@@ -14,7 +14,11 @@ import {
   ArrowRight,
   CheckCircle2,
   TrendingUp,
-  Landmark
+  Landmark,
+  LayoutDashboard,
+  Send,
+  Users2,
+  Building2
 } from 'lucide-react';
 
 export default function DashboardPage() {
@@ -51,17 +55,40 @@ export default function DashboardPage() {
     },
   ];
 
+  const navItems = [
+    { name: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
+    { name: 'Send & Verify', icon: Send, href: '/pay/new' },
+    { name: 'Family Hub', icon: Users2, href: '/family' },
+    { name: 'Projects Hub', icon: Building2, href: '/projects/proj-881' },
+  ];
+
   return (
-    <div className="min-h-screen bg-[#F8FAFC] pb-10 font-sans">
+    <div className="min-h-screen bg-[#F8FAFC] pb-10 font-sans lg:pl-20">
+      {/* Expandable Bento Navigation Sidebar */}
+      <div className="hidden lg:flex fixed left-4 top-1/2 -translate-y-1/2 z-50 group">
+        <nav className="flex flex-col gap-2 p-2 bg-white/90 backdrop-blur-xl border border-slate-200 shadow-xl rounded-3xl w-16 hover:w-60 transition-all duration-400 ease-out overflow-hidden">
+          {navItems.map((item) => (
+            <Link 
+              key={item.name} 
+              href={item.href}
+              className="flex items-center gap-4 p-3 rounded-2xl hover:bg-emerald-50 text-slate-500 hover:text-emerald-600 transition-colors whitespace-nowrap"
+            >
+              <item.icon className="w-6 h-6 flex-shrink-0" />
+              <span className="font-bold text-sm opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-400">
+                {item.name}
+              </span>
+            </Link>
+          ))}
+        </nav>
+      </div>
+
       {/* Hero / Header Section */}
       <div className="relative bg-white pt-8 pb-12 px-4 sm:px-6 lg:px-8 border-b border-slate-100/80">
         
         {/* Header Background & Image Integration */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {/* Base soft gradient */}
           <div className="absolute inset-0 bg-gradient-to-r from-emerald-50/80 via-white to-emerald-50/40 z-0"></div>
           
-          {/* Building Image blended on the right */}
           <div 
             className="absolute top-0 right-0 w-full sm:w-[65%] lg:w-[55%] h-full z-0 opacity-80"
             style={{
@@ -76,11 +103,10 @@ export default function DashboardPage() {
             />
           </div>
           
-          {/* Additional green overlay to match the UI's tint */}
           <div className="absolute top-0 right-0 w-[50%] h-full bg-gradient-to-bl from-emerald-400/20 via-emerald-100/10 to-transparent z-10 mix-blend-multiply"></div>
         </div>
 
-        <div className="max-w-7xl mx-auto relative z-20">
+        <div className="max-w-7xl mx-auto relative z-20 flex justify-between items-start">
           <div>
             <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
               Welcome back, Adeze!
@@ -89,13 +115,25 @@ export default function DashboardPage() {
               Your payments and projects are secured with Verapay.
             </p>
           </div>
+
+          {/* Top Right Badges */}
+          <div className="flex items-center gap-3">
+             <div className="hidden sm:flex items-center gap-1.5 bg-cyan-50 px-4 py-2 rounded-full border border-cyan-100 shadow-sm cursor-pointer hover:bg-cyan-100 transition-colors">
+                <Zap className="w-4 h-4 text-cyan-500" />
+                <span className="text-xs font-bold text-cyan-900">Verapay Plus</span>
+             </div>
+             
+             <div className="w-10 h-10 rounded-full bg-emerald-50 text-slate-700 font-bold flex items-center justify-center text-sm border border-emerald-100 shadow-sm">
+               AD
+             </div>
+          </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 space-y-6 relative z-30">
         
-        {/* Top 3 Metric Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+        {/* Top Metric Cards (Updated to 2 columns) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           {/* Protected in Escrow */}
           <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm relative overflow-hidden flex flex-col justify-between">
             <div className="absolute right-0 bottom-0 opacity-10 pointer-events-none">
@@ -113,22 +151,6 @@ export default function DashboardPage() {
                 <div className="mt-3 flex items-center text-xs font-medium text-emerald-600 gap-1">
                   <TrendingUp className="w-3.5 h-3.5" /> 3 Payments Active
                 </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Active Plan */}
-          <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col justify-between">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-full bg-cyan-50 flex items-center justify-center flex-shrink-0">
-                <Zap className="w-6 h-6 text-cyan-500" />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm font-medium text-slate-500">Active Plan</p>
-                <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">Verapay Plus</h3>
-                <Link href="/plan" className="mt-3 flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-700 transition-colors gap-1 w-max">
-                  View Plan <ArrowRight className="w-4 h-4" />
-                </Link>
               </div>
             </div>
           </div>
@@ -272,26 +294,7 @@ export default function DashboardPage() {
           {/* Right Column (Actions & Security) */}
           <div className="space-y-6">
             
-            {/* Security Banner */}
-            <div className="bg-gradient-to-br from-emerald-100 to-emerald-50 rounded-2xl p-6 border border-emerald-100 shadow-sm relative overflow-hidden">
-               <div className="absolute right-[-10px] top-1/2 -translate-y-1/2 opacity-20">
-                  <Lock className="w-24 h-24 text-emerald-600" />
-               </div>
-              <div className="relative z-10">
-                <div className="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center mb-4">
-                  <ShieldCheck className="w-6 h-6" />
-                </div>
-                <h3 className="text-lg font-bold text-slate-900">Your Account is Secure</h3>
-                <p className="text-sm text-emerald-900/80 mt-1 mb-6 pr-8 leading-relaxed">
-                  All transactions are verified with advanced security.
-                </p>
-                <Link href="/security" className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-emerald-700 text-sm font-semibold rounded-full shadow-sm hover:shadow border border-emerald-100 transition-all">
-                  View Security Details <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </div>
-
-            {/* Quick Actions */}
+            {/* Quick Actions (Moved Above Security) */}
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
               <div className="flex items-center gap-2 mb-5">
                 <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
@@ -321,6 +324,25 @@ export default function DashboardPage() {
                   </div>
                   <span className="text-[11px] font-medium text-slate-700 leading-tight">Manage<br/>Family</span>
                 </button>
+              </div>
+            </div>
+
+            {/* Security Banner */}
+            <div className="bg-gradient-to-br from-emerald-100 to-emerald-50 rounded-2xl p-6 border border-emerald-100 shadow-sm relative overflow-hidden">
+               <div className="absolute right-[-10px] top-1/2 -translate-y-1/2 opacity-20">
+                  <Lock className="w-24 h-24 text-emerald-600" />
+               </div>
+              <div className="relative z-10">
+                <div className="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center mb-4">
+                  <ShieldCheck className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-bold text-slate-900">Your Account is Secure</h3>
+                <p className="text-sm text-emerald-900/80 mt-1 mb-6 pr-8 leading-relaxed">
+                  All transactions are verified with advanced security.
+                </p>
+                <Link href="/security" className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-emerald-700 text-sm font-semibold rounded-full shadow-sm hover:shadow border border-emerald-100 transition-all">
+                  View Security Details <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
             </div>
 
