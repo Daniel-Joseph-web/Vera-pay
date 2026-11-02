@@ -40,24 +40,24 @@ export default function ProjectsHubPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] pb-24 lg:pb-10 font-sans lg:pl-24">
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#070B12] pb-24 lg:pb-10 font-sans lg:pl-24 transition-colors">
       
       {/* Bento Navigation with Active State & Root Affordance */}
       <BentoNavigation />
 
       {/* Header Section */}
-      <div className="relative bg-white pt-10 pb-12 px-4 sm:px-6 lg:px-8 border-b border-slate-200 overflow-hidden">
+      <div className="relative bg-white dark:bg-[#0E1626] pt-10 pb-12 px-4 sm:px-6 lg:px-8 border-b border-slate-200 dark:border-[#1E2D4A] overflow-hidden transition-colors">
         <div className="absolute inset-0 z-0 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-50/50 via-white to-slate-50/50 z-0"></div>
-          <div className="absolute top-0 right-0 w-[40%] h-full bg-emerald-100/30 rounded-l-full blur-3xl transform translate-x-1/4"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-50/50 via-white to-slate-50/50 dark:from-[#070B12]/80 dark:via-[#0E1626]/80 dark:to-[#070B12]/80 z-0"></div>
+          <div className="absolute top-0 right-0 w-[40%] h-full bg-emerald-100/30 dark:bg-emerald-500/10 rounded-l-full blur-3xl transform translate-x-1/4"></div>
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
               Projects Hub
             </h1>
-            <p className="text-slate-600 mt-2 text-sm sm:text-base font-medium">
+            <p className="text-slate-600 dark:text-[#94A3B8] mt-2 text-sm sm:text-base font-medium">
               Manage your long-term capital builds, track project milestones, and monitor site progress.
             </p>
           </div>
@@ -78,54 +78,54 @@ export default function ProjectsHubPage() {
             <Link 
               href={`/projects/${project.id}`} 
               key={project.id}
-              className="bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all p-6 group flex flex-col justify-between"
+              className="bg-white dark:bg-[#0E1626] rounded-3xl border border-slate-200 dark:border-[#1E2D4A] shadow-sm hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-500/50 transition-all p-6 group flex flex-col justify-between"
             >
               <div>
                 <div className="flex justify-between items-start mb-4">
-                  <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-105 group-hover:bg-emerald-100 transition-all">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center group-hover:scale-105 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900/60 transition-all">
                     <Building className="w-6 h-6" />
                   </div>
                   <span className={`text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full border flex items-center gap-1 ${
                     project.status === 'Active' 
-                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200' 
-                      : 'bg-slate-100 text-slate-600 border-slate-200'
+                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-800' 
+                      : 'bg-slate-100 text-slate-600 border-slate-200 dark:bg-[#162238] dark:text-[#CBD5E1] dark:border-[#1E2D4A]'
                   }`}>
-                    {project.status === 'Active' ? <Clock className="w-3 h-3 text-emerald-600" /> : <CheckCircle2 className="w-3 h-3 text-slate-500" />}
+                    {project.status === 'Active' ? <Clock className="w-3 h-3 text-emerald-600 dark:text-emerald-400" /> : <CheckCircle2 className="w-3 h-3 text-slate-500 dark:text-[#94A3B8]" />}
                     {project.status}
                   </span>
                 </div>
                 
-                <h3 className="text-xl font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">{project.title}</h3>
-                <p className="text-xs font-medium text-slate-500 flex items-center gap-1 mt-1 mb-4">
-                  <MapPin className="w-3.5 h-3.5 text-slate-400" /> {project.location}
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">{project.title}</h3>
+                <p className="text-xs font-medium text-slate-500 dark:text-[#94A3B8] flex items-center gap-1 mt-1 mb-4">
+                  <MapPin className="w-3.5 h-3.5 text-slate-400 dark:text-[#94A3B8]" /> {project.location}
                 </p>
 
                 <div className="space-y-3 mb-6">
                   <div>
                     <div className="flex justify-between text-xs font-bold mb-1.5">
-                      <span className="text-slate-500">Progress</span>
-                      <span className="text-emerald-700">{project.progress}%</span>
+                      <span className="text-slate-500 dark:text-[#94A3B8]">Progress</span>
+                      <span className="text-emerald-700 dark:text-emerald-400">{project.progress}%</span>
                     </div>
-                    <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                    <div className="w-full bg-slate-100 dark:bg-[#162238] rounded-full h-2 overflow-hidden">
                       <div 
                         className={`h-full rounded-full transition-all duration-500 bg-emerald-500`} 
                         style={{ width: `${project.progress}%` }}
                       ></div>
                     </div>
                   </div>
-                  <p className="text-[11px] font-bold text-slate-500 flex justify-between">
+                  <p className="text-[11px] font-bold text-slate-500 dark:text-[#94A3B8] flex justify-between">
                     <span>Current Stage:</span> 
-                    <span className="text-slate-800">{project.currentStage}</span>
+                    <span className="text-slate-800 dark:text-[#E2E8F0]">{project.currentStage}</span>
                   </p>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+              <div className="pt-4 border-t border-slate-100 dark:border-[#1E2D4A] flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-0.5">Budget</span>
-                  <span className="text-lg font-black text-slate-900">{formatCurrency(project.budgetUSD, 'USD')}</span>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 dark:text-[#94A3B8] block mb-0.5">Budget</span>
+                  <span className="text-lg font-black text-slate-900 dark:text-white">{formatCurrency(project.budgetUSD, 'USD')}</span>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 group-hover:bg-emerald-50 group-hover:text-emerald-600 group-hover:border-emerald-200 transition-colors">
+                <div className="w-8 h-8 rounded-full bg-slate-50 dark:bg-[#070B12] border border-slate-200 dark:border-[#1E2D4A] flex items-center justify-center text-slate-400 dark:text-[#94A3B8] group-hover:bg-emerald-50 dark:group-hover:bg-emerald-950/60 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 group-hover:border-emerald-200 dark:group-hover:border-emerald-800 transition-colors">
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </div>

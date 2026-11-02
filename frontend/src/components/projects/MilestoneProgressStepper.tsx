@@ -15,13 +15,13 @@ export const MilestoneProgressStepper: React.FC<MilestoneStepperProps> = ({
   onSelectMilestone,
 }) => {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+    <div className="bg-white dark:bg-[#0E1626] rounded-xl border border-gray-200 dark:border-[#1E2D4A] p-6 shadow-sm transition-colors">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-lg font-bold text-gray-900">Project Milestone Stages</h3>
-          <p className="text-xs text-gray-500">Funds are released stage-by-stage only after live verification.</p>
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white">Project Milestone Stages</h3>
+          <p className="text-xs text-gray-500 dark:text-[#94A3B8]">Funds are released stage-by-stage only after live verification.</p>
         </div>
-        <span className="text-xs font-semibold bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full border border-emerald-200">
+        <span className="text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 px-3 py-1 rounded-full border border-emerald-200 dark:border-emerald-800">
           2% Milestone Verification Fee
         </span>
       </div>
@@ -38,8 +38,8 @@ export const MilestoneProgressStepper: React.FC<MilestoneStepperProps> = ({
               onClick={() => onSelectMilestone(m.id)}
               className={`p-4 rounded-xl border transition-all cursor-pointer flex items-center justify-between ${
                 isSelected
-                  ? 'border-brand-primary bg-brand-light/30 ring-1 ring-brand-primary'
-                  : 'border-gray-200 hover:border-gray-300 bg-white'
+                  ? 'border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/40 ring-1 ring-emerald-500'
+                  : 'border-gray-200 dark:border-[#1E2D4A] hover:border-gray-300 dark:hover:border-emerald-500/40 bg-white dark:bg-[#070B12]'
               }`}
             >
               <div className="flex items-center gap-4">
@@ -50,16 +50,16 @@ export const MilestoneProgressStepper: React.FC<MilestoneStepperProps> = ({
                       ? 'bg-emerald-600 text-white'
                       : isInProgress
                       ? 'bg-amber-500 text-white'
-                      : 'bg-gray-100 text-gray-400'
+                      : 'bg-gray-100 dark:bg-[#162238] text-gray-400 dark:text-[#94A3B8]'
                   }`}
                 >
                   {isCompleted ? <Check className="w-5 h-5" /> : idx + 1}
                 </div>
 
                 <div>
-                  <h4 className="text-sm font-bold text-gray-900">{m.title}</h4>
-                  <div className="flex items-center gap-3 text-xs text-gray-500 mt-0.5">
-                    <span className="font-semibold text-gray-700">
+                  <h4 className="text-sm font-bold text-gray-900 dark:text-white">{m.title}</h4>
+                  <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-[#94A3B8] mt-0.5">
+                    <span className="font-semibold text-gray-700 dark:text-[#CBD5E1]">
                       {formatCurrency(m.targetBudgetUSD, 'USD')}
                     </span>
                     &bull;
@@ -67,12 +67,12 @@ export const MilestoneProgressStepper: React.FC<MilestoneStepperProps> = ({
                       <Camera className="w-3.5 h-3.5" /> {m.photoCount} Photos
                     </span>
                     {m.videoVerified && (
-                      <span className="flex items-center gap-1 text-emerald-600 font-medium">
+                      <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium">
                         <Video className="w-3.5 h-3.5" /> 15s Video Verified
                       </span>
                     )}
                     {m.surveyorVisited && (
-                      <span className="flex items-center gap-1 text-indigo-600 font-medium">
+                      <span className="flex items-center gap-1 text-indigo-600 dark:text-indigo-400 font-medium">
                         <ShieldCheck className="w-3.5 h-3.5" /> Surveyor Audited
                       </span>
                     )}
@@ -83,17 +83,17 @@ export const MilestoneProgressStepper: React.FC<MilestoneStepperProps> = ({
               {/* Status Badge */}
               <div>
                 {isCompleted && (
-                  <span className="text-xs font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded">
+                  <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/80 px-2.5 py-1 rounded border border-transparent dark:border-emerald-800">
                     PAID & RELEASED
                   </span>
                 )}
                 {isInProgress && (
-                  <span className="text-xs font-bold text-amber-700 bg-amber-100 px-2.5 py-1 rounded flex items-center gap-1">
+                  <span className="text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/80 px-2.5 py-1 rounded flex items-center gap-1 border border-transparent dark:border-amber-800">
                     <Clock className="w-3.5 h-3.5" /> AWAITING APPROVAL
                   </span>
                 )}
                 {!isCompleted && !isInProgress && (
-                  <span className="text-xs font-medium text-gray-400 flex items-center gap-1">
+                  <span className="text-xs font-medium text-gray-400 dark:text-[#94A3B8] flex items-center gap-1">
                     <Lock className="w-3.5 h-3.5" /> LOCKED
                   </span>
                 )}

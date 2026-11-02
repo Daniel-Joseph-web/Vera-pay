@@ -218,6 +218,8 @@ export default function HomePage() {
 
   useEffect(() => {
     setIsLoaded(true);
+    // Guarantee dark mode never affects the landing page
+    document.documentElement.classList.remove('dark');
   }, []);
 
   return (
