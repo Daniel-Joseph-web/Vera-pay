@@ -7,7 +7,8 @@ import {
   LayoutDashboard,
   Send,
   Users2,
-  Building2
+  Building2,
+  Settings
 } from 'lucide-react';
 
 export const BentoNavigation: React.FC = () => {
@@ -18,6 +19,7 @@ export const BentoNavigation: React.FC = () => {
     { name: 'Send & Verify', icon: Send, href: '/pay/new' },
     { name: 'Family Hub', icon: Users2, href: '/family' },
     { name: 'Projects Hub', icon: Building2, href: '/projects' },
+    { name: 'Settings', icon: Settings, href: '/settings' },
   ];
 
   const isActive = (href: string) => {
@@ -25,6 +27,7 @@ export const BentoNavigation: React.FC = () => {
     if (href === '/pay/new') return pathname.startsWith('/pay');
     if (href === '/family') return pathname.startsWith('/family');
     if (href === '/projects') return pathname.startsWith('/projects');
+    if (href === '/settings') return pathname.startsWith('/settings');
     return pathname === href;
   };
 

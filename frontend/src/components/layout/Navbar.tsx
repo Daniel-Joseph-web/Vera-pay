@@ -80,6 +80,7 @@ export const Navbar: React.FC = () => {
     pathname === '/family' || 
     pathname.startsWith('/pay') || 
     pathname.startsWith('/projects') ||
+    pathname.startsWith('/settings') ||
     pathname.startsWith('/contractor');
 
   if (isHiddenRoute) {
