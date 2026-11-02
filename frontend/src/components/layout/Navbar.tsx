@@ -44,6 +44,7 @@ const demoItems = [
   { href: '/contractor/upload/demo-token', dot: 'bg-white/40', title: 'Scene 5: Contractor Mobile Cam', sub: 'Live GPS watermarking & 15s surprise video', external: true },
 ];
 
+// MUST BE A NAMED EXPORT: export const Navbar
 export const Navbar: React.FC = () => {
   const pathname = usePathname();
   const [showDemoMenu, setShowDemoMenu] = useState(false);
@@ -72,11 +73,9 @@ export const Navbar: React.FC = () => {
 
   useEffect(() => setMobileOpen(false), [pathname, currentHash]);
 
-  // ---> ADDED CONDITION HERE <---
-  // Hide the global Navbar on the dashboard page because the dashboard 
-  // already has its own custom white header with the logo.
-  // We place it here so we don't violate React Hook rules.
-  if (pathname === '/dashboard') {
+  // Hide the global Navbar on app pages that have their own custom layout sidebars/headers.
+  const hiddenRoutes = ['/dashboard', '/family', '/pay/new'];
+  if (hiddenRoutes.includes(pathname)) {
     return null;
   }
 
@@ -86,7 +85,6 @@ export const Navbar: React.FC = () => {
       ? 'bg-[#061b16]/85 backdrop-blur-xl border-b border-white/[0.06]'
       : 'bg-transparent border-b border-transparent';
 
-  // Helper to determine if a marketing link is active
   const isMarketingLinkActive = (href: string) => {
     if (href === '/') return currentHash === '';
     return href === `/${currentHash}`;
@@ -146,7 +144,6 @@ export const Navbar: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Judge scenarios stay available inside the app, off the marketing page */}
           {!isHomePage && (
             <div className="relative hidden sm:block">
               <button

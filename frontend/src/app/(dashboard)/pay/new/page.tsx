@@ -2,16 +2,21 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import {
-  UploadCloud,
+  Upload,
   ShieldCheck,
   ArrowRight,
   Building2,
   Store,
   CheckCircle2,
   Clock,
-  Sparkles,
-  Info
+  Activity,
+  Home,
+  GraduationCap,
+  LayoutDashboard,
+  Send,
+  Users2
 } from 'lucide-react';
 import { usePaymentStore } from '@/stores/usePaymentStore';
 import { formatCurrency } from '@/lib/utils';
@@ -21,6 +26,13 @@ export default function NewPaymentPage() {
   const { form, updateForm, setPaymentId } = usePaymentStore();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const navItems = [
+    { name: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
+    { name: 'Send & Verify', icon: Send, href: '/pay/new' },
+    { name: 'Family Hub', icon: Users2, href: '/family' },
+    { name: 'Projects Hub', icon: Building2, href: '/projects/proj-881' },
+  ];
 
   // Dynamic Case 1 vs Case 2 Detection
   const isPreVerified = form.payeeName.toLowerCase().includes('bright future') ||
@@ -42,59 +54,86 @@ export default function NewPaymentPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-10 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto bg-white rounded-3xl border border-slate-200 p-8 sm:p-10 shadow-lg">
+    <div className="min-h-screen bg-[#F8FAFC] py-12 px-4 sm:px-6 lg:px-8 font-sans lg:pl-24">
+      
+      {/* Expandable Bento Navigation Sidebar */}
+      <div className="hidden lg:flex fixed left-4 top-1/2 -translate-y-1/2 z-50 group">
+        <nav className="flex flex-col gap-2 p-2 bg-white/95 backdrop-blur-xl border border-slate-200 shadow-xl rounded-3xl w-16 hover:w-60 transition-all duration-400 ease-out overflow-hidden">
+          {navItems.map((item) => (
+            <Link 
+              key={item.name} 
+              href={item.href}
+              className="flex items-center gap-4 p-3 rounded-2xl hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 transition-colors whitespace-nowrap"
+            >
+              <item.icon className="w-6 h-6 flex-shrink-0" />
+              <span className="font-bold text-sm opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-400">
+                {item.name}
+              </span>
+            </Link>
+          ))}
+        </nav>
+      </div>
+
+      <div className="max-w-3xl mx-auto bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 shadow-sm relative overflow-hidden">
+        
+        {/* Subtle Decorative Background */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-50 rounded-bl-full opacity-50 pointer-events-none"></div>
+
         {/* Header */}
-        <div className="border-b border-slate-100 pb-5 mb-6">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-black uppercase tracking-wider text-brand-primary">
+        <div className="relative z-10 border-b border-slate-100 pb-8 mb-8">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="text-[11px] font-black uppercase tracking-widest text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">
               Step 1 &bull; Fund Escrow
             </span>
-            <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded-full">
+            <div className="flex items-center gap-1.5 text-[10px] font-bold px-3 py-1 bg-slate-50 border border-slate-200 text-slate-600 rounded-full">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
               PayPal Sandbox Protected
-            </span>
+            </div>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">Start a Verified Payment</h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Start a Verified Payment</h1>
+          <p className="text-sm text-slate-500 mt-2 max-w-lg font-medium leading-relaxed">
             Your money stays 100% protected in escrow. It is only released when proof passes and you tap approve.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+          
           {/* Payment Category Picker */}
           <div>
-            <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2">
+            <label className="block text-[11px] font-black uppercase tracking-wider text-slate-500 mb-3">
               Payment Category
             </label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {[
-                { id: 'SCHOOL', label: 'School Tuition', icon: Building2 },
-                { id: 'HOSPITAL', label: 'Hospital & Clinic', icon: Building2 },
-                { id: 'LANDLORD', label: 'Rent for Parents', icon: Building2 },
+                { id: 'SCHOOL', label: 'School Tuition', icon: GraduationCap },
+                { id: 'HOSPITAL', label: 'Hospital & Clinic', icon: Activity },
+                { id: 'LANDLORD', label: 'Rent', icon: Home },
                 { id: 'BUILDING_SUPPLIER', label: 'Building Materials', icon: Building2 },
-                { id: 'ARTISAN_INFORMAL', label: 'Market / Small Seller', icon: Store },
+                { id: 'ARTISAN_INFORMAL', label: 'Groceries', icon: Store },
               ].map((c) => (
                 <button
                   key={c.id}
                   type="button"
                   onClick={() => updateForm({ payeeCategory: c.id as any })}
-                  className={`p-3 rounded-2xl border text-xs font-bold text-left flex items-center gap-2 transition-all ${
+                  className={`p-4 rounded-2xl border text-xs font-bold text-left flex flex-col items-start gap-3 transition-all ${
                     form.payeeCategory === c.id
-                      ? 'border-brand-primary bg-emerald-50 text-brand-dark ring-1 ring-brand-primary'
-                      : 'border-slate-200 text-slate-600 hover:border-slate-300 bg-white'
+                      ? 'border-emerald-500 bg-emerald-50 text-emerald-900 shadow-sm ring-1 ring-emerald-500'
+                      : 'border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 bg-white'
                   }`}
                 >
-                  <c.icon className="w-4 h-4 text-brand-primary" />
+                  <div className={`p-2 rounded-lg ${form.payeeCategory === c.id ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-500'}`}>
+                    <c.icon className="w-5 h-5" />
+                  </div>
                   {c.label}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Payee Name & Live Network Status */}
-          <div className="space-y-4">
+          <div className="bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-100 space-y-6">
+            {/* Payee Name & Live Network Status */}
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-[11px] font-black uppercase tracking-wider text-slate-500 mb-2">
                 Organisation / School / Shop Name
               </label>
               <input
@@ -103,31 +142,34 @@ export default function NewPaymentPage() {
                 placeholder="e.g. Bright Future School or Alhaji Ganiyu Cement"
                 value={form.payeeName}
                 onChange={(e) => updateForm({ payeeName: e.target.value })}
-                className="w-full p-3.5 rounded-2xl border border-slate-300 text-sm focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary font-medium"
+                className="w-full p-4 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 font-medium bg-white transition-all shadow-sm"
               />
 
               {/* Dynamic Directory Status Badge */}
-              <div className="mt-2">
+              <div className="mt-3">
                 {form.payeeName.length > 2 && (
                   isPreVerified ? (
-                    <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center gap-2 text-xs text-emerald-900">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                      <span>
-                        <strong>Case 2 (Pre-Verified):</strong> {form.payeeName} is already on the verified list! Bill check will be near-instant.
+                    <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 flex items-start gap-3 text-xs text-emerald-900 shadow-sm">
+                      <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                      <span className="leading-relaxed">
+                        <strong className="font-extrabold block mb-0.5">Case 2 (Pre-Verified)</strong> 
+                        {form.payeeName} is already on the verified list! Bill check will be near-instant.
                       </span>
                     </div>
                   ) : isInformal ? (
-                    <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-200 flex items-center gap-2 text-xs text-amber-900">
-                      <Store className="w-4 h-4 text-amber-600 flex-shrink-0" />
-                      <span>
-                        <strong>Small Seller (No CAC):</strong> Phone & account matched. Payout released strictly after family taps &ldquo;Received&rdquo; on site.
+                    <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 flex items-start gap-3 text-xs text-amber-900 shadow-sm">
+                      <Store className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                      <span className="leading-relaxed">
+                        <strong className="font-extrabold block mb-0.5">Groceries (No CAC)</strong> 
+                        Phone & account matched. Payout released strictly after family taps "Received" on site.
                       </span>
                     </div>
                   ) : (
-                    <div className="p-2.5 rounded-xl bg-blue-50 border border-blue-200 flex items-center gap-2 text-xs text-blue-900">
-                      <Clock className="w-4 h-4 text-blue-600 flex-shrink-0" />
-                      <span>
-                        <strong>Case 1 (New Organisation):</strong> Verapay will query CAC database & verify account name while funds wait safely in escrow.
+                    <div className="p-3 rounded-xl bg-blue-50 border border-blue-200 flex items-start gap-3 text-xs text-blue-900 shadow-sm">
+                      <Clock className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                      <span className="leading-relaxed">
+                        <strong className="font-extrabold block mb-0.5">Case 1 (New Organisation)</strong> 
+                        Verapay will query CAC database & verify account name while funds wait safely in escrow.
                       </span>
                     </div>
                   )
@@ -136,13 +178,13 @@ export default function NewPaymentPage() {
             </div>
 
             {/* Bank Code & NUBAN */}
-            <div className="grid sm:grid-cols-2 gap-4">
+            <div className="grid sm:grid-cols-2 gap-5">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Nigerian Commercial Bank</label>
+                <label className="block text-[11px] font-black uppercase tracking-wider text-slate-500 mb-2">Nigerian Commercial Bank</label>
                 <select
                   value={form.bankCode}
                   onChange={(e) => updateForm({ bankCode: e.target.value })}
-                  className="w-full p-3.5 rounded-2xl border border-slate-300 text-sm focus:outline-none focus:border-brand-primary bg-white"
+                  className="w-full p-4 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 bg-white font-medium shadow-sm appearance-none"
                 >
                   <option value="058">Guaranty Trust Bank (GTB)</option>
                   <option value="011">First Bank of Nigeria</option>
@@ -154,35 +196,38 @@ export default function NewPaymentPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">10-Digit NUBAN Account</label>
+                <label className="block text-[11px] font-black uppercase tracking-wider text-slate-500 mb-2">10-Digit NUBAN Account</label>
                 <input
                   type="text"
                   required
                   placeholder="0123456789"
                   value={form.accountNumber}
                   onChange={(e) => updateForm({ accountNumber: e.target.value })}
-                  className="w-full p-3.5 rounded-2xl border border-slate-300 text-sm font-mono focus:outline-none focus:border-brand-primary"
+                  className="w-full p-4 rounded-xl border border-slate-200 text-sm font-mono focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 shadow-sm bg-white"
                 />
               </div>
             </div>
 
             {/* Amount */}
-            <div className="grid sm:grid-cols-2 gap-4">
+            <div className="grid sm:grid-cols-2 gap-5 pt-2">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Amount in USD ($)</label>
-                <input
-                  type="number"
-                  required
-                  min={10}
-                  value={form.amountUSD}
-                  onChange={(e) => updateForm({ amountUSD: parseFloat(e.target.value) || 0 })}
-                  className="w-full p-3.5 rounded-2xl border border-slate-300 text-lg font-black focus:outline-none focus:border-brand-primary"
-                />
+                <label className="block text-[11px] font-black uppercase tracking-wider text-slate-500 mb-2">Amount in USD ($)</label>
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-black text-lg">$</span>
+                  <input
+                    type="number"
+                    required
+                    min={10}
+                    value={form.amountUSD || ''}
+                    onChange={(e) => updateForm({ amountUSD: parseFloat(e.target.value) || 0 })}
+                    className="w-full p-4 pl-8 rounded-xl border border-slate-200 text-xl font-black text-slate-900 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 shadow-sm bg-white"
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Estimated Payout in Naira (₦)</label>
-                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-lg font-black font-mono text-emerald-800">
+                <label className="block text-[11px] font-black uppercase tracking-wider text-slate-500 mb-2">Estimated Payout in Naira (₦)</label>
+                <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-100 text-xl font-black font-mono text-emerald-800 flex items-center shadow-sm">
                   {formatCurrency(form.amountUSD * 1650, 'NGN')}
                 </div>
               </div>
@@ -191,19 +236,21 @@ export default function NewPaymentPage() {
 
           {/* Invoice Upload Area */}
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1">Upload Bill / Invoice / Slip</label>
-            <div className="border-2 border-dashed border-slate-300 hover:border-brand-primary rounded-3xl p-7 text-center transition-colors cursor-pointer relative bg-slate-50/50">
+            <label className="block text-[11px] font-black uppercase tracking-wider text-slate-500 mb-3">Upload Bill / Invoice / Slip</label>
+            <div className="border-2 border-dashed border-slate-200 hover:border-emerald-400 rounded-3xl p-8 sm:p-10 text-center transition-colors cursor-pointer relative bg-slate-50/50 group">
               <input
                 type="file"
                 accept="image/*,.pdf"
                 onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-                className="absolute inset-0 opacity-0 cursor-pointer"
+                className="absolute inset-0 opacity-0 cursor-pointer z-10"
               />
-              <UploadCloud className="w-10 h-10 text-brand-primary mx-auto mb-2" />
-              <span className="text-xs font-bold text-slate-800 block">
+              <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm border border-slate-100 group-hover:scale-105 transition-transform">
+                <Upload className="w-8 h-8 text-emerald-500" />
+              </div>
+              <span className="text-sm font-extrabold text-slate-800 block mb-1">
                 {selectedFile ? selectedFile.name : 'Tap to upload tuition bill, hospital invoice, or materials quote'}
               </span>
-              <span className="text-[11px] text-slate-400 mt-1 block">
+              <span className="text-[11px] text-slate-500 font-medium block max-w-md mx-auto leading-relaxed">
                 Gemini Multimodal OCR will extract line items, names, and compare prices with 2-3 local shops.
               </span>
             </div>
@@ -213,10 +260,10 @@ export default function NewPaymentPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-4 bg-brand-primary hover:bg-brand-dark text-white font-black rounded-2xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 text-sm disabled:opacity-50"
+            className="w-full py-4 sm:py-5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 text-sm sm:text-base disabled:opacity-50"
           >
             {isSubmitting ? 'Funding Escrow with PayPal...' : 'Fund Escrow & Run AI Verification'}
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-5 h-5" />
           </button>
         </form>
       </div>

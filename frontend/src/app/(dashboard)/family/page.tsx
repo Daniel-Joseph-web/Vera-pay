@@ -2,227 +2,440 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Users, Plus, ShieldCheck, HeartHandshake, CheckCircle2, Download, ArrowRight } from 'lucide-react';
-import { SharedPotWidget } from '@/components/family/SharedPotWidget';
-import { SharedPotDetails } from '@shared/types/index';
-import { formatCurrency } from '@/lib/utils';
+import { 
+  Users, 
+  ShieldCheck, 
+  Calendar, 
+  Star, 
+  Clock, 
+  UserPlus, 
+  CheckCircle2, 
+  Share2, 
+  ArrowRight, 
+  Settings, 
+  Plus,
+  LayoutDashboard,
+  Send,
+  Users2,
+  Building2,
+  X,
+  Mail,
+  Copy
+} from 'lucide-react';
 
 export default function FamilyGroupPage() {
-  const [pot, setPot] = useState<SharedPotDetails>({
-    id: 'pot_eye_surgery',
-    title: "Dad's Cataract Eye Surgery at LUTH",
-    targetAmountUSD: 1200,
-    collectedAmountUSD: 900,
-    status: 'COLLECTING',
-    contributors: [
-      { userId: 'u_1', fullName: 'Tunde Balogun (Manchester, UK)', amountUSD: 400, contributedAt: '2 days ago' },
-      { userId: 'u_2', fullName: 'Folake Balogun (Toronto, CA)', amountUSD: 300, contributedAt: 'Yesterday' },
-      { userId: 'u_3', fullName: 'Emeka Balogun (Houston, US)', amountUSD: 200, contributedAt: 'Today' },
-    ],
-  });
+  const [activePane, setActivePane] = useState<'invite' | 'manage' | null>(null);
 
-  const [showChipInModal, setShowChipInModal] = useState(false);
-  const [chipInAmount, setChipInAmount] = useState<number>(300);
-  const [payoutTriggered, setPayoutTriggered] = useState(false);
+  const navItems = [
+    { name: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
+    { name: 'Send & Verify', icon: Send, href: '/pay/new' },
+    { name: 'Family Hub', icon: Users2, href: '/family' },
+    { name: 'Projects Hub', icon: Building2, href: '/projects/proj-881' },
+  ];
 
-  const handleCompleteChipIn = () => {
-    const updatedCollected = pot.collectedAmountUSD + chipInAmount;
-    const isTargetReached = updatedCollected >= pot.targetAmountUSD;
-
-    setPot({
-      ...pot,
-      collectedAmountUSD: updatedCollected,
-      status: isTargetReached ? 'TARGET_REACHED' : 'COLLECTING',
-      contributors: [
-        ...pot.contributors,
-        {
-          userId: 'u_4',
-          fullName: 'Bisi Balogun (London, UK)',
-          amountUSD: chipInAmount,
-          contributedAt: 'Just now',
-        },
-      ],
-    });
-
-    setShowChipInModal(false);
-
-    if (isTargetReached) {
-      setTimeout(() => {
-        setPayoutTriggered(true);
-      }, 600);
-    }
-  };
+  // Data for the Manage Group slide-over
+  const contributors = [
+    { id: '1', name: 'Tunde Balogun', location: 'Manchester, UK', amount: 400, date: '2 days ago', initials: 'TB', role: 'Admin' },
+    { id: '2', name: 'Folake Balogun', location: 'Toronto, Canada', amount: 300, date: 'Yesterday', initials: 'FB', role: 'Member' },
+    { id: '3', name: 'Emeka Balogun', location: 'Houston, USA', amount: 200, date: 'Today', initials: 'EB', role: 'Member' },
+  ];
 
   return (
-    <div className="min-h-screen bg-slate-50 py-10 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-5xl mx-auto space-y-6">
-        <Link href="/dashboard" className="text-xs font-bold text-slate-500 hover:text-slate-900 flex items-center gap-1.5">
-          <ArrowLeft className="w-3.5 h-3.5" /> Back to Dashboard
-        </Link>
+    <div className="min-h-screen bg-[#F8FAFC] pb-10 font-sans">
+      
+      {/* Expandable Bento Navigation Sidebar */}
+      <div className="hidden lg:flex fixed left-4 top-1/2 -translate-y-1/2 z-40 group">
+        <nav className="flex flex-col gap-2 p-2 bg-white/95 backdrop-blur-xl border border-slate-200 shadow-xl rounded-3xl w-16 hover:w-60 transition-all duration-400 ease-out overflow-hidden">
+          {navItems.map((item) => (
+            <Link 
+              key={item.name} 
+              href={item.href}
+              className="flex items-center gap-4 p-3 rounded-2xl hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 transition-colors whitespace-nowrap"
+            >
+              <item.icon className="w-6 h-6 flex-shrink-0" />
+              <span className="font-bold text-sm opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-400">
+                {item.name}
+              </span>
+            </Link>
+          ))}
+        </nav>
+      </div>
 
-        {/* Family Header */}
-        <div className="bg-white rounded-3xl border border-slate-200 p-7 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-primary to-teal-700 text-white flex items-center justify-center font-bold shadow-md">
-              <Users className="w-7 h-7" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-extrabold uppercase text-brand-primary tracking-wider">The Balogun Family Account</span>
-                <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded-full">
-                  Verapay Plus Member ($9.99/mo)
-                </span>
-              </div>
-              <h1 className="text-2xl font-black text-slate-900 mt-0.5">Family Group & Shared Pots</h1>
-              <p className="text-xs text-slate-500 mt-0.5">
-                Brothers and sisters abroad pool funds; Verapay verifies the hospital or landlord and pays directly.
+      {/* Main Content Wrapper */}
+      <div className="lg:pl-24">
+        
+        {/* Header Section */}
+        <div className="relative bg-white pt-10 pb-12 px-4 sm:px-6 lg:px-8 border-b border-slate-200 overflow-hidden">
+          <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#F0FDF8] via-[#E6F8EF] to-[#D1F4E0] opacity-80 pointer-events-none"></div>
+          
+          {/* Family Photo Integration */}
+          <div 
+            className="absolute right-0 top-0 h-full w-[80%] sm:w-[60%] lg:w-[50%] z-0 pointer-events-none"
+            style={{ 
+              backgroundImage: 'url(/image_3f491c.webp)', 
+              backgroundPosition: 'center center', 
+              backgroundSize: 'cover',
+              maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%)',
+              WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%)'
+            }}
+          ></div>
+
+          <div className="max-w-7xl mx-auto relative z-10 flex justify-between items-center">
+            <div className="max-w-xl py-6">
+              <h1 className="text-3xl sm:text-4xl font-extrabold text-[#0B1E36] tracking-tight">
+                Family & Friends
+              </h1>
+              <p className="text-slate-600 mt-2 text-sm sm:text-base font-medium">
+                Manage your family group, add trusted contacts, and share access securely.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Main Grid: Shared Pot & Family Transparent Ledger */}
-        <div className="grid lg:grid-cols-12 gap-8">
-          {/* Shared Pot Container */}
-          <div className="lg:col-span-8 space-y-6">
-            <SharedPotWidget pot={pot} onChipIn={() => setShowChipInModal(true)} />
+        {/* Content Grid */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 space-y-6 relative z-20">
+          
+          {/* Top 3 Metric Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-start gap-4 hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                <Users className="w-6 h-6 text-emerald-700" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Family Group Members</p>
+                <h3 className="text-2xl font-black text-slate-900 mt-0.5">4</h3>
+                <div className="mt-1 flex items-center text-[11px] font-bold text-emerald-700">
+                  <span className="text-emerald-600 mr-1">↑</span> +1 this month
+                </div>
+              </div>
+            </div>
 
-            {/* Target Reached Banner */}
-            {pot.status === 'TARGET_REACHED' && (
-              <div className="p-6 rounded-3xl bg-emerald-600 text-white shadow-xl space-y-3 animate-fade-in">
+            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-start gap-4 hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                <ShieldCheck className="w-6 h-6 text-emerald-700" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Shared Access</p>
+                <h3 className="text-2xl font-black text-slate-900 mt-0.5">3</h3>
+                <div className="mt-1 text-[11px] font-semibold text-slate-500">
+                  Active Connections
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-start gap-4 hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                <Calendar className="w-6 h-6 text-emerald-700" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">Last Activity</p>
+                <h3 className="text-2xl font-black text-slate-900 mt-0.5">Today</h3>
+                <div className="mt-1 text-[11px] font-semibold text-slate-500">
+                  2 activities
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Middle Section: Family Group & Quick Actions */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            {/* Your Family Group */}
+            <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col justify-between">
+              <div className="flex justify-between items-center mb-6">
+                <div className="flex items-center gap-2">
+                  <Users className="w-5 h-5 text-emerald-700" />
+                  <h2 className="text-lg font-bold text-slate-900">Your Family Group</h2>
+                </div>
+                <button 
+                  onClick={() => setActivePane('manage')}
+                  className="text-xs font-bold text-emerald-700 hover:text-emerald-800 flex items-center gap-1 bg-emerald-100 px-3 py-1.5 rounded-full transition-colors border border-emerald-200"
+                >
+                  Manage Group <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
                 <div className="flex items-center gap-3">
-                  <CheckCircle2 className="w-8 h-8 text-emerald-200" />
+                  <div className="flex flex-col items-center gap-1.5">
+                    <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-lg flex items-center justify-center border-2 border-white shadow-sm ring-2 ring-emerald-100">
+                      JD
+                    </div>
+                    <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-200">Admin</span>
+                  </div>
+                  
+                  <div className="w-14 h-14 rounded-full bg-emerald-50 text-emerald-700 font-bold text-lg flex items-center justify-center border-2 border-slate-100 shadow-sm mb-5">
+                    TB
+                  </div>
+                  <div className="w-14 h-14 rounded-full bg-emerald-50 text-emerald-700 font-bold text-lg flex items-center justify-center border-2 border-slate-100 shadow-sm mb-5">
+                    FB
+                  </div>
+                  <div className="w-14 h-14 rounded-full bg-emerald-50 text-emerald-700 font-bold text-lg flex items-center justify-center border-2 border-slate-100 shadow-sm mb-5">
+                    EB
+                  </div>
+                  
+                  {/* Invite Button */}
+                  <button 
+                    onClick={() => setActivePane('invite')}
+                    className="flex flex-col items-center gap-1.5 group mb-5"
+                  >
+                    <div className="w-14 h-14 rounded-full bg-slate-50 border-2 border-dashed border-slate-300 text-slate-500 flex items-center justify-center group-hover:border-emerald-400 group-hover:text-emerald-600 group-hover:bg-emerald-50 transition-colors">
+                      <Plus className="w-6 h-6" />
+                    </div>
+                    <span className="text-[10px] font-bold text-slate-600 group-hover:text-emerald-700">Invite Member</span>
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-4 bg-emerald-50 border border-emerald-200 rounded-2xl p-4 w-full sm:w-auto shadow-sm">
+                  <div className="w-10 h-10 rounded-full bg-emerald-600 flex items-center justify-center flex-shrink-0 shadow-md text-white">
+                    <ShieldCheck className="w-5 h-5" />
+                  </div>
                   <div>
-                    <h3 className="text-lg font-black">Shared Pot 100% Fully Funded!</h3>
-                    <p className="text-xs text-emerald-100">
-                      Target of $1,200 reached. Verapay has initiated direct institutional payout to Lagos University Teaching Hospital (LUTH).
+                    <h4 className="text-sm font-extrabold text-slate-900">Family Group Active</h4>
+                    <p className="text-xs text-slate-700 mt-0.5 max-w-[160px] leading-tight font-medium">
+                      Your family group is secure and up to date.
                     </p>
                   </div>
                 </div>
-                <div className="pt-3 border-t border-emerald-500 flex justify-between text-xs font-mono">
-                  <span>Payee: LUTH Ophthalmology Dept</span>
-                  <span className="font-bold">Naira Payout: ₦1,980,000.00</span>
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="lg:col-span-1 bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+              <div className="flex items-center gap-2 mb-6">
+                <Star className="w-5 h-5 text-emerald-700" />
+                <h2 className="text-lg font-bold text-slate-900">Quick Actions</h2>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <button 
+                  onClick={() => setActivePane('invite')}
+                  className="flex flex-col items-center justify-center text-center p-4 bg-slate-50 border border-slate-200 rounded-xl hover:border-emerald-300 hover:bg-emerald-50 hover:shadow-sm transition-all group h-full"
+                >
+                  <div className="w-12 h-12 bg-white shadow-sm rounded-full flex items-center justify-center text-emerald-700 mb-3 group-hover:scale-105 transition-transform">
+                    <UserPlus className="w-5 h-5" />
+                  </div>
+                  <span className="text-xs font-bold text-slate-800 leading-tight">Invite<br/>Member</span>
+                </button>
+                
+                <button 
+                  onClick={() => setActivePane('manage')}
+                  className="flex flex-col items-center justify-center text-center p-4 bg-slate-50 border border-slate-200 rounded-xl hover:border-emerald-300 hover:bg-emerald-50 hover:shadow-sm transition-all group h-full"
+                >
+                  <div className="w-12 h-12 bg-white shadow-sm rounded-full flex items-center justify-center text-emerald-700 mb-3 group-hover:scale-105 transition-transform">
+                    <Settings className="w-5 h-5" />
+                  </div>
+                  <span className="text-xs font-bold text-slate-800 leading-tight">Manage<br/>Group</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Section: Recent Activity & Share with confidence */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            {/* Recent Activity */}
+            <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+              <div className="flex justify-between items-center mb-6">
+                <div className="flex items-center gap-2">
+                  <Clock className="w-5 h-5 text-emerald-700" />
+                  <h2 className="text-lg font-bold text-slate-900">Recent Activity</h2>
+                </div>
+                <Link href="#" className="text-xs font-bold text-emerald-700 hover:text-emerald-800 flex items-center gap-1 transition-colors">
+                  View All <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+
+              <div className="space-y-1">
+                <div className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-xl transition-colors border border-transparent hover:border-slate-100">
+                  <div className="flex items-center gap-4">
+                    <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center flex-shrink-0">
+                      <UserPlus className="w-4 h-4" />
+                    </div>
+                    <span className="text-sm font-bold text-slate-800">You invited Tunde Balogun to your family group</span>
+                  </div>
+                  <span className="text-xs font-medium text-slate-500 whitespace-nowrap">2 hours ago</span>
+                </div>
+
+                <div className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-xl transition-colors border border-transparent hover:border-slate-100">
+                  <div className="flex items-center gap-4">
+                    <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center flex-shrink-0">
+                      <CheckCircle2 className="w-4 h-4" />
+                    </div>
+                    <span className="text-sm font-bold text-slate-800">Folake Balogun accepted your invitation</span>
+                  </div>
+                  <span className="text-xs font-medium text-slate-500 whitespace-nowrap">1 day ago</span>
+                </div>
+
+                <div className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-xl transition-colors border border-transparent hover:border-slate-100">
+                  <div className="flex items-center gap-4">
+                    <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center flex-shrink-0">
+                      <Share2 className="w-4 h-4" />
+                    </div>
+                    <span className="text-sm font-bold text-slate-800">Access shared with Emeka Balogun</span>
+                  </div>
+                  <span className="text-xs font-medium text-slate-500 whitespace-nowrap">2 days ago</span>
                 </div>
               </div>
-            )}
-
-            {/* Family Transparent Ledger */}
-            <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
-              <h3 className="font-bold text-base text-slate-900 mb-1">Transparent Family Ledger</h3>
-              <p className="text-xs text-slate-500 mb-4">
-                Everyone in the family group sees exactly what was paid, who chipped in, and the verified receipts.
-              </p>
-
-              <div className="divide-y divide-slate-100 text-xs">
-                {[
-                  { title: "Mama's Monthly Groceries & Rent", paidTo: "Landlord (Alhaji Lateef)", amount: "$450", date: "Oct 1, 2026", status: "Verified & Paid" },
-                  { title: "Sister Kemi School Tuition", paidTo: "Queens College Yaba", amount: "$320", date: "Sep 15, 2026", status: "Verified & Paid" },
-                  { title: "Solar Inverter for Family Home", paidTo: "Lagos Solar Mart", amount: "$800", date: "Aug 20, 2026", status: "Delivered (Mama tapped Received)" },
-                ].map((item, idx) => (
-                  <div key={idx} className="py-3 flex justify-between items-center">
-                    <div>
-                      <span className="font-bold text-slate-900 block">{item.title}</span>
-                      <span className="text-[11px] text-slate-500">Paid to: {item.paidTo} &bull; {item.date}</span>
-                    </div>
-                    <div className="text-right">
-                      <span className="font-bold text-slate-900 block">{item.amount}</span>
-                      <span className="text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                        {item.status}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
             </div>
-          </div>
 
-          {/* Right Column: Family Members & Monthly Audit */}
-          <div className="lg:col-span-4 space-y-6">
-            <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
-              <h4 className="text-xs font-black uppercase text-slate-400 tracking-wider mb-4">
-                Family Group Members (4)
-              </h4>
-              <div className="space-y-3.5">
-                {[
-                  { name: 'Tunde Balogun', location: 'Manchester, UK', role: 'Funder &bull; Verapay Plus Admin' },
-                  { name: 'Folake Balogun', location: 'Toronto, Canada', role: 'Funder' },
-                  { name: 'Emeka Balogun', location: 'Houston, USA', role: 'Funder' },
-                  { name: 'Mrs. Abigail Balogun (Mama)', location: 'Surulere, Lagos', role: 'Beneficiary &bull; Confirms Deliveries' },
-                ].map((m, idx) => (
-                  <div key={idx} className="flex items-center gap-3 text-xs">
-                    <div className="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center font-bold text-slate-700">
-                      {m.name[0]}
-                    </div>
-                    <div>
-                      <span className="font-bold text-slate-900 block">{m.name}</span>
-                      <span className="text-slate-500 text-[11px]">{m.location}</span>
-                      <span className="text-[10px] text-brand-primary font-semibold block" dangerouslySetInnerHTML={{ __html: m.role }} />
-                    </div>
-                  </div>
-                ))}
+            {/* Share with confidence */}
+            <div className="lg:col-span-1 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-2xl border border-emerald-300 shadow-sm p-6 relative overflow-hidden flex flex-col justify-center">
+              <div className="absolute right-0 bottom-0 w-32 h-32 bg-emerald-400/30 rounded-full blur-2xl translate-x-1/3 translate-y-1/3 pointer-events-none"></div>
+              
+              <div className="relative z-10">
+                <div className="w-12 h-12 rounded-full bg-emerald-700 text-white flex items-center justify-center shadow-md mb-4">
+                  <ShieldCheck className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-extrabold text-slate-900 mb-2">Share with confidence</h3>
+                <p className="text-sm text-slate-800 font-medium leading-relaxed mb-5">
+                  Keep your loved ones close while maintaining control.
+                </p>
+                <button className="text-xs font-bold px-5 py-2.5 rounded-full border-2 border-emerald-700 text-emerald-800 bg-white/50 hover:bg-emerald-700 hover:text-white hover:border-emerald-700 transition-all flex items-center gap-1.5 w-max shadow-sm">
+                  Learn More <ArrowRight className="w-3.5 h-3.5" />
+                </button>
               </div>
             </div>
 
-            {/* Monthly Report Box */}
-            <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
-              <span className="text-xs font-bold text-slate-900 block mb-1">Consolidated Monthly Report</span>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                One single page showing every payment, what it bought, and official receipts. Perfect for family transparency.
-              </p>
-              <button
-                onClick={() => alert('Downloaded: Verapay_Monthly_Family_Report_Oct_2026.pdf')}
-                className="mt-4 w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-bold rounded-xl flex items-center justify-center gap-2 transition-colors"
-              >
-                <Download className="w-3.5 h-3.5" /> Download October Report (PDF)
-              </button>
-            </div>
           </div>
         </div>
+      </div>
 
-        {/* Chip-In Modal */}
-        {showChipInModal && (
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl">
-              <div className="flex items-center gap-2 text-brand-primary font-bold text-xs uppercase tracking-wider">
-                <HeartHandshake className="w-4 h-4" /> Chip In to Shared Pot
+      {/* Slide-over Backdrop */}
+      {activePane && (
+        <div 
+          className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[60] transition-opacity" 
+          onClick={() => setActivePane(null)}
+        />
+      )}
+
+      {/* Slide-over Side Pane */}
+      <div 
+        className={`fixed top-0 right-0 h-full w-full sm:w-[420px] bg-white shadow-2xl z-[70] transform transition-transform duration-300 ease-in-out flex flex-col ${
+          activePane ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        <div className="flex items-center justify-between p-6 border-b border-slate-100 bg-slate-50/50">
+          <h2 className="text-lg font-extrabold text-slate-900 flex items-center gap-2">
+            {activePane === 'manage' && <Settings className="w-5 h-5 text-emerald-600" />}
+            {activePane === 'invite' && <UserPlus className="w-5 h-5 text-emerald-600" />}
+            {activePane === 'manage' ? 'Manage Group & Contributions' : 'Invite Family Member'}
+          </h2>
+          <button 
+            onClick={() => setActivePane(null)}
+            className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-200/60 text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-6">
+          
+          {/* MANAGE GROUP PANE */}
+          {activePane === 'manage' && (
+            <div className="space-y-6">
+              
+              <div className="bg-emerald-50 border border-emerald-100 rounded-2xl p-5 shadow-sm text-center">
+                <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider block mb-1">Total Family Contributions</span>
+                <div className="text-3xl font-black text-slate-900">$900.00</div>
+                <div className="mt-2 text-[11px] font-semibold text-emerald-600 bg-emerald-100/50 inline-block px-3 py-1 rounded-full">
+                  Dad's Eye Surgery Pot
+                </div>
               </div>
-              <h3 className="text-xl font-bold text-slate-900">Dad&apos;s Eye Surgery at LUTH</h3>
-              <p className="text-xs text-slate-500">
-                Current total: $900 / $1,200. $300 needed to complete the surgery pot.
-              </p>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Your Contribution (USD)</label>
-                <input
-                  type="number"
-                  value={chipInAmount}
-                  onChange={(e) => setChipInAmount(parseFloat(e.target.value) || 0)}
-                  className="w-full p-3 rounded-xl border border-slate-300 font-bold text-lg focus:outline-none focus:border-brand-primary"
-                />
+                <h3 className="text-sm font-bold text-slate-900 mb-3 border-b border-slate-100 pb-2">Active Members</h3>
+                <div className="space-y-3">
+                  {contributors.map((member) => (
+                    <div key={member.id} className="flex items-center justify-between p-3 bg-white border border-slate-100 rounded-2xl hover:border-emerald-200 transition-colors shadow-sm">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-800 font-extrabold flex items-center justify-center flex-shrink-0">
+                          {member.initials}
+                        </div>
+                        <div>
+                          <div className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                            {member.name}
+                            {member.role === 'Admin' && (
+                              <span className="text-[9px] uppercase tracking-wider font-bold bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded">Admin</span>
+                            )}
+                          </div>
+                          <div className="text-[11px] text-slate-500">{member.location}</div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-black text-emerald-700 text-sm">${member.amount}</div>
+                        <div className="text-[10px] text-slate-400 font-medium">{member.date}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-
-              <div className="p-3 bg-emerald-50 rounded-xl text-xs text-emerald-900">
-                <strong>Protected Escrow:</strong> Your contribution is held safely until the pot is 100% funded, then paid directly to LUTH Hospital.
-              </div>
-
-              <div className="flex gap-3 pt-2">
-                <button
-                  onClick={handleCompleteChipIn}
-                  className="flex-1 py-3 bg-brand-primary hover:bg-brand-dark text-white font-bold rounded-xl text-xs shadow"
-                >
-                  Confirm & Chip In ${chipInAmount} via PayPal
-                </button>
-                <button
-                  onClick={() => setShowChipInModal(false)}
-                  className="py-3 px-4 text-slate-500 text-xs font-medium"
-                >
-                  Cancel
-                </button>
-              </div>
+              
+              <button className="w-full py-3 bg-white border-2 border-slate-200 text-slate-700 hover:border-emerald-600 hover:text-emerald-700 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2">
+                Download Contribution Report
+              </button>
             </div>
-          </div>
-        )}
+          )}
+
+          {/* INVITE MEMBER PANE */}
+          {activePane === 'invite' && (
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-sm font-bold text-slate-900 mb-2">Send an Email Invite</h3>
+                <p className="text-xs text-slate-500 mb-4">
+                  Add a family member to your transparent ledger group. They will need to verify their identity upon joining.
+                </p>
+                <div className="space-y-3">
+                  <div>
+                    <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wide block mb-1">Email Address</label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                      <input 
+                        type="email" 
+                        placeholder="uncle.emeka@example.com"
+                        className="w-full pl-9 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                      />
+                    </div>
+                  </div>
+                  <button className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-sm transition-colors shadow-sm mt-2">
+                    Send Invitation
+                  </button>
+                </div>
+              </div>
+
+              <div className="relative py-2">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-slate-200"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-3 bg-white text-xs font-bold text-slate-400 uppercase tracking-wider">Or</span>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-sm font-bold text-slate-900 mb-2">Share Invite Link</h3>
+                <p className="text-xs text-slate-500 mb-4">
+                  Copy this private link and send it directly via WhatsApp or SMS.
+                </p>
+                <div className="flex items-center gap-2">
+                  <input 
+                    type="text" 
+                    readOnly
+                    value="https://verapay.io/join/f-82A9xZ"
+                    className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-600 focus:outline-none"
+                  />
+                  <button className="p-3 bg-emerald-100 text-emerald-700 hover:bg-emerald-200 rounded-xl transition-colors shadow-sm flex-shrink-0" title="Copy Link">
+                    <Copy className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          )}
+
+        </div>
       </div>
+
     </div>
   );
 }
