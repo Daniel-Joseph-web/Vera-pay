@@ -74,8 +74,14 @@ export const Navbar: React.FC = () => {
   useEffect(() => setMobileOpen(false), [pathname, currentHash]);
 
   // Hide the global Navbar on app pages that have their own custom layout sidebars/headers.
-  const hiddenRoutes = ['/dashboard', '/family', '/pay/new'];
-  if (hiddenRoutes.includes(pathname)) {
+  // Using startsWith for '/projects' ensures both the hub and the dynamic ID pages are hidden.
+  const isHiddenRoute = 
+    pathname === '/dashboard' || 
+    pathname === '/family' || 
+    pathname === '/pay/new' || 
+    pathname.startsWith('/projects');
+
+  if (isHiddenRoute) {
     return null;
   }
 

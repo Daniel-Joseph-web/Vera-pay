@@ -31,7 +31,7 @@ export default function NewPaymentPage() {
     { name: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
     { name: 'Send & Verify', icon: Send, href: '/pay/new' },
     { name: 'Family Hub', icon: Users2, href: '/family' },
-    { name: 'Projects Hub', icon: Building2, href: '/projects/proj-881' },
+    { name: 'Projects Hub', icon: Building2, href: '/projects' },
   ];
 
   // Dynamic Case 1 vs Case 2 Detection

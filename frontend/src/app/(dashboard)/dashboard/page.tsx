@@ -59,7 +59,7 @@ export default function DashboardPage() {
     { name: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
     { name: 'Send & Verify', icon: Send, href: '/pay/new' },
     { name: 'Family Hub', icon: Users2, href: '/family' },
-    { name: 'Projects Hub', icon: Building2, href: '/projects/proj-881' },
+    { name: 'Projects Hub', icon: Building2, href: '/projects' },
   ];
 
   return (
@@ -146,7 +146,7 @@ export default function DashboardPage() {
                 <ShieldCheck className="w-6 h-6 text-emerald-600" />
               </div>
               <div className="flex-1">
-                <p className="text-sm font-medium text-slate-500">Protected in Escrow</p>
+                <p className="text-sm font-medium text-slate-500">Protected in Vera pay</p>
                 <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">₦6,703.00</h3>
                 <div className="mt-3 flex items-center text-xs font-medium text-emerald-600 gap-1">
                   <TrendingUp className="w-3.5 h-3.5" /> 3 Payments Active

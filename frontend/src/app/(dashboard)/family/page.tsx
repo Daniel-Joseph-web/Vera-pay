@@ -30,7 +30,7 @@ export default function FamilyGroupPage() {
     { name: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
     { name: 'Send & Verify', icon: Send, href: '/pay/new' },
     { name: 'Family Hub', icon: Users2, href: '/family' },
-    { name: 'Projects Hub', icon: Building2, href: '/projects/proj-881' },
+    { name: 'Projects Hub', icon: Building2, href: '/projects' },
   ];
 
   // Data for the Manage Group slide-over
