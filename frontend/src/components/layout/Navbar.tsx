@@ -72,6 +72,14 @@ export const Navbar: React.FC = () => {
 
   useEffect(() => setMobileOpen(false), [pathname, currentHash]);
 
+  // ---> ADDED CONDITION HERE <---
+  // Hide the global Navbar on the dashboard page because the dashboard 
+  // already has its own custom white header with the logo.
+  // We place it here so we don't violate React Hook rules.
+  if (pathname === '/dashboard') {
+    return null;
+  }
+
   const position = isHomePage ? 'fixed inset-x-0 top-0' : 'sticky top-0';
   const surface =
     scrolled || !isHomePage || mobileOpen
