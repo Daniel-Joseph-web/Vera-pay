@@ -1,0 +1,207 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  DIASPORA_SENDER
+  FAMILY_MEMBER
+  CONTRACTOR
+  FIELD_SURVEYOR
+  ADMIN_OPERATOR
+}
+
+enum PlanType {
+  BASIC
+  VERAPAY_PLUS
+  VERAPAY_PROJECTS
+}
+
+enum EscrowStatus {
+  PENDING_FUNDING
+  ESCROW_HELD
+  VERIFYING
+  READY_FOR_APPROVAL
+  PAYOUT_INITIATED
+  COMPLETED
+  REFUNDED
+  DISPUTED
+}
+
+enum RiskSignal {
+  GREEN
+  AMBER
+  RED
+}
+
+enum PayeeCategory {
+  SCHOOL
+  HOSPITAL
+  LANDLORD
+  BUILDING_SUPPLIER
+  ARTISAN_INFORMAL
+}
+
+model User {
+  id                String             @id @default(uuid())
+  email             String?            @unique
+  phoneNumber       String             @unique
+  fullName          String
+  role              UserRole           @default(DIASPORA_SENDER)
+  countryCode       String             // "GB", "US", "CA", "NG"
+  activePlan        PlanType           @default(BASIC)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  paymentsSent      Payment[]          @relation("SenderPayments")
+  familyMemberships FamilyMember[]
+  createdProjects   Project[]          @relation("SenderProjects")
+  potContributions  PotContribution[]
+}
+
+model FamilyGroup {
+  id                String             @id @default(uuid())
+  name              String             // e.g., "The Balogun Family"
+  creatorId         String
+  createdAt         DateTime           @default(now())
+
+  members           FamilyMember[]
+  sharedPots        SharedPot[]
+}
+
+model FamilyMember {
+  id                String             @id @default(uuid())
+  familyGroupId     String
+  userId            String
+  isBeneficiary     Boolean            @default(false)
+  joinedAt          DateTime           @default(now())
+
+  familyGroup       FamilyGroup        @relation(fields: [familyGroupId], references: [id])
+  user              User               @relation(fields: [userId], references: [id])
+}
+
+model Payee {
+  id                String             @id @default(uuid())
+  businessName      String
+  category          PayeeCategory
+  isCacVerified     Boolean            @default(false)
+  cacRegistrationNo String?
+  bankCode          String             // e.g., "058" for GTBank
+  bankName          String
+  accountNumber     String             // 10-digit NUBAN
+  accountName       String             // Verified NIP Name
+  address           String?
+  phoneNumber       String?
+  isPreVerified     Boolean            @default(false)
+  createdAt         DateTime           @default(now())
+
+  payments          Payment[]
+}
+
+model Payment {
+  id                String             @id @default(uuid())
+  senderId          String
+  payeeId           String
+  milestoneId       String?
+  amountUSD         Decimal            @db.Decimal(12, 2)
+  amountNGN         Decimal            @db.Decimal(14, 2)
+  exchangeRate      Decimal            @db.Decimal(10, 4)
+  feeUSD            Decimal            @db.Decimal(8, 2)
+  escrowStatus      EscrowStatus       @default(PENDING_FUNDING)
+  paypalOrderId     String?            @unique
+  paypalCaptureId   String?            @unique
+  paystackRef       String?            @unique
+  idempotencyKey    String             @unique
+
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  sender            User               @relation("SenderPayments", fields: [senderId], references: [id])
+  payee             Payee              @relation(fields: [payeeId], references: [id])
+  verificationJob   VerificationJob?
+  evidenceMedia     EvidenceMedia[]
+}
+
+model VerificationJob {
+  id                String             @id @default(uuid())
+  paymentId         String             @unique
+  riskSignal        RiskSignal         @default(AMBER)
+  payeeCheckPassed  Boolean            @default(false)
+  billCheckPassed   Boolean            @default(false)
+  proofCheckPassed  Boolean            @default(false)
+  aiSummaryReport   String             @db.Text
+  duplicateHashHits Int                @default(0)
+  priceDeltaPercent Decimal?           @db.Decimal(5, 2)
+  requiresHumanHelp Boolean            @default(false)
+  createdAt         DateTime           @default(now())
+  completedAt       DateTime?
+
+  payment           Payment            @relation(fields: [paymentId], references: [id])
+}
+
+model EvidenceMedia {
+  id                String             @id @default(uuid())
+  paymentId         String
+  mediaType         String             // "INVOICE", "LIVE_PHOTO", "SURPRISE_VIDEO", "RECEIPT"
+  fileUrl           String
+  perceptualHash    String?            // dHash string for image replay catching
+  latitude          Decimal?           @db.Decimal(10, 7)
+  longitude         Decimal?           @db.Decimal(10, 7)
+  capturedAt        DateTime?
+  uploadedAt        DateTime           @default(now())
+
+  payment           Payment            @relation(fields: [paymentId], references: [id])
+}
+
+model Project {
+  id                String             @id @default(uuid())
+  ownerId           String
+  title             String             // e.g., "4-Bedroom Duplex in Ibadan"
+  locationCity      String
+  totalBudgetUSD    Decimal            @db.Decimal(12, 2)
+  createdAt         DateTime           @default(now())
+
+  owner             User               @relation("SenderProjects", fields: [ownerId], references: [id])
+  milestones        Milestone[]
+}
+
+model Milestone {
+  id                String             @id @default(uuid())
+  projectId         String
+  sequenceNumber    Int
+  title             String             // "Foundation & German Floor"
+  targetBudgetUSD   Decimal            @db.Decimal(12, 2)
+  status            EscrowStatus       @default(PENDING_FUNDING)
+  createdAt         DateTime           @default(now())
+
+  project           Project            @relation(fields: [projectId], references: [id])
+}
+
+model SharedPot {
+  id                String             @id @default(uuid())
+  familyGroupId     String
+  title             String             // "Dad's Eye Surgery at LUTH"
+  targetAmountUSD   Decimal            @db.Decimal(12, 2)
+  currentAmountUSD  Decimal            @default(0) @db.Decimal(12, 2)
+  status            String             // "COLLECTING", "TARGET_REACHED", "DISBURSED"
+  createdAt         DateTime           @default(now())
+
+  familyGroup       FamilyGroup        @relation(fields: [familyGroupId], references: [id])
+  contributions     PotContribution[]
+}
+
+model PotContribution {
+  id                String             @id @default(uuid())
+  potId             String
+  userId            String
+  amountUSD         Decimal            @db.Decimal(10, 2)
+  paypalCaptureId   String             @unique
+  contributedAt     DateTime           @default(now())
+
+  pot               SharedPot          @relation(fields: [potId], references: [id])
+  user              User               @relation(fields: [userId], references: [id])
+}

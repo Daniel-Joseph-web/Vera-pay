@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Frontend Engineering Documentation</title>
+<style>
+
+  @page {
+    size: A4;
+    margin: 16mm 14mm 16mm 14mm;
+  }
+  
+  * {
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    color: #2D3748;
+    background-color: #FFFFFF;
+    line-height: 1.45;
+    font-size: 8.8pt;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Document Banner */
+  .doc-header {
+    border-bottom: 2px solid #007A5E;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+  }
+
+  .doc-title {
+    font-size: 20pt;
+    font-weight: 800;
+    color: #007A5E;
+    margin: 0 0 2px 0;
+    letter-spacing: -0.4px;
+  }
+
+  .doc-tagline {
+    font-size: 10pt;
+    font-weight: 600;
+    color: #4A5568;
+    margin: 0 0 4px 0;
+  }
+
+  .doc-subtitle {
+    font-size: 8pt;
+    color: #718096;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Headings */
+  h1 {
+    color: #007A5E;
+    font-size: 16pt;
+    font-weight: 800;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #007A5E;
+    page-break-after: avoid;
+  }
+
+  h2 {
+    color: #006644;
+    font-size: 12pt;
+    font-weight: 700;
+    margin-top: 14px;
+    margin-bottom: 6px;
+    padding-bottom: 3px;
+    border-bottom: 1.5px solid #E2E8F0;
+    page-break-after: avoid;
+  }
+
+  h3 {
+    color: #2D3748;
+    font-size: 9.8pt;
+    font-weight: 700;
+    margin-top: 10px;
+    margin-bottom: 4px;
+    page-break-after: avoid;
+  }
+
+  h4 {
+    color: #334155;
+    font-size: 9pt;
+    font-weight: 700;
+    margin-top: 8px;
+    margin-bottom: 3px;
+    page-break-after: avoid;
+  }
+
+  p {
+    margin: 0 0 6px 0;
+  }
+
+  ul, ol {
+    margin: 0 0 6px 0;
+    padding-left: 18px;
+  }
+
+  li {
+    margin-bottom: 3px;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid #E2E8F0;
+    margin: 12px 0;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    font-size: 8.2pt;
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  th {
+    background-color: #006644;
+    color: #FFFFFF;
+    font-weight: 600;
+    text-align: left;
+    padding: 5px 8px;
+    border: 1px solid #00593c;
+  }
+
+  td {
+    padding: 5px 8px;
+    border: 1px solid #E2E8F0;
+    vertical-align: top;
+  }
+
+  tr:nth-child(even) td {
+    background-color: #F8FAFC;
+  }
+
+  /* Code Blocks */
+  pre {
+    background-color: #0F172A;
+    color: #F8FAFC;
+    padding: 9px 12px;
+    border-radius: 5px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 7.8pt;
+    line-height: 1.4;
+    overflow-x: auto;
+    margin: 6px 0 10px 0;
+    border: 1px solid #1E293B;
+    page-break-inside: avoid;
+  }
+
+  code {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 8pt;
+  }
+
+  p code, li code, td code {
+    background-color: #F1F5F9;
+    color: #0F766E;
+    padding: 1px 4px;
+    border-radius: 3px;
+    border: 1px solid #E2E8F0;
+    font-weight: 600;
+  }
+
+  /* Callouts & Quotes */
+  blockquote {
+    border-left: 3.5px solid #007A5E;
+    background-color: #F0FDF4;
+    padding: 6px 10px;
+    margin: 6px 0 8px 0;
+    color: #166534;
+    font-size: 8.5pt;
+    page-break-inside: avoid;
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 7.5pt;
+  }
+  .badge-green { background-color: #DCFCE7; color: #15803D; border: 1px solid #BBF7D0; }
+  .badge-amber { background-color: #FEF3C7; color: #B45309; border: 1px solid #FDE68A; }
+  .badge-red { background-color: #FEE2E2; color: #B91C1C; border: 1px solid #FECACA; }
+
+</style>
+</head>
+<body>
+  <div class="doc-header">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+      <div>
+        <div class="doc-title">Verapay Technical Docs</div>
+        <div class="doc-tagline">Frontend Engineering Documentation</div>
+        <div class="doc-subtitle">Client Architecture & Component Specs &bull; Version 2.0</div>
+      </div>
+      <div style="text-align: right; font-size: 8pt; color: #718096;">
+        <div><strong>Verapay Platform</strong></div>
+        <div>Verify, then release.</div>
+      </div>
+    </div>
+  </div>
+
+  <h1>Verapay: Frontend Engineering Documentation</h1>
+<p><strong>Client Architecture, UI Component Specifications &amp; Integration Guide | Version 2.0</strong></p>
+<hr />
+<h2>1. Frontend Technology Stack &amp; Architecture</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Layer</th>
+<th style="text-align:left">Technology</th>
+<th style="text-align:left">Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Framework</strong></td>
+<td style="text-align:left"><strong>Next.js 14+ (App Router)</strong></td>
+<td style="text-align:left">Hybrid SSR/SSG for rapid initial loads; API routes for edge authentication and webhook handling.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Language</strong></td>
+<td style="text-align:left"><strong>TypeScript 5.x</strong></td>
+<td style="text-align:left">Strict type safety for financial transactions, escrow states, and verification payloads.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Styling</strong></td>
+<td style="text-align:left"><strong>Tailwind CSS + shadcn/ui</strong></td>
+<td style="text-align:left">Rapid accessible component development; highly customizable for mobile-first views.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>State Management</strong></td>
+<td style="text-align:left"><strong>Zustand + TanStack Query (v5)</strong></td>
+<td style="text-align:left">Zustand for local interactive state (camera, modal flows); TanStack Query for server state caching &amp; optimistic UI.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Payments SDK</strong></td>
+<td style="text-align:left"><strong><code>@paypal/react-paypal-js</code></strong></td>
+<td style="text-align:left">Official React PayPal SDK for sandbox and production checkout buttons and subscription triggers.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Icons &amp; Visuals</strong></td>
+<td style="text-align:left"><strong>Lucide React</strong></td>
+<td style="text-align:left">Feather-light SVG icons optimized for high-density mobile displays.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Media Handling</strong></td>
+<td style="text-align:left"><strong>Native WebRTC / MediaDevices API</strong></td>
+<td style="text-align:left">Direct browser camera and microphone streams; enforces live camera capture and blocks file pickers.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>2. Design System &amp; Design Tokens</h2>
+<p>Verapay uses a clean, high-trust fintech palette reminiscent of institutional security, with high-contrast accessibility across desktop and mobile screens.</p>
+<pre><code class="language-css">:root {
+  /* Brand Primary */
+  --color-brand-primary: #007A5E;        /* Verapay Green */
+  --color-brand-dark: #004D3A;           /* Evergreen for Headings */
+  --color-brand-light: #E6F4EA;          /* Light Mint for Backgrounds */
+
+  /* Semantic Traffic Light Signals */
+  --signal-green-bg: #DCFCE7;            /* Green Alert Background */
+  --signal-green-text: #15803D;          /* Green Text */
+  --signal-green-border: #86EFAC;
+  
+  --signal-amber-bg: #FEF3C7;            /* Amber Alert Background */
+  --signal-amber-text: #B45309;          /* Amber Text */
+  --signal-amber-border: #FCD34D;
+  
+  --signal-red-bg: #FEE2E2;              /* Red Alert Background */
+  --signal-red-text: #B91C1C;            /* Red Text */
+  --signal-red-border: #FCA5A5;
+
+  /* Neutrals */
+  --color-surface: #FFFFFF;
+  --color-surface-subtle: #F8FAFC;
+  --color-text-main: #1E293B;
+  --color-text-muted: #64748B;
+  --color-border: #E2E8F0;
+}
+</code></pre>
+<hr />
+<h2>3. Core UI Component Specifications</h2>
+<h3>3.1. <code>&lt;TrafficLightDecisionCard /&gt;</code></h3>
+<p>The primary decision interface presented to the sender on Gate 4. The sender sees a synthesized risk verdict with full forensic transparency.</p>
+<pre><code class="language-tsx">// src/components/verification/TrafficLightDecisionCard.tsx
+
+export type TrafficLightSignal = 'GREEN' | 'AMBER' | 'RED';
+
+export interface VerificationCheckItem {
+  id: string;
+  label: string;
+  passed: boolean;
+  details: string;
+}
+
+export interface TrafficLightProps {
+  paymentId: string;
+  signal: TrafficLightSignal;
+  headline: string;
+  description: string;
+  checks: VerificationCheckItem[];
+  amountUSD: number;
+  amountNGN: number;
+  providerName: string;
+  onApprove: (paymentId: string) =&gt; Promise&lt;void&gt;;
+  onRefund: (paymentId: string) =&gt; Promise&lt;void&gt;;
+  onViewAlternatives?: () =&gt; void;
+  onRequestHumanReview?: () =&gt; void;
+  isPlusUser: boolean;
+}
+</code></pre>
+<h4>UI Behavior &amp; State Logic:</h4>
+<ol>
+<li>🟢 <strong>GREEN State:</strong>
+<ul>
+<li>Banner: Mint green background (<code>--signal-green-bg</code>) with checkmark shield icon.</li>
+<li>Actions: Primary CTA <code>[ Approve &amp; Release $XXX ]</code> triggers <code>onApprove</code>. Secondary link: <code>[ Reject &amp; Refund ]</code>.</li>
+</ul>
+</li>
+<li>🟡 <strong>AMBER State:</strong>
+<ul>
+<li>Banner: Soft amber background (<code>--signal-amber-bg</code>) with alert triangle icon.</li>
+<li>Prominently displays price delta: e.g., <em>&quot;Cement quoted at ₦14,200/bag. Local verified suppliers average ₦10,800/bag.&quot;</em></li>
+<li>Actions:
+<ul>
+<li><code>[ View Cheaper Suppliers ]</code> opens <code>&lt;QuoteComparisonModal /&gt;</code>.</li>
+<li><code>[ Request Human Review ]</code> (Free for Verapay Plus, with badge <em>&quot;Reviewed in &lt; 2 hrs&quot;</em>).</li>
+<li><code>[ Override &amp; Pay Anyway ]</code> with explicit confirmation dialogue.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>🔴 <strong>RED State:</strong>
+<ul>
+<li>Banner: Muted red background (<code>--signal-red-bg</code>) with octagonal alert icon.</li>
+<li>Forensic reason clearly stated: <em>&quot;Photo reused from August 14th milestone&quot;</em> or <em>&quot;Beneficiary account name does not match school CAC records.&quot;</em></li>
+<li>Actions: Prominent primary CTA <code>[ 1-Click Instant Refund to PayPal ]</code>. Payout button is strictly disabled.</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h3>3.2. <code>&lt;InAppCamera /&gt;</code> (Anti-Spoof Live Viewfinder)</h3>
+<p>Ensures contractors and suppliers take photos live on site. Uploading existing images from the phone gallery is technically blocked.</p>
+<pre><code class="language-tsx">// src/components/camera/InAppCamera.tsx
+
+export interface CameraCapturePayload {
+  blob: Blob;
+  base64Data: string;
+  metadata: {
+    latitude: number;
+    longitude: number;
+    accuracyMeters: number;
+    altitudeMeters: number | null;
+    compassHeading: number | null;
+    capturedAtISO: string;
+  };
+}
+
+export interface InAppCameraProps {
+  milestoneId: string;
+  promptText: string;
+  onCaptureComplete: (payload: CameraCapturePayload) =&gt; void;
+  onCancel: () =&gt; void;
+}
+</code></pre>
+<h4>Technical Implementation Rules:</h4>
+<ul>
+<li><strong>No File Input:</strong> NEVER render <code>&lt;input type=&quot;file&quot;&gt;</code>. The component must directly call <code>navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })</code>.</li>
+<li><strong>Geolocation Enforcement:</strong> <code>navigator.geolocation.getCurrentPosition</code> is queried concurrently. If location services are disabled, camera feed displays a banner: <em>&quot;Location access required to verify site coordinates.&quot;</em></li>
+<li><strong>Real-Time Canvas Watermark:</strong> When the user taps the capture button, the frame is copied to an HTML5 <code>&lt;canvas&gt;</code>. Live GPS coordinates, timestamp, and active project ID are watermarked directly into the bottom-right pixels of the image buffer before encoding to JPEG.</li>
+<li><strong>Client-Side Compression:</strong> Images are compressed to max 1920x1080 resolution at 0.75 JPEG quality before upload, reducing upload payload from ~8MB to ~450KB for fast uploads over Nigerian 3G/4G connections.</li>
+</ul>
+<hr />
+<h3>3.3. <code>&lt;SurpriseVideoRecorder /&gt;</code> (15-Second Challenge)</h3>
+<p>Issues a randomized live video challenge to contractors to prove current physical site presence.</p>
+<pre><code class="language-tsx">// src/components/camera/SurpriseVideoRecorder.tsx
+
+export interface SurpriseVideoProps {
+  milestoneId: string;
+  challengeCode: string; // e.g. &quot;CODE: 8291&quot;
+  instructions: string;  // e.g. &quot;Pan north wall while holding challenge code&quot;
+  onUploadSuccess: (videoUrl: string) =&gt; void;
+}
+</code></pre>
+<h4>UX &amp; MediaRecorder Architecture:</h4>
+<ol>
+<li>Modal displays challenge instructions and a big &quot;Ready&quot; button.</li>
+<li>Once initiated, camera feed displays an active 15-second countdown timer and an on-screen badge showing the challenge code.</li>
+<li>Uses <code>MediaRecorder</code> API (<code>video/webm;codecs=vp8,opus</code> or <code>video/mp4</code> on Safari/iOS).</li>
+<li>Automatically halts recording at 15.0 seconds.</li>
+<li>Displays immediate playback preview with <code>[ Submit Video Proof ]</code> or <code>[ Re-record ]</code>.</li>
+</ol>
+<hr />
+<h3>3.4. <code>&lt;MilestoneProgressStepper /&gt;</code></h3>
+<p>Used in Verapay Projects to visualize capital construction phases.</p>
+<pre><code class="language-tsx">// src/components/projects/MilestoneProgressStepper.tsx
+
+export interface MilestoneStage {
+  id: string;
+  sequenceNumber: number;
+  title: string;          // e.g. &quot;Foundation &amp; German Floor&quot;
+  targetBudgetUSD: number;
+  status: 'LOCKED' | 'READY_TO_FUND' | 'IN_PROGRESS' | 'IN_VERIFICATION' | 'APPROVED';
+  proofSummary?: {
+    photoCount: number;
+    videoVerified: boolean;
+    surveyorVisited: boolean;
+  };
+}
+</code></pre>
+<hr />
+<h3>3.5. <code>&lt;QuoteComparisonModal /&gt;</code></h3>
+<p>Autonomous Quote Agent interface showing contractor price vs. local market quotes.</p>
+<pre><code class="language-tsx">// src/components/verification/QuoteComparisonModal.tsx
+
+export interface SupplierQuote {
+  supplierId: string;
+  businessName: string;
+  location: string;
+  pricePerUnit: number;
+  totalCost: number;
+  cacVerified: boolean;
+  phone: string;
+}
+
+export interface QuoteComparisonProps {
+  materialName: string;      // e.g. &quot;Dangote 42.5R Cement (500 Bags)&quot;
+  contractorPrice: number;   // e.g. ₦7,100,000 (₦14,200 / bag)
+  marketAveragePrice: number;// e.g. ₦5,400,000 (₦10,800 / bag)
+  alternativeSuppliers: SupplierQuote[];
+  onSelectAlternative: (supplier: SupplierQuote) =&gt; void;
+  onClose: () =&gt; void;
+}
+</code></pre>
+<hr />
+<h3>3.6. <code>&lt;SharedPotWidget /&gt;</code> &amp; <code>&lt;FamilyGroupDashboard /&gt;</code></h3>
+<p>The collaborative hub for Verapay Plus subscribers.</p>
+<pre><code class="language-tsx">// src/components/family/SharedPotWidget.tsx
+
+export interface PotContributor {
+  userId: string;
+  name: string;
+  avatarUrl: string;
+  amountContributedUSD: number;
+  fundedAtISO: string;
+}
+
+export interface SharedPotProps {
+  potId: string;
+  potTitle: string;          // e.g. &quot;Dad's Eye Surgery at LUTH&quot;
+  targetAmountUSD: number;
+  totalCollectedUSD: number;
+  contributors: PotContributor[];
+  status: 'COLLECTING' | 'TARGET_REACHED' | 'DISBURSED';
+  onChipIn: () =&gt; void;
+}
+</code></pre>
+<hr />
+<h2>4. Application Routing &amp; Screen Flow Map</h2>
+<pre><code>/app
+ ├── (auth)
+ │    ├── /login                     # Email OTP / Google / PayPal Auth
+ │    └── /onboarding                # Sender or Beneficiary profile setup
+ ├── (dashboard)
+ │    ├── /dashboard                 # Overview of active escrows &amp; monthly spend
+ │    ├── /pay/new                   # Payee search &amp; bill upload flow
+ │    ├── /pay/[id]/verify           # Gate 4 Traffic Light Decision Screen
+ │    ├── /family                    # Verapay Plus Family Group &amp; Shared Pots
+ │    │    └── /pots/[id]            # Shared Pot funding &amp; contribution view
+ │    └── /projects                  # Verapay Projects list
+ │         ├── /projects/new         # Initialize stage-by-stage construction
+ │         └── /projects/[id]        # Milestone Stepper &amp; Progress Tracker
+ └── (mobile-contractor)
+      ├── /contractor/upload/[token] # Magic link for contractor on-site photo upload
+      └── /beneficiary/confirm/[id]  # 1-tap &quot;Item Received&quot; confirmation sheet
+</code></pre>
+<hr />
+<h2>5. Client State Management Architecture</h2>
+<pre><code class="language-ts">// src/stores/usePaymentStore.ts
+import { create } from 'zustand';
+
+interface PaymentState {
+  activePaymentId: string | null;
+  currentStep: number;
+  invoiceFile: File | null;
+  ocrExtractedData: any | null;
+  trafficLightVerdict: 'GREEN' | 'AMBER' | 'RED' | null;
+  setActivePayment: (id: string) =&gt; void;
+  setOcrData: (data: any) =&gt; void;
+  setVerdict: (verdict: 'GREEN' | 'AMBER' | 'RED') =&gt; void;
+  reset: () =&gt; void;
+}
+
+export const usePaymentStore = create&lt;PaymentState&gt;((set) =&gt; ({
+  activePaymentId: null,
+  currentStep: 1,
+  invoiceFile: null,
+  ocrExtractedData: null,
+  trafficLightVerdict: null,
+  setActivePayment: (id) =&gt; set({ activePaymentId: id }),
+  setOcrData: (data) =&gt; set({ ocrExtractedData: data }),
+  setVerdict: (verdict) =&gt; set({ trafficLightVerdict: verdict }),
+  reset: () =&gt; set({ activePaymentId: null, currentStep: 1, invoiceFile: null, trafficLightVerdict: null }),
+}));
+</code></pre>
+<hr />
+<h2>6. PayPal Client SDK Integration</h2>
+<pre><code class="language-tsx">// src/components/payments/PayPalEscrowButton.tsx
+import React from 'react';
+import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
+
+interface PayPalEscrowButtonProps {
+  amountUSD: number;
+  paymentId: string;
+  onFundingSuccess: (orderId: string) =&gt; void;
+  onFundingError: (error: any) =&gt; void;
+}
+
+export const PayPalEscrowButton: React.FC&lt;PayPalEscrowButtonProps&gt; = ({
+  amountUSD,
+  paymentId,
+  onFundingSuccess,
+  onFundingError,
+}) =&gt; {
+  const [{ isPending }] = usePayPalScriptReducer();
+
+  if (isPending) {
+    return &lt;div className=&quot;h-12 w-full animate-pulse bg-gray-200 rounded-lg&quot; /&gt;;
+  }
+
+  return (
+    &lt;PayPalButtons
+      style={{ layout: 'vertical', shape: 'rect', color: 'gold' }}
+      createOrder={async () =&gt; {
+        const response = await fetch(`/api/v1/payments/${paymentId}/create-paypal-order`, {
+          method: 'POST',
+        });
+        const order = await response.json();
+        return order.id;
+      }}
+      onApprove={async (data) =&gt; {
+        const response = await fetch(`/api/v1/payments/${paymentId}/capture-escrow`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderId: data.orderID }),
+        });
+        const result = await response.json();
+        if (result.success) {
+          onFundingSuccess(data.orderID);
+        } else {
+          onFundingError(result.error);
+        }
+      }}
+      onError={(err) =&gt; onFundingError(err)}
+    /&gt;
+  );
+};
+</code></pre>
+<hr />
+<h2>7. Nigerian Network &amp; Low-Bandwidth Optimizations</h2>
+<ol>
+<li><strong>Aggressive Image Downsampling:</strong> Mobile WebRTC canvas scales photos to 1920x1080 and compresses to JPEG 75% prior to transmission.</li>
+<li><strong>Chunked Video Streaming:</strong> 15-second video uploads use chunked HTTP POST requests via <code>Blob.slice()</code> with automatic exponential backoff retry.</li>
+<li><strong>Optimistic Local Caching:</strong> TanStack Query <code>staleTime</code> set to 10 minutes for CAC verified directories and quote indices.</li>
+<li><strong>Service Worker Offline Cache:</strong> Static assets, icons, and shell layouts are pre-cached via Workbox, allowing smooth UI rendering even on intermittent Nigerian 3G connections.</li>
+</ol>
+
+</body>
+</html>

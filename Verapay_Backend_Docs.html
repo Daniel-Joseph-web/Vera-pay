@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Backend Engineering Documentation</title>
+<style>
+
+  @page {
+    size: A4;
+    margin: 16mm 14mm 16mm 14mm;
+  }
+  
+  * {
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    color: #2D3748;
+    background-color: #FFFFFF;
+    line-height: 1.45;
+    font-size: 8.8pt;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Document Banner */
+  .doc-header {
+    border-bottom: 2px solid #007A5E;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+  }
+
+  .doc-title {
+    font-size: 20pt;
+    font-weight: 800;
+    color: #007A5E;
+    margin: 0 0 2px 0;
+    letter-spacing: -0.4px;
+  }
+
+  .doc-tagline {
+    font-size: 10pt;
+    font-weight: 600;
+    color: #4A5568;
+    margin: 0 0 4px 0;
+  }
+
+  .doc-subtitle {
+    font-size: 8pt;
+    color: #718096;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Headings */
+  h1 {
+    color: #007A5E;
+    font-size: 16pt;
+    font-weight: 800;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #007A5E;
+    page-break-after: avoid;
+  }
+
+  h2 {
+    color: #006644;
+    font-size: 12pt;
+    font-weight: 700;
+    margin-top: 14px;
+    margin-bottom: 6px;
+    padding-bottom: 3px;
+    border-bottom: 1.5px solid #E2E8F0;
+    page-break-after: avoid;
+  }
+
+  h3 {
+    color: #2D3748;
+    font-size: 9.8pt;
+    font-weight: 700;
+    margin-top: 10px;
+    margin-bottom: 4px;
+    page-break-after: avoid;
+  }
+
+  h4 {
+    color: #334155;
+    font-size: 9pt;
+    font-weight: 700;
+    margin-top: 8px;
+    margin-bottom: 3px;
+    page-break-after: avoid;
+  }
+
+  p {
+    margin: 0 0 6px 0;
+  }
+
+  ul, ol {
+    margin: 0 0 6px 0;
+    padding-left: 18px;
+  }
+
+  li {
+    margin-bottom: 3px;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid #E2E8F0;
+    margin: 12px 0;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    font-size: 8.2pt;
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  th {
+    background-color: #006644;
+    color: #FFFFFF;
+    font-weight: 600;
+    text-align: left;
+    padding: 5px 8px;
+    border: 1px solid #00593c;
+  }
+
+  td {
+    padding: 5px 8px;
+    border: 1px solid #E2E8F0;
+    vertical-align: top;
+  }
+
+  tr:nth-child(even) td {
+    background-color: #F8FAFC;
+  }
+
+  /* Code Blocks */
+  pre {
+    background-color: #0F172A;
+    color: #F8FAFC;
+    padding: 9px 12px;
+    border-radius: 5px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 7.8pt;
+    line-height: 1.4;
+    overflow-x: auto;
+    margin: 6px 0 10px 0;
+    border: 1px solid #1E293B;
+    page-break-inside: avoid;
+  }
+
+  code {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 8pt;
+  }
+
+  p code, li code, td code {
+    background-color: #F1F5F9;
+    color: #0F766E;
+    padding: 1px 4px;
+    border-radius: 3px;
+    border: 1px solid #E2E8F0;
+    font-weight: 600;
+  }
+
+  /* Callouts & Quotes */
+  blockquote {
+    border-left: 3.5px solid #007A5E;
+    background-color: #F0FDF4;
+    padding: 6px 10px;
+    margin: 6px 0 8px 0;
+    color: #166534;
+    font-size: 8.5pt;
+    page-break-inside: avoid;
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 7.5pt;
+  }
+  .badge-green { background-color: #DCFCE7; color: #15803D; border: 1px solid #BBF7D0; }
+  .badge-amber { background-color: #FEF3C7; color: #B45309; border: 1px solid #FDE68A; }
+  .badge-red { background-color: #FEE2E2; color: #B91C1C; border: 1px solid #FECACA; }
+
+</style>
+</head>
+<body>
+  <div class="doc-header">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+      <div>
+        <div class="doc-title">Verapay Technical Docs</div>
+        <div class="doc-tagline">Backend Engineering Documentation</div>
+        <div class="doc-subtitle">Server Architecture, Database Schema & API Reference &bull; Version 2.0</div>
+      </div>
+      <div style="text-align: right; font-size: 8pt; color: #718096;">
+        <div><strong>Verapay Platform</strong></div>
+        <div>Verify, then release.</div>
+      </div>
+    </div>
+  </div>
+
+  <h1>Verapay: Backend Engineering Documentation</h1>
+<p><strong>Server Architecture, Database Schema, API Specifications &amp; AI Pipeline | Version 2.0</strong></p>
+<hr />
+<h2>1. Backend Technology Stack &amp; Architecture</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Component</th>
+<th style="text-align:left">Technology</th>
+<th style="text-align:left">Role in System</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Runtime / API</strong></td>
+<td style="text-align:left"><strong>Node.js (TypeScript) / Express</strong> or <strong>FastAPI</strong></td>
+<td style="text-align:left">REST API gateway, authentication, and core business orchestration.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Primary Database</strong></td>
+<td style="text-align:left"><strong>PostgreSQL 16</strong></td>
+<td style="text-align:left">ACID-compliant relational storage for financial ledgers, escrows, and audits.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>ORM</strong></td>
+<td style="text-align:left"><strong>Prisma ORM</strong></td>
+<td style="text-align:left">Type-safe database queries, schema migrations, and relational modeling.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Job Queue &amp; Cache</strong></td>
+<td style="text-align:left"><strong>Redis 7 + BullMQ</strong></td>
+<td style="text-align:left">Asynchronous worker queues for AI OCR jobs, quote comparisons, and webhooks.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>AI Intelligence</strong></td>
+<td style="text-align:left"><strong>Google Gemini 1.5/2.0 Flash API</strong></td>
+<td style="text-align:left">Multimodal document OCR, voice note transcription, and price reasoning.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Media Forensics</strong></td>
+<td style="text-align:left"><strong>Sharp + dHash (Perceptual Hashing)</strong></td>
+<td style="text-align:left">Image metadata analysis, EXIF extraction, and duplicate photo detection.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Payment Inbound</strong></td>
+<td style="text-align:left"><strong>PayPal REST API (v2)</strong></td>
+<td style="text-align:left">Checkout Orders API, Escrow Authorization / Capture, Refund API.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Payment Outbound</strong></td>
+<td style="text-align:left"><strong>Paystack / Flutterwave API</strong></td>
+<td style="text-align:left">NIP NUBAN Account Resolution, Transfers API, live Naira bank settlements.</td>
+</tr>
+</tbody>
+</table>
+<pre><code>                       ┌──────────────────────────────────────────────┐
+                       │             Verapay API Gateway              │
+                       │           (Express / TypeScript)             │
+                       └──────────────────────┬───────────────────────┘
+                                              │
+                    ┌─────────────────────────┼─────────────────────────┐
+                    ▼                         ▼                         ▼
+         ┌────────────────────┐    ┌────────────────────┐    ┌────────────────────┐
+         │ Escrow &amp; Payout    │    │ Verification &amp; AI  │    │ Subscription &amp;     │
+         │ Service            │    │ Service            │    │ Collaboration      │
+         └─────────┬──────────┘    └─────────┬──────────┘    └─────────┬──────────┘
+                   │                         │                         │
+     ┌─────────────┴─────────────┐           │           ┌─────────────┴─────────────┐
+     ▼                           ▼           ▼           ▼                           ▼
+[PayPal v2]             [Paystack NIP]   [Gemini API]  [PostgreSQL]             [Redis / BullMQ]
+(Inbound Escrow)        (Naira Payout)   (OCR &amp; Audio) (Prisma DB)              (Async Jobs)
+</code></pre>
+<hr />
+<h2>2. PostgreSQL Database Schema (Prisma Schema)</h2>
+<pre><code class="language-prisma">datasource db {
+  provider = &quot;postgresql&quot;
+  url      = env(&quot;DATABASE_URL&quot;)
+}
+
+generator client {
+  provider = &quot;prisma-client-js&quot;
+}
+
+enum UserRole {
+  DIASPORA_SENDER
+  FAMILY_MEMBER
+  CONTRACTOR
+  FIELD_SURVEYOR
+  ADMIN_OPERATOR
+}
+
+enum PlanType {
+  BASIC
+  VERAPAY_PLUS
+  VERAPAY_PROJECTS
+}
+
+enum EscrowStatus {
+  PENDING_FUNDING
+  ESCROW_HELD
+  VERIFYING
+  READY_FOR_APPROVAL
+  PAYOUT_INITIATED
+  COMPLETED
+  REFUNDED
+  DISPUTED
+}
+
+enum RiskSignal {
+  GREEN
+  AMBER
+  RED
+}
+
+enum PayeeCategory {
+  SCHOOL
+  HOSPITAL
+  LANDLORD
+  BUILDING_SUPPLIER
+  ARTISAN_INFORMAL
+}
+
+model User {
+  id                String             @id @default(uuid())
+  email             String?            @unique
+  phoneNumber       String             @unique
+  fullName          String
+  role              UserRole           @default(DIASPORA_SENDER)
+  countryCode       String             // &quot;GB&quot;, &quot;US&quot;, &quot;CA&quot;, &quot;NG&quot;
+  activePlan        PlanType           @default(BASIC)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  paymentsSent      Payment[]          @relation(&quot;SenderPayments&quot;)
+  familyMemberships FamilyMember[]
+  createdProjects   Project[]          @relation(&quot;SenderProjects&quot;)
+  potContributions  PotContribution[]
+}
+
+model FamilyGroup {
+  id                String             @id @default(uuid())
+  name              String             // e.g., &quot;The Balogun Family&quot;
+  creatorId         String
+  createdAt         DateTime           @default(now())
+
+  members           FamilyMember[]
+  sharedPots        SharedPot[]
+}
+
+model FamilyMember {
+  id                String             @id @default(uuid())
+  familyGroupId     String
+  userId            String
+  isBeneficiary     Boolean            @default(false)
+  joinedAt          DateTime           @default(now())
+
+  familyGroup       FamilyGroup        @relation(fields: [familyGroupId], references: [id])
+  user              User               @relation(fields: [userId], references: [id])
+}
+
+model Payee {
+  id                String             @id @default(uuid())
+  businessName      String
+  category          PayeeCategory
+  isCacVerified     Boolean            @default(false)
+  cacRegistrationNo String?
+  bankCode          String             // e.g., &quot;058&quot; for GTBank
+  bankName          String
+  accountNumber     String             // 10-digit NUBAN
+  accountName       String             // Verified NIP Name
+  address           String?
+  phoneNumber       String?
+  isPreVerified     Boolean            @default(false)
+  createdAt         DateTime           @default(now())
+
+  payments          Payment[]
+}
+
+model Payment {
+  id                String             @id @default(uuid())
+  senderId          String
+  payeeId           String
+  milestoneId       String?
+  amountUSD         Decimal            @db.Decimal(12, 2)
+  amountNGN         Decimal            @db.Decimal(14, 2)
+  exchangeRate      Decimal            @db.Decimal(10, 4)
+  feeUSD            Decimal            @db.Decimal(8, 2)
+  escrowStatus      EscrowStatus       @default(PENDING_FUNDING)
+  paypalOrderId     String?            @unique
+  paypalCaptureId   String?            @unique
+  paystackRef       String?            @unique
+  idempotencyKey    String             @unique
+
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  sender            User               @relation(&quot;SenderPayments&quot;, fields: [senderId], references: [id])
+  payee             Payee              @relation(fields: [payeeId], references: [id])
+  verificationJob   VerificationJob?
+  evidenceMedia     EvidenceMedia[]
+}
+
+model VerificationJob {
+  id                String             @id @default(uuid())
+  paymentId         String             @unique
+  riskSignal        RiskSignal         @default(AMBER)
+  payeeCheckPassed  Boolean            @default(false)
+  billCheckPassed   Boolean            @default(false)
+  proofCheckPassed  Boolean            @default(false)
+  aiSummaryReport   String             @db.Text
+  duplicateHashHits Int                @default(0)
+  priceDeltaPercent Decimal?           @db.Decimal(5, 2)
+  requiresHumanHelp Boolean            @default(false)
+  createdAt         DateTime           @default(now())
+  completedAt       DateTime?
+
+  payment           Payment            @relation(fields: [paymentId], references: [id])
+}
+
+model EvidenceMedia {
+  id                String             @id @default(uuid())
+  paymentId         String
+  mediaType         String             // &quot;INVOICE&quot;, &quot;LIVE_PHOTO&quot;, &quot;SURPRISE_VIDEO&quot;, &quot;RECEIPT&quot;
+  fileUrl           String
+  perceptualHash    String?            // dHash string for image replay catching
+  latitude          Decimal?           @db.Decimal(10, 7)
+  longitude         Decimal?           @db.Decimal(10, 7)
+  capturedAt        DateTime?
+  uploadedAt        DateTime           @default(now())
+
+  payment           Payment            @relation(fields: [paymentId], references: [id])
+}
+
+model Project {
+  id                String             @id @default(uuid())
+  ownerId           String
+  title             String             // e.g., &quot;4-Bedroom Duplex in Ibadan&quot;
+  locationCity      String
+  totalBudgetUSD    Decimal            @db.Decimal(12, 2)
+  createdAt         DateTime           @default(now())
+
+  owner             User               @relation(&quot;SenderProjects&quot;, fields: [ownerId], references: [id])
+  milestones        Milestone[]
+}
+
+model Milestone {
+  id                String             @id @default(uuid())
+  projectId         String
+  sequenceNumber    Int
+  title             String             // &quot;Foundation &amp; German Floor&quot;
+  targetBudgetUSD   Decimal            @db.Decimal(12, 2)
+  status            EscrowStatus       @default(PENDING_FUNDING)
+  createdAt         DateTime           @default(now())
+
+  project           Project            @relation(fields: [projectId], references: [id])
+}
+
+model SharedPot {
+  id                String             @id @default(uuid())
+  familyGroupId     String
+  title             String             // &quot;Dad's Eye Surgery at LUTH&quot;
+  targetAmountUSD   Decimal            @db.Decimal(12, 2)
+  currentAmountUSD  Decimal            @default(0) @db.Decimal(12, 2)
+  status            String             // &quot;COLLECTING&quot;, &quot;TARGET_REACHED&quot;, &quot;DISBURSED&quot;
+  createdAt         DateTime           @default(now())
+
+  familyGroup       FamilyGroup        @relation(fields: [familyGroupId], references: [id])
+  contributions     PotContribution[]
+}
+
+model PotContribution {
+  id                String             @id @default(uuid())
+  potId             String
+  userId            String
+  amountUSD         Decimal            @db.Decimal(10, 2)
+  paypalCaptureId   String             @unique
+  contributedAt     DateTime           @default(now())
+
+  pot               SharedPot          @relation(fields: [potId], references: [id])
+  user              User               @relation(fields: [userId], references: [id])
+}
+</code></pre>
+<hr />
+<h2>3. Core Verification &amp; AI Service Pipeline</h2>
+<h3>3.1. Multimodal Document OCR Engine (Gemini Flash)</h3>
+<pre><code class="language-typescript">// src/services/ai/InvoiceOcrService.ts
+import { GoogleGenAI } from '@google/genai';
+
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+export interface ExtractedInvoice {
+  institutionName: string;
+  studentOrPatientName?: string;
+  invoiceNumber?: string;
+  invoiceDate?: string;
+  totalAmountNGN: number;
+  lineItems: Array&lt;{
+    description: string;
+    quantity: number;
+    unitPrice: number;
+    total: number;
+  }&gt;;
+  bankDetails?: {
+    accountNumber: string;
+    bankName: string;
+    accountName: string;
+  };
+}
+
+export async function parseInvoiceWithGemini(fileBuffer: Buffer, mimeType: string): Promise&lt;ExtractedInvoice&gt; {
+  const prompt = `
+    Analyze this Nigerian institutional invoice / receipt.
+    Extract the following structured JSON:
+    {
+      &quot;institutionName&quot;: &quot;String&quot;,
+      &quot;studentOrPatientName&quot;: &quot;String or null&quot;,
+      &quot;invoiceNumber&quot;: &quot;String or null&quot;,
+      &quot;invoiceDate&quot;: &quot;YYYY-MM-DD or null&quot;,
+      &quot;totalAmountNGN&quot;: Number,
+      &quot;lineItems&quot;: [{&quot;description&quot;: &quot;String&quot;, &quot;quantity&quot;: Number, &quot;unitPrice&quot;: Number, &quot;total&quot;: Number}],
+      &quot;bankDetails&quot;: {&quot;accountNumber&quot;: &quot;String&quot;, &quot;bankName&quot;: &quot;String&quot;, &quot;accountName&quot;: &quot;String&quot;}
+    }
+    Ensure all numbers are clean floats. Verify that line item sums equal the total.
+  `;
+
+  const response = await ai.models.generateContent({
+    model: 'gemini-1.5-flash',
+    contents: [
+      {
+        role: 'user',
+        parts: [
+          { text: prompt },
+          { inlineData: { data: fileBuffer.toString('base64'), mimeType } }
+        ]
+      }
+    ],
+    config: { responseMimeType: 'application/json' }
+  });
+
+  return JSON.parse(response.text) as ExtractedInvoice;
+}
+</code></pre>
+<hr />
+<h3>3.2. Media Forensics &amp; Perceptual Hashing (dHash)</h3>
+<pre><code class="language-typescript">// src/services/forensics/PerceptualHashService.ts
+import sharp from 'sharp';
+
+export async function computeImageDHash(imageBuffer: Buffer): Promise&lt;string&gt; {
+  // Resize to 9x8 grayscale
+  const rawPixels = await sharp(imageBuffer)
+    .resize(9, 8, { fit: 'fill' })
+    .grayscale()
+    .raw()
+    .toBuffer();
+
+  let hash = '';
+  for (let row = 0; row &lt; 8; row++) {
+    for (let col = 0; col &lt; 8; col++) {
+      const leftPixel = rawPixels[row * 9 + col];
+      const rightPixel = rawPixels[row * 9 + col + 1];
+      hash += leftPixel &lt; rightPixel ? '1' : '0';
+    }
+  }
+
+  // Convert 64-bit binary to 16-character hex
+  let hexHash = '';
+  for (let i = 0; i &lt; 64; i += 4) {
+    hexHash += parseInt(hash.substring(i, i + 4), 2).toString(16);
+  }
+  return hexHash;
+}
+
+export function computeHammingDistance(hash1: string, hash2: string): number {
+  let distance = 0;
+  for (let i = 0; i &lt; hash1.length; i++) {
+    const val = parseInt(hash1[i], 16) ^ parseInt(hash2[i], 16);
+    distance += val.toString(2).split('1').length - 1;
+  }
+  return distance; // Distance &lt; 5 indicates an identical or re-uploaded photo
+}
+</code></pre>
+<hr />
+<h3>3.3. Paystack NUBAN &amp; CAC Validation Service</h3>
+<pre><code class="language-typescript">// src/services/payee/NubanVerificationService.ts
+import axios from 'axios';
+
+export async function verifyNubanAccount(accountNumber: string, bankCode: string) {
+  const url = `https://api.paystack.co/bank/resolve?account_number=${accountNumber}&amp;bank_code=${bankCode}`;
+  const response = await axios.get(url, {
+    headers: { Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}` },
+  });
+
+  if (!response.data.status) {
+    throw new Error('NUBAN Account verification failed.');
+  }
+
+  return {
+    accountNumber: response.data.data.account_number,
+    accountName: response.data.data.account_name, // e.g. &quot;BRIGHT FUTURE ACADEMY LTD&quot;
+  };
+}
+</code></pre>
+<hr />
+<h2>4. REST API Specification</h2>
+<h3>4.1. Payments &amp; Escrow Endpoints</h3>
+<h4><code>POST /api/v1/payments/create</code></h4>
+<ul>
+<li><strong>Description:</strong> Diaspora sender creates a new escrow payment intent.</li>
+<li><strong>Headers:</strong> <code>Authorization: Bearer &lt;token&gt;</code>, <code>Idempotency-Key: &lt;uuid&gt;</code></li>
+<li><strong>Request Body:</strong></li>
+</ul>
+<pre><code class="language-json">{
+  &quot;payeeCategory&quot;: &quot;SCHOOL&quot;,
+  &quot;payeeName&quot;: &quot;Bright Future School&quot;,
+  &quot;bankCode&quot;: &quot;058&quot;,
+  &quot;accountNumber&quot;: &quot;0123456789&quot;,
+  &quot;amountUSD&quot;: 400.00,
+  &quot;invoiceDescription&quot;: &quot;Ada Term 1 Tuition&quot;
+}
+</code></pre>
+<ul>
+<li><strong>Response (201 Created):</strong></li>
+</ul>
+<pre><code class="language-json">{
+  &quot;paymentId&quot;: &quot;pay_9823f4a2&quot;,
+  &quot;escrowStatus&quot;: &quot;PENDING_FUNDING&quot;,
+  &quot;amountUSD&quot;: 400.00,
+  &quot;feeUSD&quot;: 6.00,
+  &quot;totalChargedUSD&quot;: 406.00,
+  &quot;exchangeRate&quot;: 1650.00,
+  &quot;amountNGN&quot;: 660000.00,
+  &quot;paypalClientOrderId&quot;: &quot;ORDER_7721998A&quot;
+}
+</code></pre>
+<h4><code>POST /api/v1/payments/:id/approve</code></h4>
+<ul>
+<li><strong>Description:</strong> Sender approves payout following Gate 4 Green/Amber inspection.</li>
+<li><strong>Headers:</strong> <code>Authorization: Bearer &lt;token&gt;</code></li>
+<li><strong>Response (200 OK):</strong></li>
+</ul>
+<pre><code class="language-json">{
+  &quot;paymentId&quot;: &quot;pay_9823f4a2&quot;,
+  &quot;escrowStatus&quot;: &quot;PAYOUT_INITIATED&quot;,
+  &quot;paystackTransferCode&quot;: &quot;TRF_99182371a&quot;,
+  &quot;message&quot;: &quot;Naira payout has been dispatched to Bright Future School NUBAN.&quot;
+}
+</code></pre>
+<h4><code>POST /api/v1/payments/:id/refund</code></h4>
+<ul>
+<li><strong>Description:</strong> Sender rejects verification or proof failed (1-click refund).</li>
+<li><strong>Headers:</strong> <code>Authorization: Bearer &lt;token&gt;</code></li>
+<li><strong>Response (200 OK):</strong></li>
+</ul>
+<pre><code class="language-json">{
+  &quot;paymentId&quot;: &quot;pay_9823f4a2&quot;,
+  &quot;escrowStatus&quot;: &quot;REFUNDED&quot;,
+  &quot;refundId&quot;: &quot;REF_77192388A&quot;,
+  &quot;message&quot;: &quot;100% of escrowed principal refunded to your PayPal account.&quot;
+}
+</code></pre>
+<hr />
+<h3>4.2. Verification &amp; Forensics Endpoints</h3>
+<h4><code>POST /api/v1/verification/analyze-invoice</code></h4>
+<ul>
+<li><strong>Description:</strong> Uploads an invoice or receipt for automated Gate 2 multimodal OCR and anti-duplicate hashing.</li>
+<li><strong>Form Data:</strong> <code>file: &lt;binary&gt;</code>, <code>paymentId: String</code></li>
+<li><strong>Response (200 OK):</strong></li>
+</ul>
+<pre><code class="language-json">{
+  &quot;invoiceNumber&quot;: &quot;INV-2026-091&quot;,
+  &quot;institutionName&quot;: &quot;Bright Future School&quot;,
+  &quot;studentName&quot;: &quot;Adaeze Okonkwo&quot;,
+  &quot;totalExtractedNGN&quot;: 660000.00,
+  &quot;isDuplicate&quot;: false,
+  &quot;riskRating&quot;: &quot;GREEN&quot;
+}
+</code></pre>
+<h4><code>POST /api/v1/media/upload-live-photo</code></h4>
+<ul>
+<li><strong>Description:</strong> Contractor uploads in-app live photo with watermarked telemetry.</li>
+<li><strong>Form Data:</strong> <code>image: &lt;binary&gt;</code>, <code>milestoneId: String</code>, <code>lat: Float</code>, <code>lng: Float</code>, <code>timestamp: ISO</code></li>
+<li><strong>Response (200 OK):</strong></li>
+</ul>
+<pre><code class="language-json">{
+  &quot;mediaId&quot;: &quot;med_8812390a&quot;,
+  &quot;perceptualHash&quot;: &quot;a1f8902be34199c2&quot;,
+  &quot;isDuplicate&quot;: false,
+  &quot;locationVerified&quot;: true
+}
+</code></pre>
+<hr />
+<h2>5. Webhook Handlers &amp; Concurrency Control</h2>
+<h3>5.1. PayPal Webhook Listener (<code>POST /api/v1/webhooks/paypal</code>)</h3>
+<ul>
+<li>Listens for <code>PAYMENT.CAPTURE.COMPLETED</code>.</li>
+<li>Validates webhook signature using PayPal SDK cert.</li>
+<li>Atomically updates <code>Payment.escrowStatus</code> to <code>ESCROW_HELD</code>.</li>
+<li>Enqueues <code>VerificationWorker</code> job in BullMQ queue.</li>
+</ul>
+<h3>5.2. Paystack Webhook Listener (<code>POST /api/v1/webhooks/paystack</code>)</h3>
+<ul>
+<li>Listens for <code>transfer.success</code> and <code>transfer.failed</code>.</li>
+<li>Verifies <code>x-paystack-signature</code> HMAC-SHA512.</li>
+<li>On success, marks <code>Payment.escrowStatus = COMPLETED</code> and emails audited receipt to sender.</li>
+<li>On failure, rolls back to <code>ESCROW_HELD</code> and alerts human operations.</li>
+</ul>
+
+</body>
+</html>

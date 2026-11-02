@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Functional Requirements Document (FRD)</title>
+<style>
+
+  @page {
+    size: A4;
+    margin: 16mm 14mm 16mm 14mm;
+  }
+  
+  * {
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    color: #2D3748;
+    background-color: #FFFFFF;
+    line-height: 1.45;
+    font-size: 8.8pt;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Document Banner */
+  .doc-header {
+    border-bottom: 2px solid #007A5E;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+  }
+
+  .doc-title {
+    font-size: 20pt;
+    font-weight: 800;
+    color: #007A5E;
+    margin: 0 0 2px 0;
+    letter-spacing: -0.4px;
+  }
+
+  .doc-tagline {
+    font-size: 10pt;
+    font-weight: 600;
+    color: #4A5568;
+    margin: 0 0 4px 0;
+  }
+
+  .doc-subtitle {
+    font-size: 8pt;
+    color: #718096;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Headings */
+  h1 {
+    color: #007A5E;
+    font-size: 16pt;
+    font-weight: 800;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #007A5E;
+    page-break-after: avoid;
+  }
+
+  h2 {
+    color: #006644;
+    font-size: 12pt;
+    font-weight: 700;
+    margin-top: 14px;
+    margin-bottom: 6px;
+    padding-bottom: 3px;
+    border-bottom: 1.5px solid #E2E8F0;
+    page-break-after: avoid;
+  }
+
+  h3 {
+    color: #2D3748;
+    font-size: 9.8pt;
+    font-weight: 700;
+    margin-top: 10px;
+    margin-bottom: 4px;
+    page-break-after: avoid;
+  }
+
+  h4 {
+    color: #334155;
+    font-size: 9pt;
+    font-weight: 700;
+    margin-top: 8px;
+    margin-bottom: 3px;
+    page-break-after: avoid;
+  }
+
+  p {
+    margin: 0 0 6px 0;
+  }
+
+  ul, ol {
+    margin: 0 0 6px 0;
+    padding-left: 18px;
+  }
+
+  li {
+    margin-bottom: 3px;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid #E2E8F0;
+    margin: 12px 0;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    font-size: 8.2pt;
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  th {
+    background-color: #006644;
+    color: #FFFFFF;
+    font-weight: 600;
+    text-align: left;
+    padding: 5px 8px;
+    border: 1px solid #00593c;
+  }
+
+  td {
+    padding: 5px 8px;
+    border: 1px solid #E2E8F0;
+    vertical-align: top;
+  }
+
+  tr:nth-child(even) td {
+    background-color: #F8FAFC;
+  }
+
+  /* Code Blocks */
+  pre {
+    background-color: #0F172A;
+    color: #F8FAFC;
+    padding: 9px 12px;
+    border-radius: 5px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 7.8pt;
+    line-height: 1.4;
+    overflow-x: auto;
+    margin: 6px 0 10px 0;
+    border: 1px solid #1E293B;
+    page-break-inside: avoid;
+  }
+
+  code {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 8pt;
+  }
+
+  p code, li code, td code {
+    background-color: #F1F5F9;
+    color: #0F766E;
+    padding: 1px 4px;
+    border-radius: 3px;
+    border: 1px solid #E2E8F0;
+    font-weight: 600;
+  }
+
+  /* Callouts & Quotes */
+  blockquote {
+    border-left: 3.5px solid #007A5E;
+    background-color: #F0FDF4;
+    padding: 6px 10px;
+    margin: 6px 0 8px 0;
+    color: #166534;
+    font-size: 8.5pt;
+    page-break-inside: avoid;
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 7.5pt;
+  }
+  .badge-green { background-color: #DCFCE7; color: #15803D; border: 1px solid #BBF7D0; }
+  .badge-amber { background-color: #FEF3C7; color: #B45309; border: 1px solid #FDE68A; }
+  .badge-red { background-color: #FEE2E2; color: #B91C1C; border: 1px solid #FECACA; }
+
+</style>
+</head>
+<body>
+  <div class="doc-header">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+      <div>
+        <div class="doc-title">Verapay Technical Docs</div>
+        <div class="doc-tagline">Functional Requirements Document (FRD)</div>
+        <div class="doc-subtitle">System Specification & Acceptance Criteria &bull; Version 2.0</div>
+      </div>
+      <div style="text-align: right; font-size: 8pt; color: #718096;">
+        <div><strong>Verapay Platform</strong></div>
+        <div>Verify, then release.</div>
+      </div>
+    </div>
+  </div>
+
+  <h1>Verapay: Functional Requirements Document (FRD)</h1>
+<p><strong>System Specification &amp; Technical Requirements | Version 2.0</strong></p>
+<hr />
+<h2>1. Document Control &amp; Overview</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Attribute</th>
+<th style="text-align:left">Specification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>System Name</strong></td>
+<td style="text-align:left"><strong>Verapay Core Platform</strong> (<em>&quot;Verify, then release.&quot;</em>)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Document Type</strong></td>
+<td style="text-align:left">Functional Requirements Document (FRD)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Version</strong></td>
+<td style="text-align:left">2.0 (Hackathon MVP &amp; Production Blueprint)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Audience</strong></td>
+<td style="text-align:left">Frontend Engineers, Backend Engineers, QA Engineers, System Architects</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Primary Rails</strong></td>
+<td style="text-align:left">Sender Funding: PayPal Checkout • Payout Settlement: Paystack / Flutterwave NIP Rails</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>2. System Architecture &amp; High-Level Flow</h2>
+<p>Verapay is an escrow orchestration and automated fraud-prevention layer positioned between international payment rails (PayPal) and local Nigerian banking infrastructure (NIP NUBAN transfers).</p>
+<pre style="background: #F8FAFC; color: #0F766E; border: 1px solid #CBD5E1; padding: 10px; font-weight: 600; font-size: 7.5pt;">graph TD
+    Sender([Diaspora Sender]) -->|1. Fund Payment| VP_Core[Verapay Core Escrow]
+    VP_Core -->|2. Enqueue Verification| AI_Engine[AI & Registry Verification Engine]
+    
+    subgraph "Verification Pipeline"
+        AI_Engine -->|Gate 1| CAC[CAC & NUBAN Registry Check]
+        AI_Engine -->|Gate 2| OCR[Multimodal OCR & Quote Agent]
+        AI_Engine -->|Gate 3| Ground[Camera Forensics & Delivery Tap]
+    end
+
+    AI_Engine -->|3. Risk Assessment| TrafficLight{Gate 4: Sender Approval}
+    TrafficLight -->|GREEN: All Good| Approve[Sender Approves]
+    TrafficLight -->|AMBER: Price High| Modify[Review Alternatives / Override]
+    TrafficLight -->|RED: Fraud Caught| Reject[Sender Rejects]
+
+    Approve -->|4. Release Escrow| Payout[Paystack/Flutterwave Naira Payout]
+    Reject -->|5. Instant Refund| Refund[PayPal Refund API]
+    Payout --> Provider([School / Hospital / Merchant])
+    Refund --> Sender</pre>
+<hr />
+<h2>3. User Roles &amp; Permissions Matrix</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Role</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Key Capabilities</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>DIASPORA_SENDER</code></strong></td>
+<td style="text-align:left">Senders residing abroad (UK, US, CA) funding payments.</td>
+<td style="text-align:left">Fund escrow, view AI risk signals, approve/reject payouts, create family groups, manage project milestones.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>FAMILY_MEMBER</code></strong></td>
+<td style="text-align:left">Dependents or relatives in Nigeria.</td>
+<td style="text-align:left">View family transparent ledger, upload tuition/medical bills, tap &quot;Item Received&quot; for consumer goods.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>CONTRACTOR</code></strong></td>
+<td style="text-align:left">Site foremen, builders, or vendors in Nigeria.</td>
+<td style="text-align:left">Submit milestone completion claims, capture live in-app photos, execute 15-second surprise video challenge.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>FIELD_SURVEYOR</code></strong></td>
+<td style="text-align:left">Certified third-party professional inspector.</td>
+<td style="text-align:left">Perform on-site structural/land inspections, submit verified independent audit reports.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>VERAPAY_OPERATOR</code></strong></td>
+<td style="text-align:left">Human compliance and triage analyst.</td>
+<td style="text-align:left">Review Amber-flagged transactions for Verapay Plus users, mediate stalled project disputes.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>4. Functional Requirements Specification</h2>
+<h3>4.1. Authentication, KYC &amp; Plan Management (FR-AUTH / FR-PLAN)</h3>
+<h4><code>FR-AUTH-01</code>: Multi-Region Identity &amp; Onboarding</h4>
+<ul>
+<li><strong>Description:</strong> Senders register using email, Google OAuth, or PayPal login. International phone numbers (UK +44, US/CA +1) require SMS OTP verification.</li>
+<li><strong>Nigerian Recipients/Contractors:</strong> Register via phone number (+234) with SMS OTP. Optional BVN (Bank Verification Number) inquiry via Paystack to confirm legal identity.</li>
+</ul>
+<h4><code>FR-PLAN-01</code>: Plan Assignment &amp; Billing Logic</h4>
+<ul>
+<li><strong>Basic (Pay-As-You-Go):</strong> $0 monthly fee. System applies 1.5% transaction surcharge ($1.00 min, $20.00 max cap) at checkout.</li>
+<li><strong>Verapay Plus ($9.99/mo):</strong>
+<ul>
+<li>Recurring monthly subscription billed via PayPal Subscriptions API.</li>
+<li>System tracks monthly cumulative volume: 0% transaction fee up to $1,000/month; 1.5% fee applied on incremental spend.</li>
+<li>Unlocks Family Group workspace, automated recurring bills, Shared Pots, and &lt;4-hour human triage on Amber alerts.</li>
+</ul>
+</li>
+<li><strong>Verapay Projects (2% per stage):</strong>
+<ul>
+<li>Project creation is free; escrow funding includes a 2% verification and orchestration fee billed <em>strictly upon milestone sign-off</em>.</li>
+<li>If a milestone is rejected and refunded, the 2% fee is completely waived/refunded.</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3>4.2. Escrow &amp; Money Movement Engine (FR-ESCROW)</h3>
+<h4><code>FR-ESCROW-01</code>: PayPal Inbound Escrow Funding</h4>
+<ul>
+<li>Senders initiate payment via PayPal Checkout.</li>
+<li>Funds are captured into a secure merchant escrow holding balance or held as an authorization (configurable via <code>ESCROW_HOLD_MODE = CAPTURE_AND_HOLD</code>).</li>
+<li>Transaction transitions to <code>ESCROW_HELD</code>. Funds cannot be touched by recipient or sender until Gate 4 resolution.</li>
+</ul>
+<h4><code>FR-ESCROW-02</code>: Naira Payout Execution</h4>
+<ul>
+<li>Upon sender approval (<code>ACTION_APPROVE</code>), the system triggers Paystack/Flutterwave Transfer API:
+<ul>
+<li>Generates Transfer Recipient using verified NUBAN account number and bank code.</li>
+<li>Initiates Naira transfer at live guaranteed FX rate.</li>
+<li>Webhook listener monitors <code>transfer.success</code>. Upon confirmation, transaction status transitions to <code>COMPLETED</code>.</li>
+</ul>
+</li>
+</ul>
+<h4><code>FR-ESCROW-03</code>: 1-Click Automated Refund</h4>
+<ul>
+<li>If the sender taps <code>ACTION_REFUND</code> (or verification triggers automated red-fraud cancellation):
+<ul>
+<li>System calls PayPal Refund API (<code>v2/payments/captures/{capture_id}/refund</code>).</li>
+<li>100% of escrowed principal is credited back to sender’s PayPal account/card.</li>
+<li>Transaction status transitions to <code>REFUNDED</code>.</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3>4.3. The 4-Step Verification Engine (FR-VERIFY)</h3>
+<pre><code>[Inbound Escrow Funded]
+         │
+         ▼
+[Gate 1: Payee Reality Check] ──(Fails)──► [RED Alert: Fake Payee] ──► [Instant Refund]
+         │ (Passes)
+         ▼
+[Gate 2: Bill Honesty &amp; Quotes] ──(Padded)──► [AMBER Alert: Padded Price]
+         │ (Passes)                                     │ (Sender can switch supplier)
+         ▼                                              ▼
+[Gate 3: Ground-Truth Proof] ────(Reused)──► [RED Alert: Fake Proof] ──► [Instant Refund]
+         │ (Passes)
+         ▼
+[Gate 4: Sender Approval Screen] ──(Sender Taps Yes)──► [Release Payout to NUBAN]
+</code></pre>
+<h4><code>FR-VER-01</code>: Gate 1 – Payee Legitimacy &amp; Registry Check</h4>
+<ul>
+<li><strong>Corporate Registry Check:</strong> Query Corporate Affairs Commission (CAC) API using company registration number or registered business name.</li>
+<li><strong>NUBAN Name Match:</strong> Execute NIP account name resolution via Paystack (<code>GET /bank/resolve?account_number=...&amp;bank_code=...</code>).</li>
+<li><strong>Match Rule:</strong> Levenshtein similarity between CAC entity name and NUBAN bank account holder name must exceed 85%. If mismatch detected, flag <code>RED_PAYEE_MISMATCH</code>.</li>
+<li><strong>Unregistered Small Merchants:</strong> For informal market vendors (sand, timber, blockmakers):
+<ul>
+<li>Verify seller’s personal NUBAN account name.</li>
+<li>Record verified merchant phone number and physical shop coordinates.</li>
+<li>Enforce <strong>Strict Pay-on-Delivery Rule</strong>: Funds remain locked until on-site delivery is confirmed by family/foreman.</li>
+</ul>
+</li>
+</ul>
+<h4><code>FR-VER-02</code>: Gate 2 – Bill Honesty &amp; Document OCR</h4>
+<ul>
+<li>Multimodal LLM (Gemini 1.5/2.0 Flash) extracts structured JSON:
+<ul>
+<li>Student / Patient Name, Institution Name, Invoice Number, Issue Date, Due Date.</li>
+<li>Line items: Description, Quantity, Unit Rate, Total Amount.</li>
+</ul>
+</li>
+<li><strong>Duplicate Detection:</strong> Calculates perceptual hash (dHash) and SHA-256 text fingerprint. If invoice hash matches existing record in <code>invoice_archive</code>, flag <code>RED_DUPLICATE_INVOICE</code>.</li>
+<li><strong>Arithmetic Validation:</strong> System computes <code>SUM(line_items) == subtotal</code> and <code>subtotal + tax == total</code>. Mismatches trigger <code>AMBER_ARITHMETIC_ERROR</code>.</li>
+</ul>
+<h4><code>FR-VER-03</code>: Gate 2B – Autonomous Quote Agent (Anti-Padding)</h4>
+<ul>
+<li>Triggered on construction materials (cement, granite, blocks, rebar, roofing sheets).</li>
+<li>System extracts material specifications and location (e.g., <em>500 bags Dangote 42.5R Cement, Ibadan</em>).</li>
+<li>Quote Agent queries cached regional commodity index and 2–3 nearby merchant price feeds.</li>
+<li><strong>Threshold Logic:</strong>
+<ul>
+<li>If contractor quote &lt;= 108% of market average: <code>PRICE_FAIR</code> (Green).</li>
+<li>If contractor quote &gt; 108% and &lt;= 125%: <code>PRICE_HIGH</code> (Amber: recommends alternative local suppliers).</li>
+<li>If contractor quote &gt; 125%: <code>PRICE_EXTORTION</code> (Amber/Red: requires contractor justification).</li>
+</ul>
+</li>
+</ul>
+<h4><code>FR-VER-04</code>: Gate 3 – Ground-Truth Execution Proof</h4>
+<ul>
+<li><strong>Category A: Tuition, Medical, Rent:</strong> Direct payment to CAC-verified institution; system polls for official institutional e-receipt or confirmation letter and attaches to transaction record.</li>
+<li><strong>Category B: Consumer Goods (Appliances, Provisions):</strong> Escrow is held until the local recipient taps <code>CONFIRM_DELIVERY</code> inside the mobile app. Geolocation must be within 5km of delivery address.</li>
+<li><strong>Category C: Construction &amp; Capital Milestones:</strong>
+<ol>
+<li><strong>In-App Camera Capture:</strong> Media must be recorded directly via WebRTC viewfinder. Standard <code>&lt;input type=&quot;file&quot;&gt;</code> file uploads are disabled.</li>
+<li><strong>Metadata Tamper Check:</strong> Device GPS, altitude, compass bearing, and network timestamp embedded into image EXIF and cryptographically signed.</li>
+<li><strong>Visual Perceptual Hashing:</strong> Checks image against database of historical project photos to prevent submitting last month’s photos.</li>
+<li><strong>Surprise 15-Second Video Prompt:</strong> Random challenge issued: <em>&quot;Record a continuous 15-second pan of the north wall showing code #4829 on a piece of paper.&quot;</em></li>
+<li><strong>Surveyor Audit Escalation:</strong> For stages &gt; $2,000, sender can dispatch a certified Verapay surveyor for physical sign-off.</li>
+</ol>
+</li>
+</ul>
+<h4><code>FR-VER-05</code>: Gate 4 – Sender Approval Interface (Traffic Light UI)</h4>
+<ul>
+<li>System synthesizes all signals into a clean mobile card:
+<ul>
+<li>🟢 <strong>GREEN:</strong> Payee CAC confirmed, invoice price within 5% of benchmark, proof verified. Single button: <code>[ Approve &amp; Pay $XXX ]</code>.</li>
+<li>🟡 <strong>AMBER:</strong> Discrepancy detected (e.g., cement quoted 18% above market, or blurry proof). Options: <code>[ View Cheaper Suppliers ]</code>, <code>[ Request Human Review (Plus) ]</code>, <code>[ Override &amp; Pay ]</code>.</li>
+<li>🔴 <strong>RED:</strong> Proof failed (reused image, name mismatch, faked bill). Escrow remains locked. Option: <code>[ 1-Click Instant Refund ]</code>.</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3>4.4. Subscription &amp; Collaboration Features (FR-PLUS / FR-PROJ)</h3>
+<h4><code>FR-PLUS-01</code>: Automated Recurring Payments</h4>
+<ul>
+<li>Senders configure monthly schedule (e.g., Mom's allowance on 1st of month, Dad's medication on 15th).</li>
+<li>48 hours prior to execution, Verapay prompts provider/family for updated bill or confirms fixed schedule.</li>
+<li>Verapay runs Gate 1 and Gate 2 checks. If Green, sender receives a notification: <em>&quot;November allowance verified. Executing in 12 hours unless cancelled.&quot;</em></li>
+</ul>
+<h4><code>FR-PLUS-02</code>: Family Group Workspace</h4>
+<ul>
+<li>Sender creates a <code>FamilyGroup</code> (e.g., <em>&quot;The Balogun Family&quot;</em>).</li>
+<li>Invites siblings abroad (co-funders) and family members in Nigeria (beneficiaries).</li>
+<li>Shared real-time ledger displays all past and pending payments, itemized receipts, and verification reports.</li>
+</ul>
+<h4><code>FR-PLUS-03</code>: Shared Pot (Multi-Sibling Pooling)</h4>
+<ul>
+<li>Senders initiate a Shared Pot (e.g., <em>&quot;Dad's Eye Surgery - $1,200&quot;</em>).</li>
+<li>Multiple siblings contribute varying amounts ($400, $500, $300) via their respective PayPal accounts.</li>
+<li>Funds are held in aggregate escrow until the 100% threshold is reached.</li>
+<li>Upon full funding, Verapay executes Gate 1–3 verification and pays the hospital directly.</li>
+</ul>
+<h4><code>FR-PROJ-01</code>: Stage-by-Stage Construction Sequencing</h4>
+<ul>
+<li>Projects follow standardized or custom milestone paths:
+<ol>
+<li><em>Stage 1: Site Clearing &amp; Foundation ($2,500)</em></li>
+<li><em>Stage 2: Blockwork to Lintel Level ($3,200)</em></li>
+<li><em>Stage 3: Roof Truss &amp; Covering ($4,000)</em></li>
+<li><em>Stage 4: Plastering, Electrical &amp; Plumbing ($3,000)</em></li>
+<li><em>Stage 5: Finishing, Tiling &amp; Painting ($2,800)</em></li>
+</ol>
+</li>
+<li>Escrow is funded stage-by-stage. Stage N+1 cannot be funded or started until Stage N proof is approved.</li>
+<li>Senders receive an automated weekly progress briefing written in plain English.</li>
+</ul>
+<hr />
+<h2>5. Non-Functional Requirements (NFR)</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">ID</th>
+<th style="text-align:left">Category</th>
+<th style="text-align:left">Requirement Specification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>NFR-SEC-01</strong></td>
+<td style="text-align:left"><strong>Data Security</strong></td>
+<td style="text-align:left">All data in transit encrypted via TLS 1.3. Sensitive NUBAN and identity fields encrypted at rest using AES-256.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>NFR-PERF-01</strong></td>
+<td style="text-align:left"><strong>Verification Latency</strong></td>
+<td style="text-align:left">Automated OCR and CAC verification must complete in <code>&lt; 45 seconds</code>. End-to-end sender approval card ready in <code>&lt; 3 minutes</code>.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>NFR-REL-01</strong></td>
+<td style="text-align:left"><strong>Escrow Idempotency</strong></td>
+<td style="text-align:left">All payout and refund API calls must enforce UUID-based idempotency keys to guarantee zero double-disbursements.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>NFR-NET-01</strong></td>
+<td style="text-align:left"><strong>Nigerian Network Resilience</strong></td>
+<td style="text-align:left">Mobile web application must operate on high-latency 3G networks (down to 256 kbps). In-app photo uploads must implement client-side image compression (JPEG quality 75%, max dimension 1920px) before transit.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>NFR-AUD-01</strong></td>
+<td style="text-align:left"><strong>Audit Trail</strong></td>
+<td style="text-align:left">Every verification signal, EXIF coordinate, OCR token, and sender click logged to an immutable append-only audit ledger for compliance.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>6. Verification Traceability Matrix</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Business Goal</th>
+<th style="text-align:left">Functional Requirement</th>
+<th style="text-align:left">Test Acceptance Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Eliminate Diversion</td>
+<td style="text-align:left"><code>FR-VER-01</code>, <code>FR-ESCROW-02</code></td>
+<td style="text-align:left">100% of disbursements route to verified NUBAN account matching registered provider name.</td>
+</tr>
+<tr>
+<td style="text-align:left">Stop Price Padding</td>
+<td style="text-align:left"><code>FR-VER-03</code></td>
+<td style="text-align:left">Padded cement quotes &gt;10% over local index reliably trigger Amber warning with alternative supplier recommendations.</td>
+</tr>
+<tr>
+<td style="text-align:left">Catch Reused Photos</td>
+<td style="text-align:left"><code>FR-VER-04</code>, <code>FR-VIS-01</code></td>
+<td style="text-align:left">Re-submitting an existing project image triggers Red alert with perceptual hash match score &gt; 92%.</td>
+</tr>
+<tr>
+<td style="text-align:left">Guarantee Zero Fund Loss</td>
+<td style="text-align:left"><code>FR-ESCROW-03</code></td>
+<td style="text-align:left">Senders can trigger an immediate 100% refund on any rejected or unverified transaction.</td>
+</tr>
+</tbody>
+</table>
+
+</body>
+</html>
