@@ -14,12 +14,9 @@ import {
   ArrowRight,
   CheckCircle2,
   TrendingUp,
-  Landmark,
-  LayoutDashboard,
-  Send,
-  Users2,
-  Building2
+  Landmark
 } from 'lucide-react';
+import { BentoNavigation } from '@/components/layout/BentoNavigation';
 
 export default function DashboardPage() {
   const recentPayments = [
@@ -55,32 +52,10 @@ export default function DashboardPage() {
     },
   ];
 
-  const navItems = [
-    { name: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
-    { name: 'Send & Verify', icon: Send, href: '/pay/new' },
-    { name: 'Family Hub', icon: Users2, href: '/family' },
-    { name: 'Projects Hub', icon: Building2, href: '/projects' },
-  ];
-
   return (
-    <div className="min-h-screen bg-[#F8FAFC] pb-10 font-sans lg:pl-20">
-      {/* Expandable Bento Navigation Sidebar */}
-      <div className="hidden lg:flex fixed left-4 top-1/2 -translate-y-1/2 z-50 group">
-        <nav className="flex flex-col gap-2 p-2 bg-white/90 backdrop-blur-xl border border-slate-200 shadow-xl rounded-3xl w-16 hover:w-60 transition-all duration-400 ease-out overflow-hidden">
-          {navItems.map((item) => (
-            <Link 
-              key={item.name} 
-              href={item.href}
-              className="flex items-center gap-4 p-3 rounded-2xl hover:bg-emerald-50 text-slate-500 hover:text-emerald-600 transition-colors whitespace-nowrap"
-            >
-              <item.icon className="w-6 h-6 flex-shrink-0" />
-              <span className="font-bold text-sm opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-400">
-                {item.name}
-              </span>
-            </Link>
-          ))}
-        </nav>
-      </div>
+    <div className="min-h-screen bg-[#F8FAFC] pb-24 lg:pb-10 font-sans lg:pl-20">
+      {/* Bento Navigation with Active State & Root Affordance */}
+      <BentoNavigation />
 
       {/* Hero / Header Section */}
       <div className="relative bg-white pt-8 pb-12 px-4 sm:px-6 lg:px-8 border-b border-slate-100/80">
@@ -193,8 +168,8 @@ export default function DashboardPage() {
                   </div>
                   <h2 className="text-lg font-bold text-slate-900">Recent Payments</h2>
                 </div>
-                <Link href="/payments" className="text-sm font-medium text-emerald-600 hover:text-emerald-700 flex items-center gap-1">
-                  View All <ArrowRight className="w-4 h-4" />
+                <Link href="/pay/new" className="text-sm font-medium text-emerald-600 hover:text-emerald-700 flex items-center gap-1">
+                  Start New Payment <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
 
@@ -233,7 +208,16 @@ export default function DashboardPage() {
                           </span>
                         </td>
                         <td className="py-4">
-                          <Link href={`/payments/${payment.id}`} className="inline-flex items-center justify-center px-4 py-1.5 border border-slate-200 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors bg-white">
+                          <Link 
+                            href={
+                              payment.id === 'pay_school_fees' 
+                                ? '/pay/pay_school_fees/verify?scenario=green' 
+                                : payment.id === 'pay_project_milestone' 
+                                ? '/projects/proj-881' 
+                                : '/family'
+                            } 
+                            className="inline-flex items-center justify-center px-4 py-1.5 border border-slate-200 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors bg-white shadow-sm"
+                          >
                             View <ArrowRight className="w-3.5 h-3.5 ml-1" />
                           </Link>
                         </td>
@@ -304,26 +288,26 @@ export default function DashboardPage() {
               </div>
               
               <div className="grid grid-cols-3 gap-3">
-                <button className="flex flex-col items-center justify-center p-4 bg-white border border-slate-100 rounded-xl hover:border-emerald-200 transition-all group text-center shadow-sm">
+                <Link href="/pay/new" className="flex flex-col items-center justify-center p-4 bg-white border border-slate-100 rounded-xl hover:border-emerald-200 transition-all group text-center shadow-sm">
                   <div className="w-10 h-10 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600 mb-2 group-hover:scale-105 transition-transform">
                     <Upload className="w-5 h-5" />
                   </div>
                   <span className="text-[11px] font-medium text-slate-700 leading-tight">Start<br/>Verification</span>
-                </button>
+                </Link>
                 
-                <button className="flex flex-col items-center justify-center p-4 bg-white border border-slate-100 rounded-xl hover:border-emerald-200 transition-all group text-center shadow-sm">
+                <Link href="/projects" className="flex flex-col items-center justify-center p-4 bg-white border border-slate-100 rounded-xl hover:border-emerald-200 transition-all group text-center shadow-sm">
                   <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-white mb-2 group-hover:scale-105 transition-transform shadow-sm">
                     <Plus className="w-5 h-5" />
                   </div>
-                  <span className="text-[11px] font-medium text-slate-700 leading-tight">Create<br/>Project</span>
-                </button>
+                  <span className="text-[11px] font-medium text-slate-700 leading-tight">Manage<br/>Projects</span>
+                </Link>
                 
-                <button className="flex flex-col items-center justify-center p-4 bg-white border border-slate-100 rounded-xl hover:border-emerald-200 transition-all group text-center shadow-sm">
+                <Link href="/family" className="flex flex-col items-center justify-center p-4 bg-white border border-slate-100 rounded-xl hover:border-emerald-200 transition-all group text-center shadow-sm">
                   <div className="w-10 h-10 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600 mb-2 group-hover:scale-105 transition-transform">
                     <Users className="w-5 h-5" />
                   </div>
                   <span className="text-[11px] font-medium text-slate-700 leading-tight">Manage<br/>Family</span>
-                </button>
+                </Link>
               </div>
             </div>
 
@@ -340,8 +324,8 @@ export default function DashboardPage() {
                 <p className="text-sm text-emerald-900/80 mt-1 mb-6 pr-8 leading-relaxed">
                   All transactions are verified with advanced security.
                 </p>
-                <Link href="/security" className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-emerald-700 text-sm font-semibold rounded-full shadow-sm hover:shadow border border-emerald-100 transition-all">
-                  View Security Details <ArrowRight className="w-4 h-4" />
+                <Link href="/pay/new" className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-emerald-700 text-sm font-semibold rounded-full shadow-sm hover:shadow border border-emerald-100 transition-all">
+                  Start Protected Transfer <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
             </div>

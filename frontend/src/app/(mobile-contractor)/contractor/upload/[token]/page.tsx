@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Camera, Video, ShieldCheck } from 'lucide-react';
+import Link from 'next/link';
+import { Camera, Video, ShieldCheck, ArrowLeft } from 'lucide-react';
 import { InAppCamera } from '@/components/camera/InAppCamera';
 import { SurpriseVideoRecorder } from '@/components/camera/SurpriseVideoRecorder';
 import { VerapayLogo } from '@/components/brand/VerapayLogo';
@@ -15,14 +16,19 @@ export default function ContractorUploadPage() {
   return (
     <div className="min-h-screen bg-slate-950 text-white p-6 max-w-md mx-auto flex flex-col justify-between">
       <div>
-        <div className="flex items-center gap-3 mb-6">
-          <VerapayLogo variant="icon" size={32} />
-          <div>
-            <span className="font-black text-sm tracking-wide block">VERAPAY SITE PROOF</span>
-            <span className="text-[10px] text-brand-gold font-mono uppercase tracking-wider block -mt-0.5">
-              Anti-Replay Active
-            </span>
+        <div className="flex items-center justify-between gap-3 mb-6">
+          <div className="flex items-center gap-3">
+            <VerapayLogo variant="icon" size={32} />
+            <div>
+              <span className="font-black text-sm tracking-wide block">VERAPAY SITE PROOF</span>
+              <span className="text-[10px] text-brand-gold font-mono uppercase tracking-wider block -mt-0.5">
+                Anti-Replay Active
+              </span>
+            </div>
           </div>
+          <Link href="/projects/proj-881" className="text-xs text-slate-300 hover:text-white flex items-center gap-1 font-semibold transition-colors bg-slate-900 hover:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-800 shadow-sm">
+            <ArrowLeft className="w-3.5 h-3.5" /> Back
+          </Link>
         </div>
 
         <div className="bg-slate-900 rounded-3xl p-6 border border-slate-800 shadow-xl">

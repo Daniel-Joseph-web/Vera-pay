@@ -13,26 +13,17 @@ import {
   Clock,
   Activity,
   Home,
-  GraduationCap,
-  LayoutDashboard,
-  Send,
-  Users2
+  GraduationCap
 } from 'lucide-react';
 import { usePaymentStore } from '@/stores/usePaymentStore';
 import { formatCurrency } from '@/lib/utils';
+import { BentoNavigation } from '@/components/layout/BentoNavigation';
 
 export default function NewPaymentPage() {
   const router = useRouter();
   const { form, updateForm, setPaymentId } = usePaymentStore();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const navItems = [
-    { name: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
-    { name: 'Send & Verify', icon: Send, href: '/pay/new' },
-    { name: 'Family Hub', icon: Users2, href: '/family' },
-    { name: 'Projects Hub', icon: Building2, href: '/projects' },
-  ];
 
   // Dynamic Case 1 vs Case 2 Detection
   const isPreVerified = form.payeeName.toLowerCase().includes('bright future') ||
@@ -54,25 +45,10 @@ export default function NewPaymentPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] py-12 px-4 sm:px-6 lg:px-8 font-sans lg:pl-24">
+    <div className="min-h-screen bg-[#F8FAFC] py-12 pb-24 lg:pb-12 px-4 sm:px-6 lg:px-8 font-sans lg:pl-24">
       
-      {/* Expandable Bento Navigation Sidebar */}
-      <div className="hidden lg:flex fixed left-4 top-1/2 -translate-y-1/2 z-50 group">
-        <nav className="flex flex-col gap-2 p-2 bg-white/95 backdrop-blur-xl border border-slate-200 shadow-xl rounded-3xl w-16 hover:w-60 transition-all duration-400 ease-out overflow-hidden">
-          {navItems.map((item) => (
-            <Link 
-              key={item.name} 
-              href={item.href}
-              className="flex items-center gap-4 p-3 rounded-2xl hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 transition-colors whitespace-nowrap"
-            >
-              <item.icon className="w-6 h-6 flex-shrink-0" />
-              <span className="font-bold text-sm opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-400">
-                {item.name}
-              </span>
-            </Link>
-          ))}
-        </nav>
-      </div>
+      {/* Bento Navigation with Active State & Root Affordance */}
+      <BentoNavigation />
 
       <div className="max-w-3xl mx-auto bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 shadow-sm relative overflow-hidden">
         
@@ -142,7 +118,7 @@ export default function NewPaymentPage() {
                 placeholder="e.g. Bright Future School or Alhaji Ganiyu Cement"
                 value={form.payeeName}
                 onChange={(e) => updateForm({ payeeName: e.target.value })}
-                className="w-full p-4 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 font-medium bg-white transition-all shadow-sm"
+                className="w-full p-4 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 font-medium bg-white text-slate-900 placeholder:text-slate-400 transition-all shadow-sm"
               />
 
               {/* Dynamic Directory Status Badge */}
@@ -184,7 +160,7 @@ export default function NewPaymentPage() {
                 <select
                   value={form.bankCode}
                   onChange={(e) => updateForm({ bankCode: e.target.value })}
-                  className="w-full p-4 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 bg-white font-medium shadow-sm appearance-none"
+                  className="w-full p-4 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 bg-white text-slate-900 font-medium shadow-sm appearance-none"
                 >
                   <option value="058">Guaranty Trust Bank (GTB)</option>
                   <option value="011">First Bank of Nigeria</option>
@@ -203,7 +179,7 @@ export default function NewPaymentPage() {
                   placeholder="0123456789"
                   value={form.accountNumber}
                   onChange={(e) => updateForm({ accountNumber: e.target.value })}
-                  className="w-full p-4 rounded-xl border border-slate-200 text-sm font-mono focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 shadow-sm bg-white"
+                  className="w-full p-4 rounded-xl border border-slate-200 text-sm font-mono focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 shadow-sm bg-white text-slate-900 placeholder:text-slate-400 font-medium"
                 />
               </div>
             </div>

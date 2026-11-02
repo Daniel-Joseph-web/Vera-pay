@@ -4,27 +4,16 @@ import React from 'react';
 import Link from 'next/link';
 import {
   Building,
-  ShieldCheck,
   MapPin,
   ArrowRight,
-  LayoutDashboard,
-  Send,
-  Users2,
-  Building2,
   Plus,
   Clock,
   CheckCircle2
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
+import { BentoNavigation } from '@/components/layout/BentoNavigation';
 
 export default function ProjectsHubPage() {
-  const navItems = [
-    { name: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
-    { name: 'Send & Verify', icon: Send, href: '/pay/new' },
-    { name: 'Family Hub', icon: Users2, href: '/family' },
-    { name: 'Projects Hub', icon: Building2, href: '/projects' }, 
-  ];
-
   const projects = [
     {
       id: 'proj-881',
@@ -51,25 +40,10 @@ export default function ProjectsHubPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] pb-10 font-sans lg:pl-24">
+    <div className="min-h-screen bg-[#F8FAFC] pb-24 lg:pb-10 font-sans lg:pl-24">
       
-      {/* Expandable Bento Navigation Sidebar */}
-      <div className="hidden lg:flex fixed left-4 top-1/2 -translate-y-1/2 z-40 group">
-        <nav className="flex flex-col gap-2 p-2 bg-white/95 backdrop-blur-xl border border-slate-200 shadow-xl rounded-3xl w-16 hover:w-60 transition-all duration-400 ease-out overflow-hidden">
-          {navItems.map((item) => (
-            <Link 
-              key={item.name} 
-              href={item.href}
-              className="flex items-center gap-4 p-3 rounded-2xl hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 transition-colors whitespace-nowrap"
-            >
-              <item.icon className="w-6 h-6 flex-shrink-0" />
-              <span className="font-bold text-sm opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-400">
-                {item.name}
-              </span>
-            </Link>
-          ))}
-        </nav>
-      </div>
+      {/* Bento Navigation with Active State & Root Affordance */}
+      <BentoNavigation />
 
       {/* Header Section */}
       <div className="relative bg-white pt-10 pb-12 px-4 sm:px-6 lg:px-8 border-b border-slate-200 overflow-hidden">
