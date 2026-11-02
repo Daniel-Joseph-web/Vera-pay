@@ -37,7 +37,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         {/* Pages render their own <main>, so this is a plain wrapper */}
         <div className="flex flex-1 flex-col">{children}</div>
 
-        {/* Global live escrow status banner */}
+        {/* Global live status banner */}
         <footer className="border-t border-white/[0.06] bg-[#041610] px-4 py-2.5 text-[11px] text-white/60">
           <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 sm:flex-row">
             <div className="flex flex-wrap items-center justify-center gap-2 text-center sm:justify-start sm:text-left">
@@ -57,7 +57,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <div className="flex items-center gap-3 text-white/45">
               <span className="flex items-center gap-1 font-medium text-emerald-300">
                 <ShieldCheck className="h-3.5 w-3.5" />
-                100% Escrow Protection Active
+                100% Payment Protection Active
               </span>
 
               <span aria-hidden="true">&bull;</span>

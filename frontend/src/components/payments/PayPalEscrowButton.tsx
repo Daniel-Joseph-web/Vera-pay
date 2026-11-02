@@ -3,14 +3,14 @@
 import React from 'react';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 
-interface PayPalEscrowButtonProps {
+interface PayPalProtectionButtonProps {
   paymentId: string;
   amountUSD: number;
   onSuccess: (orderId: string) => void;
   onError: (error: any) => void;
 }
 
-export const PayPalEscrowButton: React.FC<PayPalEscrowButtonProps> = ({
+export const PayPalProtectionButton: React.FC<PayPalProtectionButtonProps> = ({
   paymentId,
   amountUSD,
   onSuccess,

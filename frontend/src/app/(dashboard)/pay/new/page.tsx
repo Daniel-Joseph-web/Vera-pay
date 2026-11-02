@@ -59,7 +59,7 @@ export default function NewPaymentPage() {
         <div className="relative z-10 border-b border-slate-100 pb-8 mb-8">
           <div className="flex items-center gap-3 mb-3">
             <span className="text-[11px] font-black uppercase tracking-widest text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">
-              Step 1 &bull; Fund Escrow
+              Step 1 &bull; Fund Payment
             </span>
             <div className="flex items-center gap-1.5 text-[10px] font-bold px-3 py-1 bg-slate-50 border border-slate-200 text-slate-600 rounded-full">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
@@ -68,7 +68,7 @@ export default function NewPaymentPage() {
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Start a Verified Payment</h1>
           <p className="text-sm text-slate-500 mt-2 max-w-lg font-medium leading-relaxed">
-            Your money stays 100% protected in escrow. It is only released when proof passes and you tap approve.
+            Your money stays 100% protected in Verapay. It is only released when proof passes and you tap approve.
           </p>
         </div>
 
@@ -145,7 +145,7 @@ export default function NewPaymentPage() {
                       <Clock className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                       <span className="leading-relaxed">
                         <strong className="font-extrabold block mb-0.5">Case 1 (New Organisation)</strong> 
-                        Verapay will query CAC database & verify account name while funds wait safely in escrow.
+                        Verapay will query CAC database & verify account name while funds wait safely in your vault.
                       </span>
                     </div>
                   )
@@ -232,13 +232,13 @@ export default function NewPaymentPage() {
             </div>
           </div>
 
-          {/* Submit Escrow Button */}
+          {/* Submit Payment Button */}
           <button
             type="submit"
             disabled={isSubmitting}
             className="w-full py-4 sm:py-5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 text-sm sm:text-base disabled:opacity-50"
           >
-            {isSubmitting ? 'Funding Escrow with PayPal...' : 'Fund Escrow & Run AI Verification'}
+            {isSubmitting ? 'Securing Payment with PayPal...' : 'Secure Payment & Run AI Verification'}
             <ArrowRight className="w-5 h-5" />
           </button>
         </form>

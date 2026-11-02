@@ -109,7 +109,7 @@ export default function DashboardPage() {
         
         {/* Top Metric Cards (Updated to 2 columns) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-          {/* Protected in Escrow */}
+          {/* Protected in Verapay */}
           <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm relative overflow-hidden flex flex-col justify-between">
             <div className="absolute right-0 bottom-0 opacity-10 pointer-events-none">
               <svg width="120" height="60" viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg">

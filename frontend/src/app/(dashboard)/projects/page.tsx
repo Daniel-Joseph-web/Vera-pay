@@ -58,7 +58,7 @@ export default function ProjectsHubPage() {
               Projects Hub
             </h1>
             <p className="text-slate-600 mt-2 text-sm sm:text-base font-medium">
-              Manage your long-term capital builds, track escrow milestones, and monitor site progress.
+              Manage your long-term capital builds, track project milestones, and monitor site progress.
             </p>
           </div>
           

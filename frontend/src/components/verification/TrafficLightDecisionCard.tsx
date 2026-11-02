@@ -79,7 +79,7 @@ export const TrafficLightDecisionCard: React.FC<TrafficLightCardProps> = ({
           <span className="text-sm font-semibold text-gray-900">{providerName}</span>
         </div>
         <div className="text-right">
-          <span className="text-xs text-gray-500 block">Escrow Amount</span>
+          <span className="text-xs text-gray-500 block">Protected Amount</span>
           <span className="text-base font-bold text-gray-900">{formatCurrency(amountUSD, 'USD')}</span>
           <span className="text-xs text-gray-400 block font-mono">({formatCurrency(amountNGN, 'NGN')})</span>
         </div>

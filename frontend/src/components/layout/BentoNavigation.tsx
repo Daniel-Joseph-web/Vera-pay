@@ -7,8 +7,7 @@ import {
   LayoutDashboard,
   Send,
   Users2,
-  Building2,
-  ShieldCheck
+  Building2
 } from 'lucide-react';
 
 export const BentoNavigation: React.FC = () => {
@@ -41,12 +40,12 @@ export const BentoNavigation: React.FC = () => {
             className="flex items-center gap-3.5 p-2 rounded-2xl hover:bg-emerald-50/80 transition-colors group/brand mb-1"
             title="Verapay Home Dashboard"
           >
-            <div className="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-sm flex-shrink-0 group-hover/brand:scale-105 transition-transform">
-              <ShieldCheck className="w-5 h-5 text-white" />
+            <div className="w-9 h-9 rounded-xl bg-white border border-slate-100 flex items-center justify-center p-1 shadow-sm flex-shrink-0 group-hover/brand:scale-105 transition-transform overflow-hidden">
+              <img src="/logo.png" alt="Verapay" className="w-7 h-7 object-contain" />
             </div>
             <div className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 overflow-hidden whitespace-nowrap">
               <span className="font-extrabold text-sm text-slate-900 block leading-tight tracking-tight">Verapay</span>
-              <span className="text-[10px] font-bold text-emerald-600 block uppercase tracking-wider">Escrow Hub</span>
+              <span className="text-[10px] font-bold text-emerald-600 block uppercase tracking-wider">Payment Hub</span>
             </div>
           </Link>
 

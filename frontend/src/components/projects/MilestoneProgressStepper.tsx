@@ -22,7 +22,7 @@ export const MilestoneProgressStepper: React.FC<MilestoneStepperProps> = ({
           <p className="text-xs text-gray-500">Funds are released stage-by-stage only after live verification.</p>
         </div>
         <span className="text-xs font-semibold bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full border border-emerald-200">
-          2% Milestone Fee Escrow
+          2% Milestone Verification Fee
         </span>
       </div>
 

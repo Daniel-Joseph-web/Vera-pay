@@ -108,7 +108,7 @@ export default function ProjectDetailsPage() {
                     Capital Build
                   </span>
                   <span className="text-[10px] font-bold px-2 py-0.5 bg-slate-50 text-slate-600 border border-slate-200 rounded-full flex items-center gap-1">
-                    <ShieldCheck className="w-3 h-3 text-emerald-500" /> 2% Escrow Fee
+                    <ShieldCheck className="w-3 h-3 text-emerald-500" /> 2% Verification Fee
                   </span>
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">

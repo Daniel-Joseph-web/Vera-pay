@@ -198,7 +198,7 @@ export default function VerificationDecisionPage() {
                       {signal} RISK VERDICT
                     </span>
                     <span className="text-[11px] text-slate-400 font-bold bg-slate-50 px-2 py-1 rounded-full border border-slate-100">
-                      Escrow #VP-8921
+                      Payment #VP-8921
                     </span>
                   </div>
                   <h2 className="text-2xl font-extrabold text-slate-900 mt-1 leading-snug">{current.headline}</h2>
@@ -216,7 +216,7 @@ export default function VerificationDecisionPage() {
                   </div>
                 </div>
                 <div className="sm:text-right border-t sm:border-t-0 sm:border-l border-slate-200 pt-4 sm:pt-0 sm:pl-4">
-                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-1">Escrow Protected Amount</span>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-1">Protected Amount</span>
                   <span className="text-2xl font-black text-slate-900 block">{formatCurrency(current.amountUSD, 'USD')}</span>
                   <span className="text-[11px] font-bold font-mono text-slate-500 mt-0.5 block">
                     {formatCurrency(current.amountNGN, 'NGN')} at ₦1,650/$
@@ -398,7 +398,7 @@ export default function VerificationDecisionPage() {
 
                   <div className="p-4 bg-slate-900 text-white rounded-2xl text-xs space-y-1.5 shadow-md">
                     <span className="text-emerald-400 font-extrabold flex items-center gap-2 text-sm">
-                      <ShieldCheck className="w-4 h-4" /> Escrow Safeguard Triggered
+                      <ShieldCheck className="w-4 h-4" /> Payment Safeguard Triggered
                     </span>
                     <p className="text-xs text-slate-300 font-medium leading-relaxed">
                       Zero money has left your account. You can tap refund below to return all funds immediately to PayPal.
@@ -479,7 +479,7 @@ export default function VerificationDecisionPage() {
               <div>
                 <h3 className="text-2xl font-extrabold text-slate-900">100% Refund Complete</h3>
                 <p className="text-sm text-slate-600 font-medium mt-2 leading-relaxed">
-                  Because proof failed verification, 100% of your escrowed funds have been credited back to your PayPal balance.
+                  Because proof failed verification, 100% of your protected funds have been credited back to your PayPal balance.
                 </p>
               </div>
               <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl font-mono text-xs text-slate-700 font-bold text-left space-y-2">
