@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { createPayPalEscrowOrder, refundPayPalEscrow } from '../services/escrow/paypal-escrow.service.js';
 import { disburseNairaPayout } from '../services/escrow/paystack-payout.service.js';
+import { dispatchZapierEvent } from '../services/integrations/zapier.service.js';
 
 export async function createPayment(req: Request, res: Response) {
   try {
@@ -21,6 +22,17 @@ export async function createPayment(req: Request, res: Response) {
 
     const totalUSD = amountUSD + feeUSD;
     const paypalOrderId = await createPayPalEscrowOrder(paymentId, totalUSD);
+
+    // Real-time notification dispatch via Zapier
+    await dispatchZapierEvent({
+      event: 'payment.created',
+      paymentId,
+      amountUSD: totalUSD,
+      payeeName: payeeName || 'Beneficiary Institution',
+      status: 'PENDING_FUNDING',
+      details: { exchangeRate, amountNGN, plan },
+      timestamp: new Date().toISOString(),
+    });
 
     res.status(201).json({
       success: true,
@@ -57,6 +69,17 @@ export async function approvePayment(req: Request, res: Response) {
       id
     );
 
+    // Notify Zapier automation
+    await dispatchZapierEvent({
+      event: 'payout.dispatched',
+      paymentId: id,
+      amountUSD: mockPayment.amountNGN / 1650,
+      payeeName: mockPayment.accountName,
+      status: 'PAYOUT_INITIATED',
+      details: { transferCode: payout.transferCode, amountNGN: mockPayment.amountNGN },
+      timestamp: new Date().toISOString(),
+    });
+
     res.status(200).json({
       success: true,
       paymentId: id,
@@ -74,6 +97,17 @@ export async function refundPayment(req: Request, res: Response) {
     const { id } = req.params;
     const mockCaptureId = `CAP_${Date.now()}`;
     const refund = await refundPayPalEscrow(mockCaptureId, 400.0);
+
+    // Notify Zapier automation of fraud intercept & refund
+    await dispatchZapierEvent({
+      event: 'fraud.detected',
+      paymentId: id,
+      amountUSD: 400.0,
+      payeeName: 'Flagged Payee',
+      status: 'REFUNDED',
+      details: { refundId: refund.refundId, reason: 'Forensic discrepancy or user refund trigger' },
+      timestamp: new Date().toISOString(),
+    });
 
     res.status(200).json({
       success: true,

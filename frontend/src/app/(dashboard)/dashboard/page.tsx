@@ -1,3 +1,6 @@
+'use client';
+
+import React, { useState } from 'react';
 import Link from 'next/link';
 import {
   ShieldCheck,
@@ -14,11 +17,16 @@ import {
   ArrowRight,
   CheckCircle2,
   TrendingUp,
-  Landmark
+  Landmark,
+  LayoutGrid,
+  Table2
 } from 'lucide-react';
 import { BentoNavigation } from '@/components/layout/BentoNavigation';
+import { VerapayAGGrid } from '@/components/dashboard/VerapayAGGrid';
 
 export default function DashboardPage() {
+  const [viewMode, setViewMode] = useState<'aggrid' | 'standard'>('aggrid');
+
   const recentPayments = [
     {
       id: 'pay_school_fees',
@@ -159,73 +167,109 @@ export default function DashboardPage() {
           {/* Left Column (Recent Payments & Projects) */}
           <div className="lg:col-span-2 space-y-6">
             
-            {/* Recent Payments Table */}
+            {/* Recent Payments Table / AG Grid Enterprise */}
             <div className="bg-white dark:bg-[#0E1626] rounded-2xl border border-slate-100 dark:border-[#1E2D4A] shadow-sm p-6 transition-colors">
-              <div className="flex justify-between items-center mb-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-950/60 flex items-center justify-center">
                     <Clock className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   </div>
-                  <h2 className="text-lg font-bold text-slate-900 dark:text-white">Recent Payments</h2>
+                  <div>
+                    <h2 className="text-lg font-bold text-slate-900 dark:text-white leading-tight">Recent Payments</h2>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Real-time ledger with AI fraud scores & PayPal settlements</p>
+                  </div>
                 </div>
-                <Link href="/pay/new" className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center gap-1">
-                  Start New Payment <ArrowRight className="w-4 h-4" />
-                </Link>
+
+                <div className="flex items-center gap-3">
+                  {/* View Mode Toggle */}
+                  <div className="inline-flex items-center bg-slate-100 dark:bg-[#070B12] p-1 rounded-xl border border-slate-200 dark:border-[#1E2D4A]">
+                    <button
+                      onClick={() => setViewMode('aggrid')}
+                      className={`px-3 py-1 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 ${
+                        viewMode === 'aggrid'
+                          ? 'bg-emerald-600 text-white shadow-sm'
+                          : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                      }`}
+                    >
+                      <LayoutGrid className="w-3.5 h-3.5" />
+                      AG Grid
+                    </button>
+                    <button
+                      onClick={() => setViewMode('standard')}
+                      className={`px-3 py-1 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 ${
+                        viewMode === 'standard'
+                          ? 'bg-emerald-600 text-white shadow-sm'
+                          : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                      }`}
+                    >
+                      <Table2 className="w-3.5 h-3.5" />
+                      Standard
+                    </button>
+                  </div>
+
+                  <Link href="/pay/new" className="text-xs sm:text-sm font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center gap-1">
+                    New <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
               </div>
 
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm">
-                  <thead>
-                    <tr className="text-slate-500 dark:text-[#94A3B8] border-b border-slate-100 dark:border-[#1E2D4A]">
-                      <th className="pb-3 font-semibold whitespace-nowrap">Date</th>
-                      <th className="pb-3 font-semibold whitespace-nowrap">Description</th>
-                      <th className="pb-3 font-semibold whitespace-nowrap">Amount</th>
-                      <th className="pb-3 font-semibold whitespace-nowrap">Status</th>
-                      <th className="pb-3 font-semibold whitespace-nowrap">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100 dark:divide-[#1E2D4A]">
-                    {recentPayments.map((payment) => (
-                      <tr key={payment.id} className="hover:bg-slate-50/50 dark:hover:bg-[#162238]/50 transition-colors">
-                        <td className="py-4 text-slate-500 dark:text-[#94A3B8] whitespace-nowrap font-medium">{payment.date}</td>
-                        <td className="py-4">
-                          <div className="flex items-center gap-3">
-                            <div className={`p-2 rounded-lg ${payment.iconBg} dark:bg-emerald-950/60`}>
-                              <payment.icon className={`w-4 h-4 ${payment.iconColor} dark:text-emerald-400`} />
-                            </div>
-                            <span className="font-semibold text-slate-800 dark:text-[#E2E8F0]">{payment.description}</span>
-                          </div>
-                        </td>
-                        <td className="py-4 font-bold text-slate-900 dark:text-white">₦{payment.amount.toLocaleString()}</td>
-                        <td className="py-4">
-                          <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold border ${
-                            payment.status === 'Verified' 
-                              ? 'bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800'
-                              : 'bg-blue-50 text-blue-700 border-blue-100 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800'
-                          }`}>
-                            {payment.status === 'Verified' ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Clock className="w-3.5 h-3.5" />}
-                            {payment.status}
-                          </span>
-                        </td>
-                        <td className="py-4">
-                          <Link 
-                            href={
-                              payment.id === 'pay_school_fees' 
-                                ? '/pay/pay_school_fees/verify?scenario=green' 
-                                : payment.id === 'pay_project_milestone' 
-                                ? '/projects/proj-881' 
-                                : '/family'
-                            } 
-                            className="inline-flex items-center justify-center px-4 py-1.5 border border-slate-200 dark:border-[#1E2D4A] rounded-lg text-xs font-semibold text-slate-700 dark:text-[#CBD5E1] hover:bg-slate-50 dark:hover:bg-[#162238] hover:text-slate-900 dark:hover:text-white transition-colors bg-white dark:bg-[#070B12] shadow-sm"
-                          >
-                            View <ArrowRight className="w-3.5 h-3.5 ml-1" />
-                          </Link>
-                        </td>
+              {viewMode === 'aggrid' ? (
+                <VerapayAGGrid />
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm">
+                    <thead>
+                      <tr className="text-slate-500 dark:text-[#94A3B8] border-b border-slate-100 dark:border-[#1E2D4A]">
+                        <th className="pb-3 font-semibold whitespace-nowrap">Date</th>
+                        <th className="pb-3 font-semibold whitespace-nowrap">Description</th>
+                        <th className="pb-3 font-semibold whitespace-nowrap">Amount</th>
+                        <th className="pb-3 font-semibold whitespace-nowrap">Status</th>
+                        <th className="pb-3 font-semibold whitespace-nowrap">Action</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 dark:divide-[#1E2D4A]">
+                      {recentPayments.map((payment) => (
+                        <tr key={payment.id} className="hover:bg-slate-50/50 dark:hover:bg-[#162238]/50 transition-colors">
+                          <td className="py-4 text-slate-500 dark:text-[#94A3B8] whitespace-nowrap font-medium">{payment.date}</td>
+                          <td className="py-4">
+                            <div className="flex items-center gap-3">
+                              <div className={`p-2 rounded-lg ${payment.iconBg} dark:bg-emerald-950/60`}>
+                                <payment.icon className={`w-4 h-4 ${payment.iconColor} dark:text-emerald-400`} />
+                              </div>
+                              <span className="font-semibold text-slate-800 dark:text-[#E2E8F0]">{payment.description}</span>
+                            </div>
+                          </td>
+                          <td className="py-4 font-bold text-slate-900 dark:text-white">₦{payment.amount.toLocaleString()}</td>
+                          <td className="py-4">
+                            <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold border ${
+                              payment.status === 'Verified' 
+                                ? 'bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800'
+                                : 'bg-blue-50 text-blue-700 border-blue-100 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800'
+                            }`}>
+                              {payment.status === 'Verified' ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Clock className="w-3.5 h-3.5" />}
+                              {payment.status}
+                            </span>
+                          </td>
+                          <td className="py-4">
+                            <Link 
+                              href={
+                                payment.id === 'pay_school_fees' 
+                                  ? '/pay/pay_school_fees/verify?scenario=green' 
+                                  : payment.id === 'pay_project_milestone' 
+                                  ? '/projects/proj-881' 
+                                  : '/family'
+                              } 
+                              className="inline-flex items-center justify-center px-4 py-1.5 border border-slate-200 dark:border-[#1E2D4A] rounded-lg text-xs font-semibold text-slate-700 dark:text-[#CBD5E1] hover:bg-slate-50 dark:hover:bg-[#162238] hover:text-slate-900 dark:hover:text-white transition-colors bg-white dark:bg-[#070B12] shadow-sm"
+                            >
+                              View <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                            </Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
 
             {/* Your Projects */}

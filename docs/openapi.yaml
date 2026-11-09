@@ -1,0 +1,252 @@
+openapi: 3.1.0
+info:
+  title: Verapay Core Verification & PayPal Escrow API
+  description: >
+    Official API for Verapay ("Verify, then release"). 
+    Provides AI-verified, milestone-gated, sender-approved remittance payments to Nigerian commercial providers.
+  version: 2.0.0
+  contact:
+    name: Verapay Engineering
+    email: support@verapay.io
+
+servers:
+  - url: http://localhost:4000
+    description: Local Development Server
+  - url: https://api.verapay.io
+    description: Production API Server
+
+paths:
+  /health:
+    get:
+      summary: Server Health Check
+      description: Returns health status and server timestamp.
+      responses:
+        '200':
+          description: Service is healthy.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: HEALTHY
+                  timestamp:
+                    type: string
+                    format: date-time
+
+  /api/v1/payments/create:
+    post:
+      summary: Create Escrow Payment
+      description: Initializes an escrow intent, calculates exchange rate and Verapay fee, and creates a PayPal Sandbox capture order.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - payeeName
+                - bankCode
+                - accountNumber
+                - amountUSD
+              properties:
+                payeeName:
+                  type: string
+                  example: Bright Future Academy Ltd
+                bankCode:
+                  type: string
+                  example: "058"
+                accountNumber:
+                  type: string
+                  example: "0123456789"
+                amountUSD:
+                  type: number
+                  example: 400.00
+                invoiceDescription:
+                  type: string
+                  example: Term 1 School Fees
+                plan:
+                  type: string
+                  enum: [BASIC, VERAPAY_PLUS, VERAPAY_PROJECTS]
+                  default: BASIC
+      responses:
+        '201':
+          description: Escrow order created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  paymentId:
+                    type: string
+                    example: pay_892182a1
+                  amountUSD:
+                    type: number
+                    example: 400.00
+                  feeUSD:
+                    type: number
+                    example: 6.00
+                  totalChargedUSD:
+                    type: number
+                    example: 406.00
+                  paypalOrderId:
+                    type: string
+                    example: 8KJ19281729A
+                  escrowStatus:
+                    type: string
+                    example: PENDING_FUNDING
+
+  /api/v1/payments/{id}/approve:
+    post:
+      summary: Approve Payment (Disburse via Paystack NIP)
+      description: Sender authorizes disbursement. Releases escrowed funds into Nigerian bank account.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Naira payout dispatched.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  paymentId:
+                    type: string
+                  escrowStatus:
+                    type: string
+                    example: PAYOUT_INITIATED
+                  transferCode:
+                    type: string
+                    example: TRF_99182371A
+
+  /api/v1/payments/{id}/refund:
+    post:
+      summary: 1-Click PayPal Escrow Refund
+      description: Triggered when fraud is detected (Red signal). 100% of escrowed principal refunded to sender's PayPal balance.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Refund completed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  refundId:
+                    type: string
+                    example: REF_77192388A
+                  escrowStatus:
+                    type: string
+                    example: REFUNDED
+
+  /api/v1/verification/check-payee:
+    post:
+      summary: Check Payee CAC & NUBAN
+      description: Performs fuzzy name matching between sender-input organisation name and NIBSS-verified account name.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - claimedName
+                - accountNumber
+                - bankCode
+              properties:
+                claimedName:
+                  type: string
+                  example: Bright Future Academy
+                accountNumber:
+                  type: string
+                  example: "0123456789"
+                bankCode:
+                  type: string
+                  example: "058"
+      responses:
+        '200':
+          description: Verification result returned.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  nameMatchScore:
+                    type: number
+                    example: 98
+                  isVerified:
+                    type: boolean
+                    example: true
+
+  /api/v1/verification/check-quote:
+    post:
+      summary: Autonomous Quote Agent Price Benchmark
+      description: Compares contractor's quoted material total against local wholesale averages to detect padding.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - materialType
+                - quantity
+                - quotedTotalNGN
+              properties:
+                materialType:
+                  type: string
+                  example: cement-50kg
+                quantity:
+                  type: integer
+                  example: 500
+                quotedTotalNGN:
+                  type: number
+                  example: 7100000
+                city:
+                  type: string
+                  example: ibadan
+      responses:
+        '200':
+          description: Price benchmark report returned.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  comparison:
+                    type: object
+                    properties:
+                      isPadded:
+                        type: boolean
+                        example: true
+                      deltaPercentage:
+                        type: number
+                        example: 24.1
+                      recommendation:
+                        type: string
+                        example: PRICE_HIGH

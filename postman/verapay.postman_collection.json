@@ -1,0 +1,164 @@
+{
+  "info": {
+    "_postman_id": "a891e4f2-9812-4012-b129-verapaycore01",
+    "name": "Verapay Core Escrow & Forensic API",
+    "description": "Comprehensive Postman collection for the Verapay payment verification and PayPal escrow engine. Submitted for the 'Build What's Next with PayPal and AI' Hackathon.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Server Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            },
+            "description": "Verifies that the Verapay Express API server is healthy and responsive."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Create Verified Payment (PayPal Vault)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payeeName\": \"Bright Future Academy Ltd\",\n  \"bankCode\": \"058\",\n  \"accountNumber\": \"0123456789\",\n  \"amountUSD\": 400.0,\n  \"invoiceDescription\": \"Term 1 Tuition for Adaeze Okonkwo\",\n  \"plan\": \"BASIC\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/payments/create",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "payments", "create"]
+            },
+            "description": "Initializes a payment intent, calculates NGN conversion rate and Verapay fee, and creates a PayPal Sandbox capture order."
+          },
+          "response": []
+        },
+        {
+          "name": "Approve Payment (Disburse via Paystack NIP)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/payments/pay_school_fees/approve",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "payments", "pay_school_fees", "approve"]
+            },
+            "description": "Sender gives final sign-off. Releases escrowed funds directly to Nigerian provider's verified NUBAN account."
+          },
+          "response": []
+        },
+        {
+          "name": "Refund Payment (1-Click PayPal Refund)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/payments/pay_reused_photo/refund",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "payments", "pay_reused_photo", "refund"]
+            },
+            "description": "Triggered when Red risk flag is detected (fraud/reused proof). 100% of escrowed principal refunded to sender's PayPal balance with $0 fee."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Forensic Verification",
+      "item": [
+        {
+          "name": "Gate 1: Check Payee CAC & NUBAN",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"claimedName\": \"Bright Future Academy Ltd\",\n  \"bankCode\": \"058\",\n  \"accountNumber\": \"0123456789\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/verification/check-payee",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "verification", "check-payee"]
+            },
+            "description": "Performs fuzzy matching between sender-entered organisation name and NIBSS-registered bank account name."
+          },
+          "response": []
+        },
+        {
+          "name": "Gate 3: Autonomous Quote Agent Price Benchmark",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"materialType\": \"cement-50kg\",\n  \"quantity\": 500,\n  \"quotedTotalNGN\": 7100000,\n  \"city\": \"ibadan\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/verification/check-quote",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "verification", "check-quote"]
+            },
+            "description": "Agentic commerce tool: compares contractor's quoted building material price against regional wholesale benchmarks to catch padding."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Webhooks",
+      "item": [
+        {
+          "name": "PayPal Webhook Listener",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_type\": \"PAYMENT.CAPTURE.COMPLETED\",\n  \"resource\": {\n    \"id\": \"CAP-99881273\",\n    \"amount\": {\n      \"value\": \"406.00\",\n      \"currency_code\": \"USD\"\n    }\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/webhooks/paypal",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "webhooks", "paypal"]
+            },
+            "description": "Receives asynchronous capture notifications from PayPal Sandbox to lock funds in ESCROW_HELD status."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

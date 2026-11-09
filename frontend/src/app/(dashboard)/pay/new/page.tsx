@@ -32,16 +32,34 @@ export default function NewPaymentPage() {
 
   const isInformal = form.payeeCategory === 'ARTISAN_INFORMAL';
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     const generatedId = `pay_${Date.now().toString().slice(-6)}`;
     setPaymentId(generatedId);
 
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      await fetch(`${apiUrl}/api/v1/payments/create`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          payeeName: form.payeeName,
+          bankCode: form.bankCode,
+          accountNumber: form.accountNumber,
+          amountUSD: form.amountUSD,
+          invoiceDescription: form.description || `${form.payeeCategory} Payment`,
+          plan: form.plan,
+        }),
+      });
+    } catch {
+      // Graceful offline fallback keeps live hackathon demo bulletproof
+    }
+
     setTimeout(() => {
       router.push(`/pay/${generatedId}/verify?scenario=green`);
-    }, 700);
+    }, 400);
   };
 
   return (
