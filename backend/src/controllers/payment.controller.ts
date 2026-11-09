@@ -120,3 +120,14 @@ export async function refundPayment(req: Request, res: Response) {
     res.status(500).json({ success: false, error: error.message });
   }
 }
+
+export async function createOrderForPayment(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    const { amountUSD = 400.0 } = req.body || {};
+    const paypalOrderId = await createPayPalEscrowOrder(id, Number(amountUSD));
+    res.status(200).json({ success: true, paymentId: id, paypalOrderId });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+}
