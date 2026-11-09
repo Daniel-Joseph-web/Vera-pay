@@ -217,9 +217,12 @@ export default function FamilyGroupPage() {
                   <Clock className="w-5 h-5 text-emerald-700 dark:text-emerald-400" />
                   <h2 className="text-lg font-bold text-slate-900 dark:text-white">Recent Activity</h2>
                 </div>
-                <Link href="#" className="text-xs font-bold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 flex items-center gap-1 transition-colors">
+                <button 
+                  onClick={() => setActivePane('manage')}
+                  className="text-xs font-bold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 flex items-center gap-1 transition-colors"
+                >
                   View All <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
+                </button>
               </div>
 
               <div className="space-y-1">

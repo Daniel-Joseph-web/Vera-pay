@@ -602,7 +602,7 @@ export default function HomePage() {
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-slate-500">
             <Link href="/pay/new" className="transition hover:text-emerald-300">Send &amp; Verify</Link>
             <Link href="/family" className="transition hover:text-emerald-300">Family Hub</Link>
-            <Link href="/projects/proj-881" className="transition hover:text-emerald-300">Projects</Link>
+            <Link href="/projects" className="transition hover:text-emerald-300">Projects</Link>
             <Link href="/dashboard" className="transition hover:text-emerald-300">Dashboard</Link>
           </div>
           <p className="text-[11px] text-slate-600">© {new Date().getFullYear()} Verapay. All rights reserved.</p>

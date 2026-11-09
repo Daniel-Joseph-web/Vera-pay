@@ -33,7 +33,7 @@ const appLinks = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/pay/new', label: 'Send & Verify', icon: Send },
   { href: '/family', label: 'Family Hub', icon: Users2 },
-  { href: '/projects/proj-881', label: 'Projects Hub', icon: Building2 },
+  { href: '/projects', label: 'Projects Hub', icon: Building2 },
 ];
 
 const demoItems = [
