@@ -150,44 +150,44 @@ export default function VerificationDecisionPage() {
             <ArrowLeft className="w-3.5 h-3.5" /> Back to Dashboard
           </Link>
 
-          {/* Hackathon Judge Preset Bar */}
+          {/* Forensic Audit Cases */}
           <div className="flex items-center gap-3">
-            <span className="text-[11px] font-black uppercase tracking-wider text-slate-400 dark:text-[#94A3B8] flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" /> Judge Scenarios
+            <span className="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-[#94A3B8] flex items-center gap-1.5">
+              <ShieldCheck className="w-4 h-4 text-emerald-500 dark:text-emerald-400" /> Audit Scenario:
             </span>
-            <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-[#070B12] p-1.5 rounded-xl border border-slate-100 dark:border-[#1E2D4A] text-xs font-bold">
+            <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-[#070B12] p-1.5 rounded-xl border border-slate-200 dark:border-[#1E2D4A] text-xs font-bold">
               <button
                 onClick={() => setSignal('GREEN')}
-                className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 ${
                   signal === 'GREEN' 
-                    ? 'bg-white dark:bg-[#162238] text-emerald-800 dark:text-emerald-300 shadow-sm font-extrabold border border-emerald-100 dark:border-emerald-800' 
-                    : 'text-slate-500 dark:text-[#94A3B8] hover:text-slate-800 dark:hover:text-white border border-transparent'
+                    ? 'bg-white dark:bg-[#162238] text-emerald-800 dark:text-emerald-300 shadow-sm font-black border border-emerald-200 dark:border-emerald-800' 
+                    : 'text-slate-600 dark:text-[#94A3B8] hover:text-slate-900 dark:hover:text-white border border-transparent'
                 }`}
               >
-                <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                School Fees (Green)
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                Tuition Milestone (Verified)
               </button>
               <button
                 onClick={() => setSignal('AMBER')}
-                className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 ${
                   signal === 'AMBER' 
-                    ? 'bg-white dark:bg-[#162238] text-amber-800 dark:text-amber-300 shadow-sm font-extrabold border border-amber-100 dark:border-amber-800' 
-                    : 'text-slate-500 dark:text-[#94A3B8] hover:text-slate-800 dark:hover:text-white border border-transparent'
+                    ? 'bg-white dark:bg-[#162238] text-amber-800 dark:text-amber-300 shadow-sm font-black border border-amber-200 dark:border-amber-800' 
+                    : 'text-slate-600 dark:text-[#94A3B8] hover:text-slate-900 dark:hover:text-white border border-transparent'
                 }`}
               >
-                <span className="w-2 h-2 rounded-full bg-amber-500" />
-                Padded Quote (Amber)
+                <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+                Materials Quote (Price Alert)
               </button>
               <button
                 onClick={() => setSignal('RED')}
-                className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-2 ${
                   signal === 'RED' 
-                    ? 'bg-white dark:bg-[#162238] text-rose-800 dark:text-rose-300 shadow-sm font-extrabold border border-rose-100 dark:border-rose-800' 
-                    : 'text-slate-500 dark:text-[#94A3B8] hover:text-slate-800 dark:hover:text-white border border-transparent'
+                    ? 'bg-white dark:bg-[#162238] text-rose-800 dark:text-rose-300 shadow-sm font-black border border-rose-200 dark:border-rose-800' 
+                    : 'text-slate-600 dark:text-[#94A3B8] hover:text-slate-900 dark:hover:text-white border border-transparent'
                 }`}
               >
-                <span className="w-2 h-2 rounded-full bg-rose-500" />
-                Reused Photo (Red)
+                <span className="w-2.5 h-2.5 rounded-full bg-rose-500" />
+                Construction Site (Photo Alert)
               </button>
             </div>
           </div>
@@ -229,24 +229,24 @@ export default function VerificationDecisionPage() {
                       Payment #VP-8921
                     </span>
                   </div>
-                  <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white mt-1 leading-snug">{current.headline}</h2>
-                  <p className="text-sm text-slate-600 dark:text-[#94A3B8] mt-2 font-medium leading-relaxed">{current.description}</p>
+                  <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mt-1 leading-snug">{current.headline}</h2>
+                  <p className="text-base text-slate-600 dark:text-[#94A3B8] mt-2 font-medium leading-relaxed">{current.description}</p>
                 </div>
               </div>
 
               {/* Verified Beneficiary Card */}
-              <div className="mt-8 p-5 rounded-2xl bg-[#F8FAFC] dark:bg-[#070B12] border border-slate-200 dark:border-[#1E2D4A] grid sm:grid-cols-2 gap-4 items-center">
+              <div className="mt-8 p-6 rounded-2xl bg-[#F8FAFC] dark:bg-[#070B12] border border-slate-200 dark:border-[#1E2D4A] grid sm:grid-cols-2 gap-5 items-center">
                 <div>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 dark:text-[#94A3B8] block mb-1">Verified Beneficiary</span>
-                  <span className="text-sm font-extrabold text-slate-900 dark:text-white block">{current.providerName}</span>
-                  <div className="text-[11px] text-slate-500 dark:text-[#94A3B8] font-medium mt-1">
+                  <span className="text-xs font-black uppercase tracking-wider text-slate-400 dark:text-[#94A3B8] block mb-1">Verified Beneficiary</span>
+                  <span className="text-base sm:text-lg font-black text-slate-900 dark:text-white block">{current.providerName}</span>
+                  <div className="text-xs text-slate-500 dark:text-[#94A3B8] font-medium mt-1">
                     CAC: <span className="font-bold text-emerald-700 dark:text-emerald-400">{current.cacReg}</span> &bull; NUBAN: <span className="font-mono font-bold text-slate-700 dark:text-[#CBD5E1]">{current.accountNumber}</span>
                   </div>
                 </div>
-                <div className="sm:text-right border-t sm:border-t-0 sm:border-l border-slate-200 dark:border-[#1E2D4A] pt-4 sm:pt-0 sm:pl-4">
-                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 dark:text-[#94A3B8] block mb-1">Protected Amount</span>
-                  <span className="text-2xl font-black text-slate-900 dark:text-white block">{formatCurrency(current.amountUSD, 'USD')}</span>
-                  <span className="text-[11px] font-bold font-mono text-slate-500 dark:text-[#94A3B8] mt-0.5 block">
+                <div className="sm:text-right border-t sm:border-t-0 sm:border-l border-slate-200 dark:border-[#1E2D4A] pt-4 sm:pt-0 sm:pl-6">
+                  <span className="text-xs font-black uppercase tracking-wider text-slate-400 dark:text-[#94A3B8] block mb-1">Protected Amount</span>
+                  <span className="text-3xl font-black text-slate-900 dark:text-white block">{formatCurrency(current.amountUSD, 'USD')}</span>
+                  <span className="text-xs font-bold font-mono text-slate-500 dark:text-[#94A3B8] mt-0.5 block">
                     {formatCurrency(current.amountNGN, 'NGN')} at ₦1,650/$
                   </span>
                 </div>
@@ -254,21 +254,21 @@ export default function VerificationDecisionPage() {
 
               {/* Detailed 4-Step Checklist */}
               <div className="mt-8 space-y-3">
-                <span className="text-[11px] font-black uppercase tracking-wider text-slate-400 dark:text-[#94A3B8] block">
-                  Verapay 4-Gate Forensic Results
+                <span className="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-[#94A3B8] block">
+                  Verapay 4-Gate Verification Audit Results
                 </span>
                 <div className="divide-y divide-slate-100 dark:divide-[#1E2D4A] rounded-2xl bg-white dark:bg-[#070B12] border border-slate-200 dark:border-[#1E2D4A] overflow-hidden shadow-sm">
                   {current.checks.map((c) => (
-                    <div key={c.id} className="p-4 flex items-center justify-between text-xs">
+                    <div key={c.id} className="p-4 sm:p-5 flex items-center justify-between text-sm">
                       <div className="flex items-center gap-3">
                         {c.passed ? (
                           <CheckCircle2 className="w-5 h-5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
                         ) : (
                           <XCircle className="w-5 h-5 text-rose-500 dark:text-rose-400 flex-shrink-0" />
                         )}
-                        <span className="font-bold text-slate-800 dark:text-[#E2E8F0]">{c.name}</span>
+                        <span className="font-bold text-slate-900 dark:text-[#E2E8F0]">{c.name}</span>
                       </div>
-                      <span className={`font-bold text-right pl-4 ${c.passed ? 'text-slate-500 dark:text-[#94A3B8]' : 'text-amber-700 dark:text-amber-400'}`}>
+                      <span className={`font-bold text-right pl-4 text-xs sm:text-sm ${c.passed ? 'text-slate-500 dark:text-[#94A3B8]' : 'text-amber-700 dark:text-amber-400'}`}>
                         {c.statusText}
                       </span>
                     </div>
@@ -283,13 +283,13 @@ export default function VerificationDecisionPage() {
                     <button
                       onClick={handleApprove}
                       disabled={isProcessing}
-                      className="flex-1 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 text-sm disabled:opacity-50"
+                      className="flex-1 py-4 sm:py-5 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 text-base disabled:opacity-50"
                     >
                       {isProcessing ? 'Authorizing Payout...' : `Approve & Release ${formatCurrency(current.amountUSD, 'USD')}`}
                     </button>
                     <button
                       onClick={handleRefund}
-                      className="py-4 px-6 text-slate-500 dark:text-[#94A3B8] hover:text-slate-800 dark:hover:text-white font-bold text-xs bg-slate-50 dark:bg-[#070B12] hover:bg-slate-100 dark:hover:bg-[#162238] border border-slate-200 dark:border-[#1E2D4A] rounded-2xl transition-colors"
+                      className="py-4 sm:py-5 px-6 text-slate-600 dark:text-[#94A3B8] hover:text-slate-900 dark:hover:text-white font-bold text-sm bg-slate-50 dark:bg-[#070B12] hover:bg-slate-100 dark:hover:bg-[#162238] border border-slate-200 dark:border-[#1E2D4A] rounded-2xl transition-colors"
                     >
                       Reject & Refund
                     </button>
@@ -300,13 +300,13 @@ export default function VerificationDecisionPage() {
                   <>
                     <button
                       onClick={() => setShowQuoteModal(true)}
-                      className="flex-1 py-4 bg-amber-600 hover:bg-amber-700 text-white font-extrabold rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 text-sm"
+                      className="flex-1 py-4 sm:py-5 bg-amber-600 hover:bg-amber-700 text-white font-black rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 text-base"
                     >
-                      <TrendingDown className="w-4 h-4" /> View 3 Cheaper Suppliers (Save ₦1.7M)
+                      <TrendingDown className="w-5 h-5" /> View 3 Cheaper Suppliers (Save ₦1.7M)
                     </button>
                     <button
                       onClick={() => alert('Verapay Plus Fast Track: A human compliance agent is reviewing this invoice. ETA < 2 hours.')}
-                      className="py-4 px-6 bg-slate-50 dark:bg-[#070B12] hover:bg-slate-100 dark:hover:bg-[#162238] text-slate-700 dark:text-[#CBD5E1] font-bold border border-slate-200 dark:border-[#1E2D4A] rounded-2xl text-xs transition-colors"
+                      className="py-4 sm:py-5 px-6 bg-slate-50 dark:bg-[#070B12] hover:bg-slate-100 dark:hover:bg-[#162238] text-slate-700 dark:text-[#CBD5E1] font-bold border border-slate-200 dark:border-[#1E2D4A] rounded-2xl text-sm transition-colors"
                     >
                       Human Help
                     </button>
@@ -317,7 +317,7 @@ export default function VerificationDecisionPage() {
                   <button
                     onClick={handleRefund}
                     disabled={isProcessing}
-                    className="w-full py-4 bg-rose-600 hover:bg-rose-700 text-white font-extrabold rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 text-sm disabled:opacity-50"
+                    className="w-full py-4 sm:py-5 bg-rose-600 hover:bg-rose-700 text-white font-black rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 text-base disabled:opacity-50"
                   >
                     {isProcessing ? 'Refunding...' : 'Proof Failed • 1-Click Instant Refund to PayPal'}
                   </button>
