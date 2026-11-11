@@ -97,6 +97,16 @@ const INITIAL_TRANSACTIONS: DashboardTransaction[] = [
     verifyUrl: '/pay/pay_padded_cement/verify?scenario=amber',
   },
   {
+    id: 'pay_reused_photo',
+    date: 'Oct 26, 2026',
+    description: 'Alhaji Sikiru Builders • Duplicate Roof Photo',
+    category: 'Construction',
+    amount: 3300000,
+    amountUSD: 2000,
+    status: 'Refunded',
+    verifyUrl: '/pay/pay_reused_photo/verify?scenario=red',
+  },
+  {
     id: 'pay_hospital_bill',
     date: 'Oct 28, 2026',
     description: "LUTH Hospital • Dad's Eye Surgery Pot",

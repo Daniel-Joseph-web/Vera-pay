@@ -15,7 +15,14 @@ import {
   Headphones,
   ArrowRight,
   TrendingUp,
-  Landmark
+  Landmark,
+  FlaskConical,
+  Camera,
+  Sparkles,
+  CheckCircle2,
+  AlertTriangle,
+  XCircle,
+  ExternalLink
 } from 'lucide-react';
 import { BentoNavigation } from '@/components/layout/BentoNavigation';
 import { VerapayAGGrid } from '@/components/dashboard/VerapayAGGrid';
@@ -78,6 +85,94 @@ export default function DashboardPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 space-y-8 relative z-30">
+        
+        {/* Quick Demo Scenarios Control Center */}
+        <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-5 sm:p-6 shadow-xl border border-indigo-500/30">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-400/30 flex items-center justify-center text-indigo-300">
+                <Sparkles className="w-5 h-5 text-amber-300" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-lg sm:text-xl font-black text-white">Live Demo & Test Bench Scenarios</h2>
+                  <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">1-Click Launch</span>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-300">Jump directly into any forensic verification test or simulated fraud audit:</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Link
+                href="/testbench"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-sm"
+              >
+                <FlaskConical className="w-3.5 h-3.5" /> All-in-One AI Lab
+              </Link>
+              <Link
+                href="/contractor/upload/demo-token"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all border border-slate-700"
+              >
+                <Camera className="w-3.5 h-3.5" /> Contractor Cam
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {/* Scene 1: School Fees */}
+            <Link
+              href="/pay/pay_school_fees/verify?scenario=green"
+              className="group flex items-start gap-3 p-3.5 rounded-2xl bg-white/5 hover:bg-emerald-500/10 border border-emerald-500/30 hover:border-emerald-400 transition-all"
+            >
+              <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-extrabold text-emerald-400 tracking-wider uppercase">Scene 1 • Green</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-1 group-hover:text-emerald-300 transition-all" />
+                </div>
+                <p className="text-sm font-bold text-white truncate mt-0.5">Adaeze Tuition ($400)</p>
+                <p className="text-xs text-slate-300 mt-0.5 line-clamp-1">CAC & bank match • Auto-payout</p>
+              </div>
+            </Link>
+
+            {/* Scene 2: Quote Radar */}
+            <Link
+              href="/pay/pay_padded_cement/verify?scenario=amber"
+              className="group flex items-start gap-3 p-3.5 rounded-2xl bg-white/5 hover:bg-amber-500/10 border border-amber-500/30 hover:border-amber-400 transition-all"
+            >
+              <div className="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-300 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                <AlertTriangle className="w-4 h-4 text-amber-400" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-extrabold text-amber-400 tracking-wider uppercase">Scene 2 • Amber</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-1 group-hover:text-amber-300 transition-all" />
+                </div>
+                <p className="text-sm font-bold text-white truncate mt-0.5">Padded Cement Quote</p>
+                <p className="text-xs text-slate-300 mt-0.5 line-clamp-1">+67% markup detected • Escrow locked</p>
+              </div>
+            </Link>
+
+            {/* Scene 3: Reused Photo */}
+            <Link
+              href="/pay/pay_reused_photo/verify?scenario=red"
+              className="group flex items-start gap-3 p-3.5 rounded-2xl bg-white/5 hover:bg-rose-500/10 border border-rose-500/30 hover:border-rose-400 transition-all"
+            >
+              <div className="w-8 h-8 rounded-lg bg-rose-500/20 text-rose-300 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                <XCircle className="w-4 h-4 text-rose-400" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-extrabold text-rose-400 tracking-wider uppercase">Scene 3 • Red</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-1 group-hover:text-rose-300 transition-all" />
+                </div>
+                <p className="text-sm font-bold text-white truncate mt-0.5">Duplicate Site Photo</p>
+                <p className="text-xs text-slate-300 mt-0.5 line-clamp-1">Perceptual hash clone • 1-click refund</p>
+              </div>
+            </Link>
+          </div>
+        </div>
         
         {/* Top Metric Cards (Enlarged Fonts) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8">
