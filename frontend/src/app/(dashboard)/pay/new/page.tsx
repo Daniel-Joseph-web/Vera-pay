@@ -38,9 +38,22 @@ export default function NewPaymentPage() {
 
     const generatedId = `pay_${Date.now().toString().slice(-6)}`;
     setPaymentId(generatedId);
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append('invoice', selectedFile);
+        const ocrRes = await fetch(`${apiUrl}/api/v1/verification/analyze-invoice`, {
+          method: 'POST',
+          body: formData,
+        });
+        const ocrData = await ocrRes.json();
+        if (ocrData?.data?.institutionName) {
+          updateForm({ payeeName: ocrData.data.institutionName });
+        }
+      }
+
       await fetch(`${apiUrl}/api/v1/payments/create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -57,9 +70,14 @@ export default function NewPaymentPage() {
       // Graceful offline fallback keeps live hackathon demo bulletproof
     }
 
+    let scenario = 'green';
+    if (form.payeeCategory === 'BUILDING_SUPPLIER' || form.payeeCategory === 'ARTISAN_INFORMAL') {
+      scenario = 'amber';
+    }
+
     setTimeout(() => {
-      router.push(`/pay/${generatedId}/verify?scenario=green`);
-    }, 400);
+      router.push(`/pay/${generatedId}/verify?scenario=${scenario}`);
+    }, 500);
   };
 
   return (

@@ -8,6 +8,7 @@ import {
   Send,
   Users2,
   Building2,
+  FlaskConical,
   Settings
 } from 'lucide-react';
 
@@ -17,6 +18,7 @@ export const BentoNavigation: React.FC = () => {
   const navItems = [
     { name: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
     { name: 'Send & Verify', icon: Send, href: '/pay/new' },
+    { name: 'Live AI Lab', icon: FlaskConical, href: '/testbench' },
     { name: 'Family Hub', icon: Users2, href: '/family' },
     { name: 'Projects Hub', icon: Building2, href: '/projects' },
     { name: 'Settings', icon: Settings, href: '/settings' },
@@ -25,6 +27,7 @@ export const BentoNavigation: React.FC = () => {
   const isActive = (href: string) => {
     if (href === '/dashboard') return pathname === '/dashboard';
     if (href === '/pay/new') return pathname.startsWith('/pay');
+    if (href === '/testbench') return pathname === '/testbench';
     if (href === '/family') return pathname.startsWith('/family');
     if (href === '/projects') return pathname.startsWith('/projects');
     if (href === '/settings') return pathname.startsWith('/settings');
