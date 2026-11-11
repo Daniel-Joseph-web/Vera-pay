@@ -18,9 +18,10 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@shared/*": ["../shared/*"]
+      "@/*": ["src/*", "./src/*"],
+      "@shared/*": ["src/shared/*", "../shared/*"]
     }
   },
   "include": [
