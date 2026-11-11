@@ -19,10 +19,12 @@ import { QuoteComparisonModal } from '@/components/verification/QuoteComparisonM
 import { TrafficLightSignal, VerificationCheckItem } from '@shared/types/index';
 import { formatCurrency } from '@/lib/utils';
 import { BentoNavigation } from '@/components/layout/BentoNavigation';
+import { usePaymentStore } from '@/stores/usePaymentStore';
 
 export default function VerificationDecisionPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { approvePayment, refundPayment, activePaymentId } = usePaymentStore();
 
   const initialScenario = (searchParams.get('scenario')?.toUpperCase() as TrafficLightSignal) || 'GREEN';
   const [signal, setSignal] = useState<TrafficLightSignal>(initialScenario);
@@ -100,14 +102,16 @@ export default function VerificationDecisionPage() {
 
   const handleApprove = async () => {
     setIsProcessing(true);
+    const targetId = activePaymentId || 'pay_school_fees';
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
-      await fetch(`${apiUrl}/api/v1/payments/pay_school_fees/approve`, {
+      await fetch(`${apiUrl}/api/v1/payments/${targetId}/approve`, {
         method: 'POST',
       });
     } catch {
       // Graceful offline fallback
     }
+    approvePayment(targetId);
     setTimeout(() => {
       setIsProcessing(false);
       setPayoutSuccessModal(true);
@@ -116,14 +120,16 @@ export default function VerificationDecisionPage() {
 
   const handleRefund = async () => {
     setIsProcessing(true);
+    const targetId = activePaymentId || 'pay_padded_cement';
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
-      await fetch(`${apiUrl}/api/v1/payments/pay_padded_cement/refund`, {
+      await fetch(`${apiUrl}/api/v1/payments/${targetId}/refund`, {
         method: 'POST',
       });
     } catch {
       // Graceful offline fallback
     }
+    refundPayment(targetId);
     setTimeout(() => {
       setIsProcessing(false);
       setRefundSuccessModal(true);

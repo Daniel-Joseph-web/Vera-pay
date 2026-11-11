@@ -21,7 +21,7 @@ import { BentoNavigation } from '@/components/layout/BentoNavigation';
 
 export default function NewPaymentPage() {
   const router = useRouter();
-  const { form, updateForm, setPaymentId } = usePaymentStore();
+  const { form, updateForm, setPaymentId, addNewPayment } = usePaymentStore();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -39,6 +39,14 @@ export default function NewPaymentPage() {
     const generatedId = `pay_${Date.now().toString().slice(-6)}`;
     setPaymentId(generatedId);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+
+    addNewPayment({
+      id: generatedId,
+      payeeName: form.payeeName || 'Bright Future Academy Ltd',
+      category: form.payeeCategory === 'SCHOOL' ? 'Education' : form.payeeCategory === 'HOSPITAL' ? 'Healthcare' : 'Construction',
+      amountUSD: Number(form.amountUSD) || 400,
+      description: form.description || `${form.payeeCategory} Payment`,
+    });
 
     try {
       if (selectedFile) {

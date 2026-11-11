@@ -8,6 +8,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { ArrowRight, CheckCircle2, Clock, Download, Search, Sparkles } from 'lucide-react';
 import { useTheme } from '@/components/layout/ThemeContext';
+import { usePaymentStore } from '@/stores/usePaymentStore';
 
 interface PaymentRow {
   id: string;
@@ -24,57 +25,19 @@ export const VerapayAGGrid: React.FC = () => {
   const isDark = theme === 'dark';
   const gridRef = useRef<AgGridReact>(null);
   const [quickFilterText, setQuickFilterText] = useState('');
+  const { transactions } = usePaymentStore();
 
-  const rowData: PaymentRow[] = useMemo(
-    () => [
-      {
-        id: 'pay_school_fees',
-        date: 'Today, 2:15 PM',
-        description: 'Bright Future Academy • Tuition & Books',
-        category: 'Education',
-        amount: 660000,
-        status: 'Verified',
-        verifyUrl: '/pay/pay_school_fees/verify?scenario=green',
-      },
-      {
-        id: 'pay_padded_cement',
-        date: 'Yesterday',
-        description: 'Engr. Kayode • 500 Bags Dangote Cement',
-        category: 'Construction',
-        amount: 7100000,
-        status: 'Review Required',
-        verifyUrl: '/pay/pay_padded_cement/verify?scenario=amber',
-      },
-      {
-        id: 'pay_hospital_bill',
-        date: 'Oct 28, 2026',
-        description: "LUTH Hospital • Dad's Eye Surgery Pot",
-        category: 'Healthcare',
-        amount: 2475000,
-        status: 'Verified',
-        verifyUrl: '/family',
-      },
-      {
-        id: 'pay_project_milestone',
-        date: 'Oct 24, 2026',
-        description: '4-Bedroom Duplex • Blockwork to Lintel',
-        category: 'Capital Build',
-        amount: 5280000,
-        status: 'Verifying',
-        verifyUrl: '/projects/proj-881',
-      },
-      {
-        id: 'pay_groceries_mother',
-        date: 'Oct 20, 2026',
-        description: 'Alhaji Ganiyu Depot • Monthly Family Food',
-        category: 'Living Support',
-        amount: 350000,
-        status: 'Verified',
-        verifyUrl: '/dashboard',
-      },
-    ],
-    []
-  );
+  const rowData: PaymentRow[] = useMemo(() => {
+    return transactions.map((t) => ({
+      id: t.id,
+      date: t.date,
+      description: t.description,
+      category: t.category,
+      amount: t.amount,
+      status: t.status === 'Refunded' ? 'Review Required' : (t.status as any),
+      verifyUrl: t.verifyUrl,
+    }));
+  }, [transactions]);
 
   const columnDefs: ColDef<PaymentRow>[] = useMemo(
     () => [

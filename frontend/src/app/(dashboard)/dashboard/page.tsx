@@ -23,42 +23,22 @@ import {
 } from 'lucide-react';
 import { BentoNavigation } from '@/components/layout/BentoNavigation';
 import { VerapayAGGrid } from '@/components/dashboard/VerapayAGGrid';
+import { usePaymentStore } from '@/stores/usePaymentStore';
 
 export default function DashboardPage() {
   const [viewMode, setViewMode] = useState<'aggrid' | 'standard'>('aggrid');
+  const { protectedBalanceUSD, verifiedCount, transactions } = usePaymentStore();
 
-  const recentPayments = [
-    {
-      id: 'pay_school_fees',
-      date: 'Nov 1, 2026 • 10:24 AM',
-      description: 'School Tuition – Bright Future Academy',
-      amount: 400000,
-      status: 'Verified',
-      icon: GraduationCap,
-      iconColor: 'text-emerald-600',
-      iconBg: 'bg-emerald-100',
-    },
-    {
-      id: 'pay_project_milestone',
-      date: 'Oct 28, 2026 • 2:15 PM',
-      description: 'Project Milestone – Duplex House',
-      amount: 2000000,
-      status: 'Pending',
-      icon: Home,
-      iconColor: 'text-blue-600',
-      iconBg: 'bg-blue-100',
-    },
-    {
-      id: 'pay_family',
-      date: 'Oct 25, 2026 • 9:30 AM',
-      description: 'Family Contribution',
-      amount: 200000,
-      status: 'Verified',
-      icon: Users,
-      iconColor: 'text-emerald-600',
-      iconBg: 'bg-emerald-100',
-    },
-  ];
+  const recentPayments = transactions.slice(0, 3).map((tx) => ({
+    id: tx.id,
+    date: tx.date,
+    description: tx.description,
+    amount: tx.amount,
+    status: tx.status,
+    icon: tx.category === 'Education' ? GraduationCap : tx.category === 'Healthcare' ? Users : Home,
+    iconColor: tx.status === 'Verified' ? 'text-emerald-600' : tx.status === 'Refunded' ? 'text-rose-600' : 'text-blue-600',
+    iconBg: tx.status === 'Verified' ? 'bg-emerald-100' : tx.status === 'Refunded' ? 'bg-rose-100' : 'bg-blue-100',
+  }));
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#070B12] text-slate-900 dark:text-[#F8FAFC] pb-24 lg:pb-10 font-sans lg:pl-20 transition-colors">
@@ -130,9 +110,14 @@ export default function DashboardPage() {
               </div>
               <div className="flex-1">
                 <p className="text-sm font-semibold text-slate-600 dark:text-[#94A3B8]">Protected in Vera pay</p>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">₦6,703.00</h3>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">
+                  ${protectedBalanceUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  <span className="text-xs font-semibold text-slate-400 dark:text-slate-500 ml-2">
+                    (₦{(protectedBalanceUSD * 1650).toLocaleString()})
+                  </span>
+                </h3>
                 <div className="mt-3 flex items-center text-xs font-bold text-emerald-600 dark:text-emerald-400 gap-1">
-                  <TrendingUp className="w-3.5 h-3.5" /> 3 Payments Active
+                  <TrendingUp className="w-3.5 h-3.5" /> {transactions.filter(t => t.status === 'Verifying').length || 3} Payments Active
                 </div>
               </div>
             </div>
@@ -152,7 +137,7 @@ export default function DashboardPage() {
               </div>
               <div>
                 <p className="text-sm font-semibold text-slate-600 dark:text-[#94A3B8]">Verified Payments</p>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">12</h3>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">{verifiedCount}</h3>
                 <div className="mt-3 flex items-center text-xs font-bold text-emerald-600 dark:text-emerald-400 gap-1">
                   <TrendingUp className="w-3.5 h-3.5" /> +2 this month
                 </div>
