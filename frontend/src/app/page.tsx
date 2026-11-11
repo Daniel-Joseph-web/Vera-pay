@@ -22,6 +22,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { HeroSection } from "@/components/home/HeroSection";
+import { TechPartnersMarquee } from "@/components/home/TechPartnersMarquee";
 import { VerapayLogo } from "@/components/brand/VerapayLogo";
 
 const LIME = "#7CF05A";
@@ -229,6 +230,9 @@ export default function HomePage() {
       }`}
     >
       <HeroSection />
+
+      {/* ---------------- Tech Partners & Infrastructure Marquee ---------------- */}
+      <TechPartnersMarquee />
 
       {/* ---------------- Features (light) ---------------- */}
       <section id="features" className="relative overflow-hidden bg-white px-5 pb-20 pt-16 sm:px-8 lg:px-12">

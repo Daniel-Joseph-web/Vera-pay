@@ -46,6 +46,15 @@ const config: Config = {
         display: ['var(--font-display)', 'Sora', 'system-ui', 'sans-serif'],
         serif: ['Playfair Display', 'Georgia', 'serif'], // Added for elegant headings
       },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+      },
+      animation: {
+        marquee: 'marquee 35s linear infinite',
+      },
     },
   },
   plugins: [],
