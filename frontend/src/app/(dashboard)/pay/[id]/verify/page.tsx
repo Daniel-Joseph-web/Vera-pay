@@ -24,7 +24,7 @@ import { usePaymentStore } from '@/stores/usePaymentStore';
 export default function VerificationDecisionPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { approvePayment, refundPayment, activePaymentId } = usePaymentStore();
+  const { approvePayment, refundPayment, activePaymentId, lastAnalysisResult } = usePaymentStore();
 
   const initialScenario = (searchParams.get('scenario')?.toUpperCase() as TrafficLightSignal) || 'GREEN';
   const [signal, setSignal] = useState<TrafficLightSignal>(initialScenario);
@@ -37,14 +37,16 @@ export default function VerificationDecisionPage() {
     const q = searchParams.get('scenario');
     if (q && ['green', 'amber', 'red'].includes(q.toLowerCase())) {
       setSignal(q.toUpperCase() as TrafficLightSignal);
+    } else if (lastAnalysisResult?.signal) {
+      setSignal(lastAnalysisResult.signal);
     }
-  }, [searchParams]);
+  }, [searchParams, lastAnalysisResult]);
 
   // Dynamic scenario data
   const scenarioData = {
     GREEN: {
       headline: 'All good. Pay Bright Future School?',
-      description: 'CAC registration verified, student Ada Okonkwo enrolled, invoice arithmetic clean, price is standard.',
+      description: 'CAC registration verified, student Adaeze Okonkwo enrolled, invoice arithmetic clean, price is standard.',
       providerName: 'Bright Future Academy Ltd',
       cacReg: 'RC-892182',
       accountNumber: '0123456789',
@@ -55,7 +57,7 @@ export default function VerificationDecisionPage() {
       amountNGN: 660000.0,
       checks: [
         { id: '1', name: '1. Payee Reality & CAC Verification', passed: true, statusText: 'CAC Registered & Bank Name Matched (98%)', category: 'PAYEE' },
-        { id: '2', name: '2. Bill Honesty & Arithmetic', passed: true, statusText: 'Ada Okonkwo fee schedule confirmed', category: 'INVOICE' },
+        { id: '2', name: '2. Bill Honesty & Arithmetic', passed: true, statusText: 'Adaeze Okonkwo fee schedule confirmed', category: 'INVOICE' },
         { id: '3', name: '3. Quote Agent Price Check', passed: true, statusText: 'Termly fees match approved schedule', category: 'PRICE' },
         { id: '4', name: '4. Ground-Truth Proof', passed: true, statusText: 'Official termly bill validated & receipt queued', category: 'PROOF' },
       ] as VerificationCheckItem[],
@@ -98,7 +100,22 @@ export default function VerificationDecisionPage() {
     },
   };
 
-  const current = scenarioData[signal];
+  const isViewingLiveResult = !!(lastAnalysisResult && (signal === lastAnalysisResult.signal));
+  const current = isViewingLiveResult
+    ? {
+        headline: lastAnalysisResult.headline,
+        description: lastAnalysisResult.description,
+        providerName: lastAnalysisResult.providerName,
+        cacReg: lastAnalysisResult.cacReg,
+        accountNumber: lastAnalysisResult.accountNumber,
+        bankName: lastAnalysisResult.bankName,
+        resolvedAccountName: lastAnalysisResult.resolvedAccountName,
+        nameMatchScore: lastAnalysisResult.nameMatchScore,
+        amountUSD: lastAnalysisResult.amountUSD,
+        amountNGN: lastAnalysisResult.amountNGN,
+        checks: lastAnalysisResult.checks,
+      }
+    : scenarioData[signal];
 
   const handleApprove = async () => {
     setIsProcessing(true);
@@ -348,26 +365,45 @@ export default function VerificationDecisionPage() {
                 <div className="mt-5 space-y-5">
                   <div className="p-5 rounded-2xl bg-slate-50 dark:bg-[#070B12] border border-slate-200 dark:border-[#1E2D4A] font-mono text-xs space-y-3">
                     <div className="flex justify-between border-b border-slate-200 dark:border-[#1E2D4A] pb-3">
-                      <span className="font-extrabold text-slate-900 dark:text-white">BRIGHT FUTURE SCHOOL</span>
-                      <span className="text-emerald-700 dark:text-emerald-300 font-bold bg-emerald-100/50 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-transparent dark:border-emerald-800">CAC #RC-892182</span>
+                      <span className="font-extrabold text-slate-900 dark:text-white uppercase">
+                        {isViewingLiveResult && lastAnalysisResult?.extractedInvoice?.institutionName
+                          ? lastAnalysisResult.extractedInvoice.institutionName
+                          : current.providerName}
+                      </span>
+                      <span className="text-emerald-700 dark:text-emerald-300 font-bold bg-emerald-100/50 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-transparent dark:border-emerald-800">{current.cacReg}</span>
                     </div>
                     <div className="text-[11px] text-slate-600 dark:text-[#94A3B8] space-y-2 font-medium">
-                      <div>Student: <span className="text-slate-900 dark:text-white font-bold">Adaeze Okonkwo (JSS 2)</span></div>
+                      <div>Beneficiary: <span className="text-slate-900 dark:text-white font-bold">
+                        {isViewingLiveResult && lastAnalysisResult?.extractedInvoice?.studentOrPatientName
+                          ? lastAnalysisResult.extractedInvoice.studentOrPatientName
+                          : 'Adaeze Okonkwo (JSS 2)'}
+                      </span></div>
                       <div>Term: First Term 2026/2027 Session</div>
-                      <div className="flex justify-between"><span>Tuition & Books:</span> <span className="text-slate-800 dark:text-slate-200 font-bold">₦540,000.00</span></div>
-                      <div className="flex justify-between"><span>Development Levy:</span> <span className="text-slate-800 dark:text-slate-200 font-bold">₦120,000.00</span></div>
+                      {isViewingLiveResult && lastAnalysisResult?.extractedInvoice?.lineItems?.length > 0 ? (
+                        lastAnalysisResult.extractedInvoice.lineItems.map((item: any, idx: number) => (
+                          <div key={idx} className="flex justify-between">
+                            <span>{item.description}:</span>
+                            <span className="text-slate-800 dark:text-slate-200 font-bold">&#8358;{Number(item.total).toLocaleString()}</span>
+                          </div>
+                        ))
+                      ) : (
+                        <>
+                          <div className="flex justify-between"><span>Tuition & Books:</span> <span className="text-slate-800 dark:text-slate-200 font-bold">&#8358;540,000.00</span></div>
+                          <div className="flex justify-between"><span>Development Levy:</span> <span className="text-slate-800 dark:text-slate-200 font-bold">&#8358;120,000.00</span></div>
+                        </>
+                      )}
                     </div>
                     <div className="pt-3 border-t border-slate-200 dark:border-[#1E2D4A] flex justify-between font-extrabold text-slate-900 dark:text-white text-sm">
                       <span>TOTAL:</span>
-                      <span className="text-emerald-700 dark:text-emerald-400">₦660,000.00</span>
+                      <span className="text-emerald-700 dark:text-emerald-400">&#8358;{current.amountNGN.toLocaleString()}</span>
                     </div>
                   </div>
 
                   <div className="p-4 bg-emerald-50 dark:bg-emerald-950/40 rounded-2xl border border-emerald-100 dark:border-emerald-800 text-xs text-emerald-900 dark:text-emerald-200 flex items-start gap-3 shadow-sm">
                     <ShieldCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
                     <span className="font-medium leading-relaxed">
-                      <strong className="font-bold block mb-0.5">Automated OCR Match</strong>
-                      Gemini Multimodal OCR verified student enrollment & exact fee matching from the uploaded document.
+                      <strong className="font-bold block mb-0.5">Automated Gemini OCR Match</strong>
+                      Multimodal OCR verified fee schedule arithmetic, matching against authorized disbursement rules.
                     </span>
                   </div>
                 </div>
@@ -435,15 +471,6 @@ export default function VerificationDecisionPage() {
                 </div>
               )}
             </div>
-
-            {/* Quick Demo Tips Card */}
-            <div className="p-5 bg-indigo-50/50 dark:bg-[#161B2E] rounded-3xl border border-indigo-100 dark:border-indigo-900/50 text-xs text-indigo-900/70 dark:text-indigo-200 space-y-2 transition-colors">
-              <span className="font-extrabold text-indigo-900 dark:text-indigo-200 block flex items-center gap-1.5 mb-1">
-                <Sparkles className="w-4 h-4 text-indigo-500 dark:text-indigo-400" /> Hackathon Presentation Tip
-              </span>
-              <div className="font-medium leading-relaxed">&bull; Use the top buttons to switch between the 3 scenarios in under 30 seconds.</div>
-              <div className="font-medium leading-relaxed">&bull; Point out that Verapay only earns its fee when money is safely released.</div>
-            </div>
           </div>
         </div>
 
@@ -474,15 +501,16 @@ export default function VerificationDecisionPage() {
                 <CheckCircle2 className="w-10 h-10" />
               </div>
               <div>
-                <h3 className="text-2xl font-extrabold text-slate-900 dark:text-white">Naira Payout Dispatched!</h3>
+                <h3 className="text-2xl font-extrabold text-slate-900 dark:text-white">Escrow Release Dispatched!</h3>
                 <p className="text-sm text-slate-600 dark:text-[#94A3B8] font-medium mt-2 leading-relaxed">
-                  ₦660,000 has been transferred directly into Bright Future Academy Ltd's GTB account via Paystack NIP rails.
+                  Verified funds captured from PayPal escrow and disbursed via PayPal Payouts & institutional settlement to {current.providerName}.
                 </p>
               </div>
               <div className="p-4 bg-slate-50 dark:bg-[#070B12] border border-slate-200 dark:border-[#1E2D4A] rounded-2xl font-mono text-xs text-slate-700 dark:text-[#CBD5E1] font-bold text-left space-y-2">
-                <div className="flex justify-between"><span>Transfer Code:</span> <span>TRF_99182371A</span></div>
-                <div className="flex justify-between"><span>Status:</span> <span className="text-emerald-600 dark:text-emerald-400">SUCCESSFUL</span></div>
-                <div className="flex justify-between"><span>Official Receipt:</span> <span>Emailed</span></div>
+                <div className="flex justify-between"><span>PayPal Payouts Batch:</span> <span className="text-emerald-600 dark:text-emerald-400">PAYOUT_99182371A</span></div>
+                <div className="flex justify-between"><span>PayPal Capture ID:</span> <span className="text-emerald-600 dark:text-emerald-400">CAPT_89218274_SUCCESS</span></div>
+                <div className="flex justify-between"><span>Disbursement Status:</span> <span className="text-emerald-600 dark:text-emerald-400">SUCCESSFUL</span></div>
+                <div className="flex justify-between"><span>Audit Certificate:</span> <span>Verified & Emailed</span></div>
               </div>
               <button
                 onClick={() => {

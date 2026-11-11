@@ -232,7 +232,7 @@ export default function SettingsPage() {
             <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
               isDark ? 'text-emerald-300 bg-emerald-950/60' : 'text-emerald-700 bg-emerald-100'
             }`}>
-              Real-time Mid-Market
+              Indicative Sandbox Rate
             </span>
           </div>
         </div>

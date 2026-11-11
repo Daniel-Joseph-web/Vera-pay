@@ -95,9 +95,9 @@ export default function DashboardPage() {
               <div className="flex-1">
                 <p className="text-base font-bold text-slate-600 dark:text-[#94A3B8]">Protected in Escrow Vault</p>
                 <h3 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mt-1.5 tracking-tight">
-                  ${protectedBalanceUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  ${protectedBalanceUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-sm font-bold text-slate-400">USD</span>
                   <span className="text-base font-bold text-slate-500 dark:text-slate-400 ml-3">
-                    (₦{(protectedBalanceUSD * 1650).toLocaleString()})
+                    (&#8358;{(protectedBalanceUSD * 1650).toLocaleString()})
                   </span>
                 </h3>
                 <div className="mt-4 flex items-center text-sm font-bold text-emerald-600 dark:text-emerald-400 gap-1.5">
@@ -181,16 +181,16 @@ export default function DashboardPage() {
                 
                 <div className="flex items-center gap-4">
                   <div className="flex-1 bg-slate-200 dark:bg-[#1E2D4A] h-3 rounded-full overflow-hidden">
-                    <div className="bg-emerald-500 h-full rounded-full w-[65%]"></div>
+                    <div className="bg-emerald-500 h-full rounded-full w-[40%]"></div>
                   </div>
-                  <span className="text-sm font-bold text-slate-700 dark:text-[#CBD5E1]">65% Complete</span>
+                  <span className="text-sm font-bold text-slate-700 dark:text-[#CBD5E1]">40% Complete</span>
                 </div>
               </div>
 
               <div className="w-full sm:w-auto flex sm:flex-col items-center justify-between sm:items-end sm:justify-center pt-4 sm:pt-0 sm:pl-6 sm:border-l border-slate-200 dark:border-[#1E2D4A]">
                 <div className="text-left sm:text-right mb-0 sm:mb-3">
-                  <div className="text-xl font-black text-slate-900 dark:text-white">₦45,000,000</div>
-                  <div className="text-xs text-slate-500 dark:text-[#94A3B8] font-semibold mt-0.5">Stage: Roofing</div>
+                  <div className="text-xl font-black text-slate-900 dark:text-white">&#8358;25,575,000</div>
+                  <div className="text-xs text-slate-500 dark:text-[#94A3B8] font-semibold mt-0.5">Stage: Blockwork to Lintel ($15,500 Total)</div>
                 </div>
                 <Link href="/projects/proj-881" className="w-11 h-11 rounded-2xl bg-white dark:bg-[#0E1626] border border-slate-200 dark:border-[#1E2D4A] flex items-center justify-center text-slate-600 dark:text-[#CBD5E1] hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-200 dark:hover:border-emerald-600 transition-colors shadow-sm">
                   <ArrowRight className="w-5 h-5" />

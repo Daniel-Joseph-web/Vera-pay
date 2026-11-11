@@ -23,16 +23,36 @@ interface PaymentFormState {
   plan: PlanType;
 }
 
+export interface LiveAnalysisResult {
+  paymentId: string;
+  signal: TrafficLightSignal;
+  headline: string;
+  description: string;
+  providerName: string;
+  cacReg: string;
+  accountNumber: string;
+  bankName: string;
+  resolvedAccountName: string;
+  nameMatchScore: number;
+  amountUSD: number;
+  amountNGN: number;
+  checks: any[];
+  extractedInvoice?: any;
+  forensics?: any;
+}
+
 interface PaymentStore {
   activePaymentId: string | null;
   form: PaymentFormState;
   activeVerdict: TrafficLightSignal | null;
+  lastAnalysisResult: LiveAnalysisResult | null;
   protectedBalanceUSD: number;
   verifiedCount: number;
   transactions: DashboardTransaction[];
   setPaymentId: (id: string | null) => void;
   updateForm: (updates: Partial<PaymentFormState>) => void;
   setVerdict: (verdict: TrafficLightSignal | null) => void;
+  setAnalysisResult: (result: LiveAnalysisResult | null) => void;
   addNewPayment: (payment: {
     id: string;
     payeeName: string;
@@ -104,6 +124,7 @@ export const usePaymentStore = create<PaymentStore>()(
       activePaymentId: null,
       form: defaultForm,
       activeVerdict: null,
+      lastAnalysisResult: null,
       protectedBalanceUSD: 4063.0,
       verifiedCount: 12,
       transactions: INITIAL_TRANSACTIONS,
@@ -111,6 +132,7 @@ export const usePaymentStore = create<PaymentStore>()(
       setPaymentId: (id) => set({ activePaymentId: id }),
       updateForm: (updates) => set((state) => ({ form: { ...state.form, ...updates } })),
       setVerdict: (verdict) => set({ activeVerdict: verdict }),
+      setAnalysisResult: (result) => set({ lastAnalysisResult: result }),
 
       addNewPayment: (payment) => {
         const amountNGN = payment.amountUSD * 1650;

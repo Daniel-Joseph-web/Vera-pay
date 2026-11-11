@@ -23,6 +23,19 @@ import { BentoNavigation } from '@/components/layout/BentoNavigation';
 
 export default function FamilyGroupPage() {
   const [activePane, setActivePane] = useState<'invite' | 'manage' | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  const inviteLink = typeof window !== 'undefined'
+    ? `${window.location.origin}/family?invite=f-82A9xZ`
+    : 'https://vera-pay.vercel.app/family?invite=f-82A9xZ';
+
+  const handleCopyLink = () => {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(inviteLink);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
 
   // Data for the Manage Group slide-over
   const contributors = [
@@ -400,11 +413,16 @@ export default function FamilyGroupPage() {
                   <input 
                     type="text" 
                     readOnly
-                    value="https://verapay.io/join/f-82A9xZ"
+                    value={inviteLink}
                     className="flex-1 px-4 py-3 bg-slate-50 dark:bg-[#070B12] border border-slate-200 dark:border-[#1E2D4A] rounded-xl text-sm font-medium text-slate-600 dark:text-[#CBD5E1] focus:outline-none"
                   />
-                  <button className="p-3 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-200 dark:hover:bg-emerald-900 rounded-xl transition-colors shadow-sm flex-shrink-0" title="Copy Link">
-                    <Copy className="w-5 h-5" />
+                  <button 
+                    onClick={handleCopyLink}
+                    className="px-4 py-3 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-200 dark:hover:bg-emerald-900 rounded-xl transition-colors shadow-sm flex-shrink-0 font-bold text-xs flex items-center gap-1.5" 
+                    title="Copy Link"
+                  >
+                    <Copy className="w-4 h-4" />
+                    {copied ? 'Copied!' : 'Copy'}
                   </button>
                 </div>
               </div>

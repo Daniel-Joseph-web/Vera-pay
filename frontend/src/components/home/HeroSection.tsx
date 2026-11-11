@@ -103,13 +103,13 @@ export function HeroSection() {
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
-              href="#verification-demo"
+              href="/testbench"
               className="inline-flex min-h-14 items-center justify-center gap-2.5 rounded-full border border-white/25 bg-white/[0.06] px-7 text-sm font-semibold text-white backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-white/10"
             >
               <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-[#052e1f]">
                 <Play className="h-3 w-3 fill-current" />
               </span>
-              Watch Demo
+              Watch Interactive Demo
             </Link>
           </motion.div>
 
@@ -131,9 +131,9 @@ export function HeroSection() {
               ))}
             </div>
             <p className="text-xs leading-5 text-white/80">
-              Trusted by
+              Built for
               <br />
-              <span className="font-bold text-white">100,000+ users worldwide</span>
+              <span className="font-bold text-white">Diaspora families & projects</span>
             </p>
           </motion.div>
         </div>

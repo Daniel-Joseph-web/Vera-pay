@@ -37,9 +37,9 @@ const appLinks = [
 ];
 
 const demoItems = [
-  { href: '/pay/pay_school_fees/verify?scenario=green', dot: 'bg-emerald-400', title: 'Scene 1: School Fees (Green)', sub: 'Ada Okonkwo tuition • CAC check & instant release' },
+  { href: '/pay/pay_school_fees/verify?scenario=green', dot: 'bg-emerald-400', title: 'Scene 1: School Fees (Green)', sub: 'Adaeze Okonkwo tuition • CAC check & instant release' },
   { href: '/pay/pay_padded_cement/verify?scenario=amber', dot: 'bg-amber-300', title: 'Scene 2: Quote Agent Catch (Amber)', sub: 'Cement quoted +24% • Switch to local supplier' },
-  { href: '/pay/pay_reused_photo/verify?scenario=red', dot: 'bg-rose-400', title: 'Scene 3: Fraud Caught (Red)', sub: 'Reused roof photo • 1-click PayPal 100% refund' },
+  { href: '/pay/pay_reused_photo/verify?scenario=red', dot: 'bg-rose-400', title: 'Scene 3: Fraud Caught (Red)', sub: 'Reused roof photo • 1-click PayPal instant refund' },
   { href: '/family', dot: 'bg-white/40', title: 'Scene 4: Verapay Plus Family Pot', sub: "Siblings chip in for Dad's surgery at LUTH", divider: true },
   { href: '/contractor/upload/demo-token', dot: 'bg-white/40', title: 'Scene 5: Contractor Mobile Cam', sub: 'Live GPS watermarking & 15s surprise video', external: true },
 ];

@@ -523,21 +523,21 @@ export default function HomePage() {
                   <MessageCircle className="h-6 w-6" />
                 </span>
                 <div>
-                  <h3 className="font-bold text-white transition-colors group-hover:text-emerald-300">WhatsApp Chat</h3>
-                  <p className="mt-0.5 text-sm text-emerald-100/70">09161138160</p>
+                  <h3 className="font-bold text-white transition-colors group-hover:text-emerald-300">WhatsApp Desk</h3>
+                  <p className="mt-0.5 text-sm text-emerald-100/70">+234 (0) 800-VERAPAY</p>
                 </div>
               </a>
               
               <a
-                href="mailto:danieljosepholuwafemi@gmail.com"
+                href="mailto:support@verapay.app"
                 className="group flex items-center gap-4 rounded-2xl border border-white/5 bg-white/5 p-4 backdrop-blur-md transition-colors hover:bg-white/10"
               >
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-500 text-white">
                   <Mail className="h-6 w-6" />
                 </span>
                 <div>
-                  <h3 className="font-bold text-white transition-colors group-hover:text-amber-300">Email Us</h3>
-                  <p className="mt-0.5 text-sm text-emerald-100/70">danieljosepholuwafemi@gmail.com</p>
+                  <h3 className="font-bold text-white transition-colors group-hover:text-amber-300">Email Support</h3>
+                  <p className="mt-0.5 text-sm text-emerald-100/70">support@verapay.app</p>
                 </div>
               </a>
             </div>

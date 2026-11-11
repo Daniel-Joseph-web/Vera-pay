@@ -49,20 +49,19 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <span className="font-semibold text-white/90">Verapay Active Rails:</span>
 
               <span>
-                PayPal Sandbox Checkout (Inbound) &bull; Paystack NIP Direct Transfers (Naira
-                Payout)
+                PayPal Sandbox Checkout (Inbound Escrow) &bull; PayPal Payouts & Capture / Instant Refund (Outbound)
               </span>
             </div>
 
             <div className="flex items-center gap-3 text-white/45">
               <span className="flex items-center gap-1 font-medium text-emerald-300">
                 <ShieldCheck className="h-3.5 w-3.5" />
-                100% Payment Protection Active
+                Verified Escrow Protection Active
               </span>
 
               <span aria-hidden="true">&bull;</span>
 
-              <span>Hackathon Prototype v2.0</span>
+              <span>Institutional Escrow Platform</span>
             </div>
           </div>
         </footer>

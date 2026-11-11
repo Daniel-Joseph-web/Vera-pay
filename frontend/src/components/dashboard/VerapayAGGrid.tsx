@@ -3,12 +3,15 @@
 import React, { useState, useMemo, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { AgGridReact } from 'ag-grid-react';
-import { ColDef, ICellRendererParams, GridReadyEvent } from 'ag-grid-community';
+import { ModuleRegistry, AllCommunityModule, ColDef, ICellRendererParams, GridReadyEvent } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { ArrowRight, CheckCircle2, Clock, Download, Search, Sparkles } from 'lucide-react';
 import { useTheme } from '@/components/layout/ThemeContext';
 import { usePaymentStore } from '@/stores/usePaymentStore';
+
+// Register all AG Grid Community modules to enable filtering, quick filter, and CSV export without error #200
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 interface PaymentRow {
   id: string;

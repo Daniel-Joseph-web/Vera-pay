@@ -1,6 +1,11 @@
 import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
-import { createPayPalEscrowOrder, refundPayPalEscrow } from '../services/escrow/paypal-escrow.service.js';
+import {
+  createPayPalEscrowOrder,
+  refundPayPalEscrow,
+  capturePayPalEscrowOrder,
+  createPayPalPayout,
+} from '../services/escrow/paypal-escrow.service.js';
 import { disburseNairaPayout } from '../services/escrow/paystack-payout.service.js';
 import { dispatchZapierEvent } from '../services/integrations/zapier.service.js';
 
@@ -55,12 +60,26 @@ export async function approvePayment(req: Request, res: Response) {
     const { id } = req.params;
     // In production, fetch Payment record from Prisma DB
     const mockPayment = {
+      id: id,
       accountNumber: '0123456789',
       bankCode: '058',
       accountName: 'BRIGHT FUTURE ACADEMY LTD',
       amountNGN: 660000.0,
+      amountUSD: 400.0,
     };
 
+    // 1. Capture escrow principal via PayPal Sandbox
+    const paypalCapture = await capturePayPalEscrowOrder(id);
+
+    // 2. Disburse via PayPal Payouts Rails (supporting direct PayPal payouts)
+    const paypalPayout = await createPayPalPayout(
+      id,
+      'bursar@brightfutureacademy.edu.ng',
+      mockPayment.amountUSD,
+      `Verapay verified escrow release for ${mockPayment.accountName}`
+    );
+
+    // 3. Optional local bank disbursement
     const payout = await disburseNairaPayout(
       mockPayment.accountNumber,
       mockPayment.bankCode,
@@ -73,19 +92,26 @@ export async function approvePayment(req: Request, res: Response) {
     await dispatchZapierEvent({
       event: 'payout.dispatched',
       paymentId: id,
-      amountUSD: mockPayment.amountNGN / 1650,
+      amountUSD: mockPayment.amountUSD,
       payeeName: mockPayment.accountName,
       status: 'PAYOUT_INITIATED',
-      details: { transferCode: payout.transferCode, amountNGN: mockPayment.amountNGN },
+      details: {
+        transferCode: payout.transferCode,
+        paypalCaptureId: paypalCapture.captureId,
+        paypalPayoutBatchId: paypalPayout.batchId,
+        amountNGN: mockPayment.amountNGN,
+      },
       timestamp: new Date().toISOString(),
     });
 
     res.status(200).json({
       success: true,
       paymentId: id,
-      escrowStatus: 'PAYOUT_INITIATED',
+      escrowStatus: 'PAYOUT_RELEASED',
+      paypalCaptureId: paypalCapture.captureId,
+      paypalPayoutBatchId: paypalPayout.batchId,
       transferCode: payout.transferCode,
-      message: 'Verified funds successfully released to provider NUBAN account.',
+      message: 'Verified funds successfully released via PayPal Payouts & direct bank settlement.',
     });
   } catch (error: any) {
     res.status(500).json({ success: false, error: error.message });
